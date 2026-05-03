@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --bg-body: #e5e7eb; /* Fondo más grisáceo para que las tarjetas resalten */
+    --bg-surface: #ffffff; /* Superficies blancas (más claro que el fondo) */
+    --bg-header: #105b63; /* Verde petróleo */
+    --header-text: #ffffff;
+    --border-color: #d1d5db; /* Bordes en gris */
+    --primary-color: #105b63; /* Verde petróleo para botones principales */
+    --primary-hover: #0c454b;
+    --text-main: #374151; /* Textos en gris oscuro */
+    --text-muted: #6b7280; /* Textos secundarios en gris medio */
+    --input-bg: #ffffff;
+    --input-border: #9ca3af;
+    --focus-ring: rgba(16, 91, 99, 0.2);
+    --radius: 4px;
+    --transition: all 0.2s ease-in-out;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header & Login */
+.main-header {
+    background: var(--bg-header);
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#site-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--header-text);
+    letter-spacing: -0.5px;
+}
+
+.login-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.login-form h2, .login-form label {
+    display: none;
+}
+
+.login-form input {
+    border: 1px solid transparent; /* Más limpio dentro del header oscuro */
+}
+
+.login-form button {
+    background: #ffffff;
+    color: var(--bg-header);
+    font-weight: 600;
+}
+
+.login-form button:hover {
+    background: #f3f4f6;
+    color: var(--primary-hover);
+}
+
+/* Forms & Inputs */
+input {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-main);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    outline: none;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/* Main Layout */
+.main-layout {
+    display: grid;
+    /* Invertimos el grid: primero el espacio libre (feed), luego la columna de 320px (registro) */
+    grid-template-columns: 1fr 320px; 
+    gap: 30px;
+    padding: 40px 20px;
+    align-items: start;
+}
+
+/* Usamos CSS order para colocar visualmente el Feed primero y el Registro segundo */
+.public-feed {
+    order: 1;
+}
+
+.register-section {
+    order: 2;
+}
+
+/* Register Section */
+.register-form {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.register-form h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.register-form label {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.register-form input {
+    width: 100%;
+}
+
+.register-form button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Public Feed */
+.public-feed > h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-header h3 {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.post-header span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.post-text {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    color: var(--text-main);
+}
+
+.post-thumbnail {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: var(--radius);
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+}
+
+audio {
+    width: 100%;
+    border-radius: var(--radius);
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: var(--bg-body);
+    color: var(--text-main);
+}
+
+.like-btn:hover {
+    color: #ef4444; 
+    background: #fef2f2;
+}
+
+.fav-btn:hover {
+    color: #d97706; 
+    background: #fffbeb;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .register-section {
+        order: -1; /* En móviles mostramos el registro arriba */
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .login-form {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .login-form input {
+        width: calc(50% - 15px);
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 500px) {
+    .login-form {
+        flex-direction: column;
+    }
+    
+    .login-form input,
+    .login-form button {
+        width: 100%;
+    }
+}
