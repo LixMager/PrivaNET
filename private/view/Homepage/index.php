@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Inicio</title>
     <link rel="stylesheet" href="inicio.css?v=<?php echo time(); ?>">
+    <!-- CSS Modular del componente Homepage -->
+    <link rel="stylesheet" href="private/view/Homepage/homepage.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -21,12 +23,12 @@
             </div>
 
             <div class="user-menu" style="display: flex; align-items: center; gap: 15px;">
-                <span style="color: var(--text-main); font-weight: 500;">Hola, @usuario_demo</span>
+                <span style="color: var(--header-text); font-weight: 500;">Hola, @usuario_demo</span>
                 
                 <!-- Botón de Logout -->
                 <form method="POST" action="index.php" style="margin: 0;">
                     <input type="hidden" name="action" value="logout">
-                    <button type="submit" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Cerrar sesión</button>
+                    <button type="submit" style="background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--header-text); font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Cerrar sesión</button>
                 </form>
             </div>
         </div>
@@ -47,14 +49,26 @@
                         <div class="media-inputs">
                             <label class="media-btn">
                                 📷 Añadir foto
-                                <input type="file" name="post_image" accept="image/*">
+                                <input type="file" name="post_image" id="post-image-input" accept="image/*">
                             </label>
                             <label class="media-btn">
                                 🎵 Añadir audio
-                                <input type="file" name="post_audio" accept="audio/*">
+                                <input type="file" name="post_audio" id="post-audio-input" accept="audio/*">
                             </label>
                         </div>
                         <button type="submit" class="submit-post-btn">Publicar</button>
+                    </div>
+
+                    <!-- Contenedor dinámico donde JS inyectará la previsualización de Imagen -->
+                    <div id="image-preview-container" style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <img id="image-preview" src="" alt="Previsualización" style="max-height: 200px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: cover;">
+                        <button type="button" id="remove-image-btn" style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌ Quitar imagen</button>
+                    </div>
+
+                    <!-- Contenedor dinámico donde JS inyectará la previsualización de Audio -->
+                    <div id="audio-preview-container" style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <audio id="audio-preview" controls style="width: 100%; border-radius: var(--radius);"></audio>
+                        <button type="button" id="remove-audio-btn" style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌ Quitar audio</button>
                     </div>
                 </form>
             </div>
@@ -146,5 +160,8 @@
             </div>
         </section>
     </main>
+
+    <!-- Script modular de la página de inicio -->
+    <script src="private/view/Homepage/homepage.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

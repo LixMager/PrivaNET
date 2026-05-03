@@ -1,0 +1,103 @@
+/* ==========================================================================
+   Componente: Entorno Público (Login & Registro)
+   ========================================================================== */
+
+/* Header Login Form */
+.login-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.login-form h2, .login-form label {
+    display: none;
+}
+
+.login-form input {
+    border: 1px solid transparent;
+}
+
+.login-form button {
+    background: #ffffff;
+    color: var(--bg-header);
+    font-weight: 600;
+}
+
+.login-form button:hover {
+    background: #f3f4f6;
+    color: var(--primary-hover);
+}
+
+/* Usamos CSS order para colocar visualmente el Feed primero y el Registro segundo en Desktop */
+.public-feed {
+    order: 1;
+}
+
+.register-section {
+    order: 2;
+}
+
+/* Register Section */
+.register-form {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.register-form h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.register-form label {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.register-form input {
+    width: 100%;
+}
+
+.register-form button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Responsive Login/Register */
+@media (max-width: 900px) {
+    .register-section {
+        order: -1; /* En móviles mostramos el registro arriba del feed */
+    }
+
+    .login-form {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .login-form input {
+        width: calc(50% - 15px);
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 500px) {
+    .login-form {
+        flex-direction: column;
+    }
+    
+    .login-form input,
+    .login-form button {
+        width: 100%;
+    }
+}

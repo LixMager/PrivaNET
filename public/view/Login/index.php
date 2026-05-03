@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
     <link rel="stylesheet" href="inicio.css?v=<?php echo time(); ?>">
+    <!-- CSS Modular del componente Login -->
+    <link rel="stylesheet" href="public/view/Login/login.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
