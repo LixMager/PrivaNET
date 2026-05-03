@@ -1,113 +1,85 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+/**
+ * FRONT CONTROLLER - PRIVANET
+ * Este archivo actúa como el punto de entrada principal y enrutador.
+ */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrivaNET</title>
-    <link rel="stylesheet" href="inicio.css?v=<?php echo time(); ?>">
-</head>
+// 2. Procesar Peticiones POST (Login / Logout)
+//No ejecuta el codigo pos linea 38 si se ingresa en este if
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // Acción: Login
+    if (isset($_POST['login-user'])) {
+        // En la vida real aquí verificaríamos la contraseña contra la BD usando password_verify()
+        // Si es correcta, generamos un token seguro único:
+        
+        // MOCK: Usaremos nuestro token estático para poder validarlo luego
+        $token_to_save = bin2hex(random_bytes(32)); 
+        
+        // Creamos la cookie HttpOnly y Segura
+        //atk=authentication token
+        // Parámetros: nombre, valor, expiración (30 días), ruta, dominio, secure (false en localhost), httpOnly (true)
+        setcookie('atk', $token_to_save, time() + (86400 * 30), "/", "", false, true);
+        
+        // Redirigir para limpiar el POST y recargar con la cookie
+        header("Location: index.php");
+        exit;
+    }
 
-<body>
+    // Acción: Logout
+    if (isset($_POST['action']) && $_POST['action'] === 'logout') {
+        // Borramos la cookie poniéndole una fecha de expiración en el pasado
+        setcookie('atk', '', time() - 3600, "/"); 
+        
+        // Redirigir a la página de inicio (que ahora mostrará el login)
+        header("Location: index.php");
+        exit;
+    }
+}
 
-    <header class="main-header">
-        <div class="container header-content">
-            <h1 id="site-title">PrivaNET</h1>
+// 3. Validación de Autenticación
+$is_logged_in = false;
 
-            <section class="login-section">
-                <form id="login-form" class="login-form">
-                    <h2>Iniciar sesión</h2>
+if (isset($_COOKIE['atk'])) {
+    // 1. Obtenemos la llave plana del navegador
+    $token_cookie = $_COOKIE['atk'];
+    
+    // 2. La hasheamos para buscarla de forma segura
+    $hash_busqueda = hash('sha256', $token_cookie);
 
-                    <label for="login-user">Nombre de usuario</label>
-                    <input type="text" id="login-user" name="login-user" placeholder="Ingrese su usuario" required>
+    /*
+    // --- LÓGICA REAL DE BASE DE DATOS (Descomentar al implementar BD) ---
+    
+    // Preparamos la consulta (ejemplo con PDO)
+    $stmt = $db->prepare("SELECT user_id FROM sesiones_dispositivos WHERE rtk_hash = ?");
+    $stmt->execute([$hash_busqueda]);
+    $sesion_valida = $stmt->fetch();
+    
+    if ($sesion_valida) {
+        // ¡Match perfecto! El usuario existe y el token es válido
+        session_start();
+        $_SESSION['usuario_autenticado'] = true;
+        $_SESSION['user_id'] = $sesion_valida['user_id'];
+        $is_logged_in = true;
+    } else {
+        // Token revocado, inventado o expirado. Forzamos logout de seguridad
+        setcookie('atk', '', time() - 3600, "/");
+        $is_logged_in = false;
+    }
+    */
 
-                    <label for="login-password">Contraseña</label>
-                    <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña"required>
+    // --- MOCK TEMPORAL (Borrar al conectar la BD) ---
+    // Aceptamos cualquier token existente para mantener el flujo de pruebas
+    session_start();
+    $_SESSION['usuario_autenticado'] = true;
+    $is_logged_in = true;
+}
 
-                    <button type="submit">Ingresar</button>
-                </form>
-            </section>
-        </div>
-    </header>
-
-    <main class="container main-layout">
-
-        <aside class="register-section">
-            <form id="register-form" class="register-form">
-                <h2>Registro de nuevos usuarios</h2>
-
-                <label for="register-user">Nombre de usuario</label>
-                <input type="text" id="register-user" name="register-user" placeholder="Usuario único" required>
-
-                <label for="register-password">Contraseña</label>
-                <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres"
-                    minlength="8" required>
-
-                <label for="register-email">Correo electrónico</label>
-                <input type="email" id="register-email" name="register-email" placeholder="correo@ejemplo.com" required>
-
-                <label for="register-birthdate">Fecha de nacimiento</label>
-                <input type="date" id="register-birthdate" name="register-birthdate" required>
-
-                <label for="register-country">País de residencia</label>
-                <input type="text" id="register-country" name="register-country" placeholder="Ingrese su país" required>
-
-                <button type="submit">Registrarse</button>
-            </form>
-        </aside>
-
-        <section class="public-feed" id="public-feed">
-            <h2>Últimos 10 posteos públicos</h2>
-
-            <div id="posts-container" class="posts-container">
-
-                <article class="post-card" id="post-1">
-                    <header class="post-header">
-                        <h3>@usuario_demo</h3>
-                        <span>Hace 10 minutos</span>
-                    </header>
-
-                    <p class="post-text">
-                        Este es un ejemplo de publicación pública con texto descriptivo de hasta 255 caracteres.
-                    </p>
-
-                    <div class="post-media image-media">
-                        <img src="https://via.placeholder.com/150" alt="Imagen de ejemplo del post"
-                            class="post-thumbnail">
-                    </div>
-
-                    <div class="post-media audio-media">
-                        <audio controls>
-                            <source src="#" type="audio/mpeg">
-                            Tu navegador no soporta audio HTML5.
-                        </audio>
-                    </div>
-
-                    <footer class="post-actions">
-                        <button type="button" class="action-btn like-btn">🤍 Me gusta</button>
-                        <button type="button" class="action-btn fav-btn">☆ Favorito</button>
-                    </footer>
-                </article>
-
-                <article class="post-card" id="post-2">
-                    <header class="post-header">
-                        <h3>@otro_usuario</h3>
-                        <span>Hace 30 minutos</span>
-                    </header>
-
-                    <p class="post-text">
-                        Otro ejemplo de publicación visible para cualquier visitante no registrado.
-                    </p>
-
-                    <footer class="post-actions">
-                        <button type="button" class="action-btn like-btn">🤍 Me gusta</button>
-                        <button type="button" class="action-btn fav-btn">☆ Favorito</button>
-                    </footer>
-                </article>
-            </div>
-        </section>
-    </main>
-</body>
-</html>
-
-
+// 4. Enrutador (Router)
+if ($is_logged_in) {
+    // Si está logueado, mostramos el Entorno Privado (Feed)
+    require_once __DIR__ . '/private/view/Homepage/index.php';
+} else {
+    // Si no está logueado, mostramos el Entorno Público (Login/Registro)
+    require_once __DIR__ . '/public/view/Login/index.php';
+}

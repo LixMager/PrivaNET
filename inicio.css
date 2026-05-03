@@ -227,7 +227,8 @@ button:hover {
 
 .post-thumbnail {
     width: 100%;
-    max-width: 400px;
+    max-height: 500px;
+    object-fit: cover;
     height: auto;
     border-radius: var(--radius);
     display: block;
