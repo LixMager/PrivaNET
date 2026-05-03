@@ -35,9 +35,71 @@
     <main class="container main-layout" style="grid-template-columns: 1fr; max-width: 800px; margin: 0 auto;">
 
         <section class="public-feed" id="public-feed">
+            
+            <!-- Caja de Creación de Posteo -->
+            <div class="create-post-box">
+                <form action="index.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="create_post">
+                    
+                    <textarea name="post_text" placeholder="¿Qué estás pensando, @usuario_demo?"></textarea>
+                    
+                    <div class="create-post-actions">
+                        <div class="media-inputs">
+                            <label class="media-btn">
+                                📷 Añadir foto
+                                <input type="file" name="post_image" accept="image/*">
+                            </label>
+                            <label class="media-btn">
+                                🎵 Añadir audio
+                                <input type="file" name="post_audio" accept="audio/*">
+                            </label>
+                        </div>
+                        <button type="submit" class="submit-post-btn">Publicar</button>
+                    </div>
+                </form>
+            </div>
+
             <h2>Últimos posteos</h2>
 
             <div id="posts-container" class="posts-container">
+
+                <!-- Posteos Dinámicos (creados en la sesión actual) -->
+                <?php if (isset($_SESSION['posteos']) && is_array($_SESSION['posteos'])): ?>
+                    <?php foreach (array_reverse($_SESSION['posteos']) as $post): ?>
+                        <article class="post-card">
+                            <header class="post-header">
+                                <h3>@usuario_demo</h3>
+                                <span>Hace un momento</span>
+                            </header>
+
+                            <?php if (!empty($post['text'])): ?>
+                                <p class="post-text">
+                                    <?php echo htmlspecialchars($post['text']); ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if (!empty($post['image'])): ?>
+                                <div class="post-media image-media">
+                                    <img src="<?php echo htmlspecialchars($post['image']); ?>" class="post-thumbnail">
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (!empty($post['audio'])): ?>
+                                <div class="post-media audio-media">
+                                    <audio controls>
+                                        <source src="<?php echo htmlspecialchars($post['audio']); ?>" type="audio/mpeg">
+                                        Tu navegador no soporta audio HTML5.
+                                    </audio>
+                                </div>
+                            <?php endif; ?>
+
+                            <footer class="post-actions">
+                                <button type="button" class="action-btn like-btn">🤍 Me gusta</button>
+                                <button type="button" class="action-btn fav-btn">☆ Favorito</button>
+                            </footer>
+                        </article>
+                    <?php endforeach; ?>
+                <?php endif; ?>
 
                 <article class="post-card" id="post-1">
                     <header class="post-header">

@@ -26,12 +26,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Acción: Logout
+    // Acción: Cerrar Sesión
     if (isset($_POST['action']) && $_POST['action'] === 'logout') {
-        // Borramos la cookie poniéndole una fecha de expiración en el pasado
+        /*
+        // --- LÓGICA DE BD PARA LOGOUT (A IMPLEMENTAR) ---
+        // $token_cookie = $_COOKIE['atk'] ?? '';
+        // DELETE FROM sesiones WHERE rtk_hash = hash('sha256', $token_cookie);
+        */
+        
+        // Destruimos la cookie asignándole una expiración en el pasado
         setcookie('atk', '', time() - 3600, "/"); 
         
-        // Redirigir a la página de inicio (que ahora mostrará el login)
+        // Redirigir al inicio público
+        header("Location: index.php");
+        exit;
+    }
+
+    // Acción: Crear Posteo (MOCK)
+    if (isset($_POST['action']) && $_POST['action'] === 'create_post') {
+        // Verificamos de forma rápida que el usuario tenga una cookie (simulación de seguridad)
+        if (isset($_COOKIE['atk'])) {
+            session_start();
+            
+            $post_text = trim($_POST['post_text'] ?? '');
+            $post_id = time(); // ID simulado único basado en tiempo
+            
+            $new_post = [
+                'id' => $post_id,
+                'text' => $post_text,
+                'image' => null,
+                'audio' => null
+            ];
+
+            // Ruta base para este posteo (usuario 1, posteo nuevo)
+            $dir = __DIR__ . '/assets/uploads/users/1/posts/' . $post_id . '/';
+            $relative_dir = 'assets/uploads/users/1/posts/' . $post_id . '/';
+
+            // Procesar imagen
+            if (isset($_FILES['post_image']) && $_FILES['post_image']['error'] === UPLOAD_ERR_OK) {
+                if (!is_dir($dir)) mkdir($dir, 0777, true);
+                $ext = pathinfo($_FILES['post_image']['name'], PATHINFO_EXTENSION);
+                $img_name = 'img_' . rand(1000, 9999) . '.' . $ext;
+                if (move_uploaded_file($_FILES['post_image']['tmp_name'], $dir . $img_name)) {
+                    $new_post['image'] = $relative_dir . $img_name;
+                }
+            }
+
+            // Procesar audio
+            if (isset($_FILES['post_audio']) && $_FILES['post_audio']['error'] === UPLOAD_ERR_OK) {
+                if (!is_dir($dir)) mkdir($dir, 0777, true);
+                $ext = pathinfo($_FILES['post_audio']['name'], PATHINFO_EXTENSION);
+                $audio_name = 'aud_' . rand(1000, 9999) . '.' . $ext;
+                if (move_uploaded_file($_FILES['post_audio']['tmp_name'], $dir . $audio_name)) {
+                    $new_post['audio'] = $relative_dir . $audio_name;
+                }
+            }
+
+            // Si el posteo no está completamente vacío, lo guardamos en sesión
+            if (!empty($new_post['text']) || !empty($new_post['image']) || !empty($new_post['audio'])) {
+                if (!isset($_SESSION['posteos'])) {
+                    $_SESSION['posteos'] = [];
+                }
+                $_SESSION['posteos'][] = $new_post;
+            }
+        }
+        
         header("Location: index.php");
         exit;
     }
