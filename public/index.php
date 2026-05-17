@@ -4,6 +4,7 @@ require_once dirname(__DIR__) . '/config/app.php';
 
 use App\Controllers\AuthController;
 use App\Controllers\PublicationController;
+use App\Database\Database;
 use App\Services\AuthService;
 
 /**
@@ -12,8 +13,8 @@ use App\Services\AuthService;
  */
 
 // 1. Validación de Autenticación
-$db = new Database($config);
-$authService = new AuthService();
+$db = new Database($dbConfig);
+$authService = new AuthService($db);
 $is_logged_in = $authService->checkSession();
 
 // 2. Procesar Peticiones POST (Login / Logout / Publicaciones)
@@ -32,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Acción: Crear Posteo
     if ($action === 'create_post') {
-        (new PublicationController())->store($_POST, $_FILES);
+        (new PublicationController($db))->store($_POST, $_FILES);
     }
 
     exit;

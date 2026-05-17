@@ -1,13 +1,12 @@
 <?php
 namespace App\Services;
 
-use Database;
+use App\Database\Database;
 
 class AuthService {
     private ?\PDO $db;
 
-    public function __construct() {
-        $database = new Database();
+    public function __construct(Database $database) {
         $this->db = $database->getConnection();
     }
 

@@ -1,14 +1,13 @@
 <?php
 namespace App\Repositories;
 
+use App\Database\Database;
 use App\Models\Publication;
-use Database;
 
 class PublicationRepository {
     private ?\PDO $db;
 
-    public function __construct() {
-        $database = new Database();
+    public function __construct(Database $database) {
         $this->db = $database->getConnection();
     }
 

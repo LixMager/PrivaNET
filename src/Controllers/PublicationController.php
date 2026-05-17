@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Database\Database;
 use App\Helpers\UploadHelper;
 use App\Models\Publication;
 use App\Repositories\PublicationRepository;
@@ -8,8 +9,8 @@ use App\Repositories\PublicationRepository;
 class PublicationController {
     private PublicationRepository $repository;
 
-    public function __construct() {
-        $this->repository = new PublicationRepository();
+    public function __construct(Database $database) {
+        $this->repository = new PublicationRepository($database);
     }
 
     public function store(array $postData, array $filesData): void {
