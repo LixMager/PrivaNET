@@ -1,13 +1,16 @@
+<!-- public: carpeta expuesta a la red -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
-    <link rel="stylesheet" href="inicio.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/inicio.css?v=<?php echo time(); ?>">
     <!-- CSS Modular del componente Login -->
-    <link rel="stylesheet" href="public/view/Login/login.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="src/view/Login/login.css?v=<?php echo time(); ?>">
 </head>
+
 <body>
 
     <header class="main-header">
@@ -23,7 +26,8 @@
                     <input type="text" id="login-user" name="login-user" placeholder="Ingrese su usuario" required>
 
                     <label for="login-password">Contraseña</label>
-                    <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña"required>
+                    <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña"
+                        required>
 
                     <button type="submit">Ingresar</button>
                 </form>
@@ -40,7 +44,8 @@
                 <input type="text" id="register-user" name="register-user" placeholder="Usuario único" required>
 
                 <label for="register-password">Contraseña</label>
-                <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres"
+                    minlength="8" required>
 
                 <label for="register-email">Correo electrónico</label>
                 <input type="email" id="register-email" name="register-email" placeholder="correo@ejemplo.com" required>
@@ -66,16 +71,20 @@
                     </header>
 
                     <p class="post-text">
-                        ¡Increíble viaje por Trevelin! 🌷🏔️ Los campos de tulipanes en la Patagonia son verdaderamente un paraíso terrenal. Totalmente recomendado.
+                        ¡Increíble viaje por Trevelin! 🌷🏔️ Los campos de tulipanes en la Patagonia son verdaderamente
+                        un paraíso terrenal. Totalmente recomendado.
                     </p>
 
                     <div class="post-media image-media">
-                        <img src="assets/uploads/users/1/posts/1/trevelin.jpg" alt="Campo de tulipanes en Trevelin" class="post-thumbnail">
+                        <img src="assets/uploads/users/1/posts/1/trevelin.jpg" alt="Campo de tulipanes en Trevelin"
+                            class="post-thumbnail">
                     </div>
 
                     <footer class="post-actions">
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me gusta</button>
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆ Favorito</button>
+                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me
+                            gusta</button>
+                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆
+                            Favorito</button>
                     </footer>
                 </article>
 
@@ -90,8 +99,10 @@
                     </p>
 
                     <footer class="post-actions">
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me gusta</button>
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆ Favorito</button>
+                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me
+                            gusta</button>
+                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆
+                            Favorito</button>
                     </footer>
                 </article>
             </div>
@@ -99,4 +110,5 @@
     </main>
 
 </body>
+
 </html>

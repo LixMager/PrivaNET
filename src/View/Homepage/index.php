@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Inicio</title>
-    <link rel="stylesheet" href="inicio.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/inicio.css?v=<?php echo time(); ?>">
     <!-- CSS Modular del componente Homepage -->
-    <link rel="stylesheet" href="private/view/Homepage/homepage.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="src/view/Homepage/homepage.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -18,17 +18,21 @@
 
             <div class="search-bar" style="flex: 1; max-width: 400px; margin: 0 20px;">
                 <form action="#" method="GET" style="display: flex; width: 100%;">
-                    <input type="text" name="q" placeholder="Buscar publicaciones, usuarios..." style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 20px; padding: 8px 15px; outline: none;">
+                    <input type="text" name="q" placeholder="Buscar publicaciones, usuarios..."
+                        style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 20px; padding: 8px 15px; outline: none;">
                 </form>
             </div>
 
             <div class="user-menu" style="display: flex; align-items: center; gap: 15px;">
                 <span style="color: var(--header-text); font-weight: 500;">Hola, @usuario_demo</span>
-                
+
                 <!-- Botón de Logout -->
                 <form method="POST" action="index.php" style="margin: 0;">
                     <input type="hidden" name="action" value="logout">
-                    <button type="submit" style="background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--header-text); font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Cerrar sesión</button>
+                    <button type="submit"
+                        style="background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--header-text); font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: background 0.2s;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                        onmouseout="this.style.background='transparent'">Cerrar sesión</button>
                 </form>
             </div>
         </div>
@@ -37,14 +41,14 @@
     <main class="container main-layout" style="grid-template-columns: 1fr; max-width: 800px; margin: 0 auto;">
 
         <section class="public-feed" id="public-feed">
-            
+
             <!-- Caja de Creación de Posteo -->
             <div class="create-post-box">
                 <form action="index.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="create_post">
-                    
+
                     <textarea name="post_text" placeholder="¿Qué estás pensando, @usuario_demo?"></textarea>
-                    
+
                     <div class="create-post-actions">
                         <div class="media-inputs">
                             <label class="media-btn">
@@ -60,15 +64,22 @@
                     </div>
 
                     <!-- Contenedor dinámico donde JS inyectará la previsualización de Imagen -->
-                    <div id="image-preview-container" style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                        <img id="image-preview" src="" alt="Previsualización" style="max-height: 200px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: cover;">
-                        <button type="button" id="remove-image-btn" style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌ Quitar imagen</button>
+                    <div id="image-preview-container"
+                        style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <img id="image-preview" src="" alt="Previsualización"
+                            style="max-height: 200px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: cover;">
+                        <button type="button" id="remove-image-btn"
+                            style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌
+                            Quitar imagen</button>
                     </div>
 
                     <!-- Contenedor dinámico donde JS inyectará la previsualización de Audio -->
-                    <div id="audio-preview-container" style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <div id="audio-preview-container"
+                        style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                         <audio id="audio-preview" controls style="width: 100%; border-radius: var(--radius);"></audio>
-                        <button type="button" id="remove-audio-btn" style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌ Quitar audio</button>
+                        <button type="button" id="remove-audio-btn"
+                            style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌
+                            Quitar audio</button>
                     </div>
                 </form>
             </div>
@@ -122,11 +133,13 @@
                     </header>
 
                     <p class="post-text">
-                        ¡Increíble viaje por Trevelin! 🌷🏔️ Los campos de tulipanes en la Patagonia son verdaderamente un paraíso terrenal. Totalmente recomendado.
+                        ¡Increíble viaje por Trevelin! 🌷🏔️ Los campos de tulipanes en la Patagonia son verdaderamente
+                        un paraíso terrenal. Totalmente recomendado.
                     </p>
 
                     <div class="post-media image-media">
-                        <img src="assets/uploads/users/1/posts/1/trevelin.jpg" alt="Campo de tulipanes en Trevelin" class="post-thumbnail">
+                        <img src="assets/uploads/users/1/posts/1/trevelin.jpg" alt="Campo de tulipanes en Trevelin"
+                            class="post-thumbnail">
                     </div>
 
                     <div class="post-media audio-media">
@@ -162,6 +175,7 @@
     </main>
 
     <!-- Script modular de la página de inicio -->
-    <script src="private/view/Homepage/homepage.js?v=<?php echo time(); ?>"></script>
+    <script src="src/view/Homepage/homepage.js?v=<?php echo time(); ?>"></script>
 </body>
+
 </html>
