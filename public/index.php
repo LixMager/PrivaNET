@@ -24,18 +24,28 @@ $db = new Database($dbConfig);
 $authService = new AuthService($db);
 $is_logged_in = $authService->checkSession();
 
-// 2. Procesar Peticiones POST (Login / Logout / Publicaciones)
+// 2. Procesar Peticiones POST (Login / Logout / Registro / Publicaciones)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
+    // Acción: Verificación AJAX de nombre de usuario
+    if ($action === 'check_username') {
+        (new AuthController($db))->checkUsername($_POST);
+    }
+
+    // Acción: Registro de Usuario
+    if ($action === 'register') {
+        (new AuthController($db))->register($_POST);
+    }
+
     // Acción: Login
-    if (isset($_POST['login-user'])) {
-        (new AuthController())->login($_POST);
+    if ($action === 'login' || isset($_POST['login-user'])) {
+        (new AuthController($db))->login($_POST);
     }
 
     // Acción: Cerrar Sesión
     if ($action === 'logout') {
-        (new AuthController())->logout();
+        (new AuthController($db))->logout();
     }
 
     // Acción: Crear Posteo

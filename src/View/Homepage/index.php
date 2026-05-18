@@ -38,7 +38,7 @@
 
             <!-- 4. Usuario y Logout (Derecha del todo) -->
             <div class="user-menu" style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0;">
-                <span style="color: var(--header-text); font-weight: 500; font-size: 0.9rem;">Hola, @usuario_demo</span>
+                <span style="color: var(--header-text); font-weight: 500; font-size: 0.9rem;">Hola, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?></span>
                 <form method="POST" action="/PrivaNet/index.php" style="margin: 0;">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit"
@@ -54,46 +54,10 @@
 
         <section class="public-feed" id="public-feed">
 
-            <!-- Caja de Creación de Posteo -->
-            <div class="create-post-box">
-                <form action="index.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="action" value="create_post">
-
-                    <textarea name="post_text" placeholder="¿Qué estás pensando, @usuario_demo?"></textarea>
-
-                    <div class="create-post-actions">
-                        <div class="media-inputs">
-                            <label class="media-btn">
-                                📷 Añadir foto
-                                <input type="file" name="post_image" id="post-image-input" accept="image/*">
-                            </label>
-                            <label class="media-btn">
-                                🎵 Añadir audio
-                                <input type="file" name="post_audio" id="post-audio-input" accept="audio/*">
-                            </label>
-                        </div>
-                        <button type="submit" class="submit-post-btn">Publicar</button>
-                    </div>
-
-                    <!-- Contenedor dinámico donde JS inyectará la previsualización de Imagen -->
-                    <div id="image-preview-container"
-                        style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                        <img id="image-preview" src="" alt="Previsualización"
-                            style="max-height: 200px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: cover;">
-                        <button type="button" id="remove-image-btn"
-                            style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌
-                            Quitar imagen</button>
-                    </div>
-
-                    <!-- Contenedor dinámico donde JS inyectará la previsualización de Audio -->
-                    <div id="audio-preview-container"
-                        style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                        <audio id="audio-preview" controls style="width: 100%; border-radius: var(--radius);"></audio>
-                        <button type="button" id="remove-audio-btn"
-                            style="display: block; margin-top: 5px; background: transparent; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer;">❌
-                            Quitar audio</button>
-                    </div>
-                </form>
+            <!-- Mensaje de Bienvenida -->
+            <div class="welcome-box post-card" style="margin-bottom: 25px; background: linear-gradient(135deg, var(--bg-surface), var(--bg-body)); border-left: 4px solid var(--primary-color);">
+                <h2 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 8px;">¡Bienvenido a PrivaNET, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?>!</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 0;">Tu último login fue el (...)</p>
             </div>
 
             <h2>Últimos posteos</h2>
@@ -105,7 +69,7 @@
                     <?php foreach (array_reverse($_SESSION['posteos']) as $post): ?>
                         <article class="post-card">
                             <header class="post-header">
-                                <h3>@usuario_demo</h3>
+                                <h3>@<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?></h3>
                                 <span>Hace un momento</span>
                             </header>
 

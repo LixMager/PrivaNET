@@ -8,6 +8,7 @@
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .login-form h2, .login-form label {
@@ -72,6 +73,29 @@
 .register-form button {
     margin-top: 10px;
     width: 100%;
+}
+
+/* Mensajes de validación y estado */
+.status-msg {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: -8px;
+    min-height: 18px;
+}
+
+.status-success {
+    color: #10b981; /* Verde esmeralda */
+}
+
+.status-error {
+    color: #ef4444; /* Rojo coral */
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted, #6b7280);
+    margin-top: -8px;
+    margin-bottom: 4px;
 }
 
 /* Responsive Login/Register */

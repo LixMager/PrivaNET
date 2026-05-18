@@ -37,7 +37,7 @@
 
             <!-- 4. Usuario y Logout (Derecha del todo) -->
             <div class="user-menu" style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0;">
-                <span style="color: var(--header-text); font-weight: 500; font-size: 0.9rem;">Hola, @usuario_demo</span>
+                <span style="color: var(--header-text); font-weight: 500; font-size: 0.9rem;">Hola, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?></span>
                 <form method="POST" action="/PrivaNet/index.php" style="margin: 0;">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit"
@@ -55,7 +55,7 @@
             <form action="/PrivaNet/index.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="create_post">
 
-                <textarea name="post_text" placeholder="¿Qué estás pensando, @usuario_demo?"></textarea>
+                <textarea name="post_text" placeholder="¿Qué estás pensando, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?>?"></textarea>
 
                 <div class="create-post-actions">
                     <div class="media-inputs">

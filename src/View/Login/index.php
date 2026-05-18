@@ -30,6 +30,7 @@
                         required>
 
                     <button type="submit">Ingresar</button>
+                    <div id="login-status" class="status-msg" style="position: absolute; right: 0; bottom: -20px; width: 100%; text-align: right; margin: 0; font-size: 0.8rem;"></div>
                 </form>
             </section>
         </div>
@@ -42,21 +43,25 @@
 
                 <label for="register-user">Nombre de usuario</label>
                 <input type="text" id="register-user" name="register-user" placeholder="Usuario único" required>
+                <span id="username-status" class="status-msg"></span>
 
                 <label for="register-password">Contraseña</label>
                 <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres"
                     minlength="8" required>
+                <small class="form-hint">Debe contener al menos 8 caracteres.</small>
 
                 <label for="register-email">Correo electrónico</label>
                 <input type="email" id="register-email" name="register-email" placeholder="correo@ejemplo.com" required>
 
                 <label for="register-birthdate">Fecha de nacimiento</label>
                 <input type="date" id="register-birthdate" name="register-birthdate" required>
+                <small class="form-hint">Debes ser mayor de 13 años.</small>
 
                 <label for="register-country">País de residencia</label>
                 <input type="text" id="register-country" name="register-country" placeholder="Ingrese su país" required>
 
-                <button type="button">Registrarse</button>
+                <div id="register-status" class="status-msg"></div>
+                <button type="submit">Registrarse</button>
             </form>
         </aside>
 
@@ -109,6 +114,8 @@
         </section>
     </main>
 
+    <script src="src/view/Login/register.js?v=<?php echo time(); ?>"></script>
+    <script src="src/view/Login/login.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>

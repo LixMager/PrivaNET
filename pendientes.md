@@ -32,3 +32,5 @@
 
 - PrivaNet que mande al index
 
+aux:
+DROP DATABASE IF EXISTS privanet;
