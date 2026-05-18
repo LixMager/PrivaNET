@@ -15,6 +15,12 @@ use App\Services\Router;
 
 // 1. Validación de Autenticación
 $db = new Database($dbConfig);
+#$db->getConnection();
+//Lineas para carga de base de datos:
+//$db->loadSchema();
+//$db->loadData();//carga datos de prueba para presentacion
+//exit;
+
 $authService = new AuthService($db);
 $is_logged_in = $authService->checkSession();
 

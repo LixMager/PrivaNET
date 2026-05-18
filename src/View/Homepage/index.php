@@ -12,25 +12,37 @@
 
 <body>
 
-    <header class="main-header">
-        <div class="container header-content">
-            <h1 id="site-title">PrivaNET</h1>
+    <header class="main-header" style="padding: 12px 0;">
+        <div class="header-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 30px; width: 100%;">
+            <!-- 1. Logo (Izquierda del todo) -->
+            <div class="logo-container" style="flex-shrink: 0;">
+                <h1 id="site-title" style="margin: 0;"><a href="/PrivaNet/" style="color: var(--header-text); text-decoration: none;">PrivaNET</a></h1>
+            </div>
 
-            <div class="search-bar" style="flex: 1; max-width: 400px; margin: 0 20px;">
-                <form action="#" method="GET" style="display: flex; width: 100%;">
+            <!-- 2. Buscador (A la derecha del logo, flexible con min y max) -->
+            <div class="search-bar" style="flex: 1; min-width: 150px; max-width: 450px; margin: 0 10px;">
+                <form action="/PrivaNet/buscar" method="GET" style="margin: 0; display: flex; width: 100%;">
                     <input type="text" name="q" placeholder="Buscar publicaciones, usuarios..."
                         style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 20px; padding: 8px 15px; outline: none;">
                 </form>
             </div>
 
-            <div class="user-menu" style="display: flex; align-items: center; gap: 15px;">
-                <span style="color: var(--header-text); font-weight: 500;">Hola, @usuario_demo</span>
+            <!-- 3. Navegación (Centro-Derecha) -->
+            <nav class="main-nav" style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+                <a href="/PrivaNet/publicar" style="color: var(--header-text); text-decoration: none; font-size: 0.95rem; font-weight: 500;">Realizar post</a>
+                <span style="color: rgba(255,255,255,0.3);">│</span>
+                <a href="/PrivaNet/actividad" style="color: var(--header-text); text-decoration: none; font-size: 0.95rem; font-weight: 500;">Mi actividad</a>
+                <span style="color: rgba(255,255,255,0.3);">│</span>
+                <a href="/PrivaNet/panel" style="color: var(--header-text); text-decoration: none; font-size: 0.95rem; font-weight: 500;">Panel de control</a>
+            </nav>
 
-                <!-- Botón de Logout -->
-                <form method="POST" action="index.php" style="margin: 0;">
+            <!-- 4. Usuario y Logout (Derecha del todo) -->
+            <div class="user-menu" style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0;">
+                <span style="color: var(--header-text); font-weight: 500; font-size: 0.9rem;">Hola, @usuario_demo</span>
+                <form method="POST" action="/PrivaNet/index.php" style="margin: 0;">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit"
-                        style="background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--header-text); font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: background 0.2s;"
+                        style="background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--header-text); font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: background 0.2s;"
                         onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                         onmouseout="this.style.background='transparent'">Cerrar sesión</button>
                 </form>

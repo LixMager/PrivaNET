@@ -140,35 +140,6 @@ CREATE TABLE IF NOT EXISTS favorites (
     INDEX idx_favorites_post_id (post_id)
 );
 
--- =========================================================
--- COMMENTS
--- =========================================================
-
-CREATE TABLE IF NOT EXISTS comments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-
-    user_id INT NOT NULL,
-    post_id INT NOT NULL,
-
-    content VARCHAR(255) NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_comments_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_comments_post
-        FOREIGN KEY (post_id)
-        REFERENCES posts(id)
-        ON DELETE CASCADE,
-
-    INDEX idx_comments_post_id (post_id),
-    INDEX idx_comments_user_id (user_id)
-);
 
 -- =========================================================
 -- REMEMBER TOKENS
@@ -205,23 +176,3 @@ CREATE TABLE IF NOT EXISTS remember_tokens (
 ALTER TABLE posts
 ADD FULLTEXT INDEX ft_posts_text_content (text_content);
 
--- =========================================================
--- DEMO USER (OPTIONAL)
--- password: demo123
--- generar correctamente luego con password_hash()
--- =========================================================
-
--- INSERT INTO users (
---     username,
---     email,
---     password_hash,
---     birth_date,
---     country
--- )
--- VALUES (
---     'demo',
---     'demo@example.com',
---     '$2y$10$REEMPLAZAR_HASH_REAL',
---     '2000-01-01',
---     'Argentina'
--- );

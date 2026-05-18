@@ -7,7 +7,7 @@ class Router
     private array $knownRoutes;
     private string $baseSubdir;
 
-    public function __construct(array $knownRoutes = ['/', '/index.php', '/public/index.php'], string $baseSubdir = '/PrivaNet')
+    public function __construct(array $knownRoutes = ['/', '/index.php', '/public/index.php', '/buscar', '/publicar', '/actividad', '/panel'], string $baseSubdir = '/PrivaNet')
     {
         $this->knownRoutes = $knownRoutes;
         $this->baseSubdir = $baseSubdir;
@@ -39,8 +39,26 @@ class Router
 
         // 2. Despacho de Vistas para Rutas Conocidas
         if ($is_logged_in) {
-            // Usuario autenticado → Entorno Privado (Feed)
-            require_once VIEW_PATH . '/Homepage/index.php';
+            switch ($route) {
+                case '/buscar':
+                    require_once VIEW_PATH . '/Search/index.php';
+                    break;
+                case '/publicar':
+                    require_once VIEW_PATH . '/Publish/index.php';
+                    break;
+                case '/actividad':
+                    require_once VIEW_PATH . '/Activity/index.php';
+                    break;
+                case '/panel':
+                    require_once VIEW_PATH . '/Dashboard/index.php';
+                    break;
+                case '/':
+                case '/index.php':
+                case '/public/index.php':
+                default:
+                    require_once VIEW_PATH . '/Homepage/index.php';
+                    break;
+            }
         } else {
             // Usuario sin sesión → Entorno Público (Login/Registro)
             require_once VIEW_PATH . '/Login/index.php';
