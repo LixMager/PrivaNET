@@ -1,0 +1,16 @@
+Options -Indexes
+
+# Redirigir todos los errores 404 de Apache al front controller
+ErrorDocument 404 /PrivaNet/index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /PrivaNet/
+
+    # Si el archivo o directorio real existe, servirlo directamente (CSS, imágenes, JS, etc.)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Todo lo demás pasa por el front controller
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

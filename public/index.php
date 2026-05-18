@@ -6,6 +6,7 @@ use App\Controllers\AuthController;
 use App\Controllers\PublicationController;
 use App\Database\Database;
 use App\Services\AuthService;
+use App\Services\Router;
 
 /**
  * FRONT CONTROLLER - PRIVANET
@@ -40,10 +41,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // 3. Enrutador (Router) de Vistas
-if ($is_logged_in) {
-    // Si está logueado, mostramos el Entorno Privado (Feed)
-    require_once VIEW_PATH . '/Homepage/index.php';
-} else {
-    // Si no está logueado, mostramos el Entorno Público (Login/Registro)
-    require_once VIEW_PATH . '/Login/index.php';
-}
+$router = new Router();
+$router->dispatch($is_logged_in);
