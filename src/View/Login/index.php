@@ -15,7 +15,7 @@
 <body>
 
     <header class="main-header">
-        <div class="container header-content">
+        <div class="header-content">
             <h1 id="site-title"><a href="/PrivaNet/">PrivaNET</a></h1>
 
             <section class="login-section">

@@ -11,7 +11,7 @@ function nav_active($path, $route) {
 ?>
 
 <header class="main-header">
-	<div class="header-content container">
+	<div class="header-content">
 		<div class="logo-container">
 			<h1 id="site-title"><a href="/PrivaNet/">PrivaNET</a></h1>
 		</div>
