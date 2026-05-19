@@ -1,8 +1,52 @@
 /* ==========================================================================
-   Componente: Entorno Público (Login & Registro)
-   ========================================================================== */
+    Componente: Entorno Público (Login & Registro)
+    ========================================================================== */
 
-/* Header Login Form */
+/* Login Form en Main (no en header) */
+.login-card .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-card .login-form h2 {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.login-card .login-form label {
+    display: block;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.login-card .login-form input {
+    border: 1px solid var(--border-color);
+    padding: 10px 12px;
+    border-radius: var(--radius);
+}
+
+.login-card .login-form button {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.login-card .login-form button:hover {
+    background: var(--primary-hover);
+}
+
+/* Legacy header login form (si aún existe) */
 .login-form {
     display: flex;
     align-items: center;
@@ -11,7 +55,8 @@
     position: relative;
 }
 
-.login-form h2, .login-form label {
+.login-form h2,
+.login-form label {
     display: none;
 }
 
@@ -19,7 +64,7 @@
     border: 1px solid transparent;
 }
 
-.login-form button {
+/* .login-form button {
     background: #ffffff;
     color: var(--bg-header);
     font-weight: 600;
@@ -28,7 +73,7 @@
 .login-form button:hover {
     background: #f3f4f6;
     color: var(--primary-hover);
-}
+} */
 
 /* Usamos CSS order para colocar visualmente el Feed primero y el Registro segundo en Desktop */
 .public-feed {
@@ -48,7 +93,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .register-form h2 {
@@ -84,11 +129,13 @@
 }
 
 .status-success {
-    color: #10b981; /* Verde esmeralda */
+    color: #10b981;
+    /* Verde esmeralda */
 }
 
 .status-error {
-    color: #ef4444; /* Rojo coral */
+    color: #ef4444;
+    /* Rojo coral */
 }
 
 .form-hint {
@@ -101,7 +148,8 @@
 /* Responsive Login/Register */
 @media (max-width: 900px) {
     .register-section {
-        order: -1; /* En móviles mostramos el registro arriba del feed */
+        order: -1;
+        /* En móviles mostramos el registro arriba del feed */
     }
 
     .login-form {
@@ -119,7 +167,7 @@
     .login-form {
         flex-direction: column;
     }
-    
+
     .login-form input,
     .login-form button {
         width: 100%;

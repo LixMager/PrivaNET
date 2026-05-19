@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
     <link rel="stylesheet" href="public/inicio.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/layout.css?v=<?php echo time(); ?>">
     <!-- CSS Modular del componente Login -->
     <link rel="stylesheet" href="src/view/Login/login.css?v=<?php echo time(); ?>">
 </head>
@@ -15,10 +16,9 @@
 
     <header class="main-header">
         <div class="container header-content">
-            <h1 id="site-title">PrivaNET</h1>
+            <h1 id="site-title"><a href="/PrivaNet/">PrivaNET</a></h1>
 
             <section class="login-section">
-                <!-- Se agregó method POST apuntando al router principal -->
                 <form id="login-form" class="login-form" method="POST" action="index.php">
                     <h2>Iniciar sesión</h2>
 
@@ -26,45 +26,16 @@
                     <input type="text" id="login-user" name="login-user" placeholder="Ingrese su usuario" required>
 
                     <label for="login-password">Contraseña</label>
-                    <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña"
-                        required>
+                    <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña" required>
 
-                    <button type="submit">Ingresar</button>
+                    <button class="header-button" type="submit">Ingresar</button>
                     <div id="login-status" class="status-msg" style="position: absolute; right: 0; bottom: -20px; width: 100%; text-align: right; margin: 0; font-size: 0.8rem;"></div>
                 </form>
             </section>
         </div>
     </header>
 
-    <main class="container main-layout">
-        <aside class="register-section">
-            <form id="register-form" class="register-form">
-                <h2>Registro de nuevos usuarios</h2>
-
-                <label for="register-user">Nombre de usuario</label>
-                <input type="text" id="register-user" name="register-user" placeholder="Usuario único" required>
-                <span id="username-status" class="status-msg"></span>
-
-                <label for="register-password">Contraseña</label>
-                <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres"
-                    minlength="8" required>
-                <small class="form-hint">Debe contener al menos 8 caracteres.</small>
-
-                <label for="register-email">Correo electrónico</label>
-                <input type="email" id="register-email" name="register-email" placeholder="correo@ejemplo.com" required>
-
-                <label for="register-birthdate">Fecha de nacimiento</label>
-                <input type="date" id="register-birthdate" name="register-birthdate" required>
-                <small class="form-hint">Debes ser mayor de 13 años.</small>
-
-                <label for="register-country">País de residencia</label>
-                <input type="text" id="register-country" name="register-country" placeholder="Ingrese su país" required>
-
-                <div id="register-status" class="status-msg"></div>
-                <button type="submit">Registrarse</button>
-            </form>
-        </aside>
-
+    <main class="container main-layout" style="grid-template-columns: 1fr 320px;">
         <section class="public-feed" id="public-feed">
             <h2>Últimos posteos públicos</h2>
 
@@ -112,6 +83,34 @@
                 </article>
             </div>
         </section>
+
+        <aside class="register-section">
+            <form id="register-form" class="register-form">
+                <h2>Registro de nuevos usuarios</h2>
+
+                <label for="register-user">Nombre de usuario</label>
+                <input type="text" id="register-user" name="register-user" placeholder="Usuario único" required>
+                <span id="username-status" class="status-msg"></span>
+
+                <label for="register-password">Contraseña</label>
+                <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres"
+                    minlength="8" required>
+                <small class="form-hint">Debe contener al menos 8 caracteres.</small>
+
+                <label for="register-email">Correo electrónico</label>
+                <input type="email" id="register-email" name="register-email" placeholder="correo@ejemplo.com" required>
+
+                <label for="register-birthdate">Fecha de nacimiento</label>
+                <input type="date" id="register-birthdate" name="register-birthdate" required>
+                <small class="form-hint">Debes ser mayor de 13 años.</small>
+
+                <label for="register-country">País de residencia</label>
+                <input type="text" id="register-country" name="register-country" placeholder="Ingrese su país" required>
+
+                <div id="register-status" class="status-msg"></div>
+                <button type="submit">Registrarse</button>
+            </form>
+        </aside>
     </main>
 
     <script src="src/view/Login/register.js?v=<?php echo time(); ?>"></script>

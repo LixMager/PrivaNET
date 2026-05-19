@@ -41,7 +41,7 @@ class Router
         if ($is_logged_in) {
             switch ($route) {
                 case '/buscar':
-                    require_once VIEW_PATH . '/Search/index.php';
+                    require_once VIEW_PATH . '/Search_Result/index.php';
                     break;
                 case '/publicar':
                     require_once VIEW_PATH . '/Publish/index.php';
