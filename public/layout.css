@@ -373,6 +373,14 @@ audio {
     box-shadow: 0 2px 4px rgba(16, 91, 99, 0.2);
 }
 
+/* Transición de carga en contenedor de actividad */
+#activity-content {
+    transition: opacity 0.15s ease-in-out;
+}
+#activity-content.loading {
+    opacity: 0.45;
+}
+
 /* Responsive */
 @media (max-width:900px) {
     .main-layout {

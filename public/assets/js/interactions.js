@@ -119,14 +119,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 tabButton.classList.add('active');
             }
             
-            // Mostrar indicador de carga
-            activityContent.innerHTML = '<div class="post-card" style="text-align: center; padding: 40px 20px;"><p class="muted">Cargando actividad...</p></div>';
+            // Verificar si es la primera carga (tiene la tarjeta inicial de "Cargando tu actividad...")
+            var isFirstLoad = false;
+            var initialMutedText = activityContent.querySelector('.muted');
+            if (initialMutedText && initialMutedText.textContent.indexOf('Cargando tu actividad') !== -1) {
+                isFirstLoad = true;
+            }
+            
+            // Si es primera carga, sí mostramos el cargando dentro.
+            // Si ya hay publicaciones, solo bajamos opacidad para evitar saltos bruscos (CLS)
+            if (isFirstLoad) {
+                activityContent.innerHTML = '<div class="post-card" style="text-align: center; padding: 40px 20px;"><p class="muted">Cargando actividad...</p></div>';
+            } else {
+                activityContent.classList.add('loading');
+            }
             
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/PrivaNet/index.php?action=get_user_activity&type=' + encodeURIComponent(type), true);
             
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
+                    activityContent.classList.remove('loading');
                     if (xhr.status === 200) {
                         activityContent.innerHTML = xhr.responseText;
                     } else {

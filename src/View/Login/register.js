@@ -1,20 +1,22 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    if (!registerForm) return;
+document.addEventListener('DOMContentLoaded', function () {
+    var registerForm = document.getElementById('register-form');
+    if (!registerForm) {
+        return;
+    }
 
-    const usernameInput = document.getElementById('register-user');
-    const usernameStatus = document.getElementById('username-status');
-    const registerStatus = document.getElementById('register-status');
-    const passwordInput = document.getElementById('register-password');
-    const birthdateInput = document.getElementById('register-birthdate');
+    var usernameInput = document.getElementById('register-user');
+    var usernameStatus = document.getElementById('username-status');
+    var registerStatus = document.getElementById('register-status');
+    var passwordInput = document.getElementById('register-password');
+    var birthdateInput = document.getElementById('register-birthdate');
 
-    let isUsernameAvailable = false;
-    let usernameTimeout = null;
+    var isUsernameAvailable = false;
+    var usernameTimeout = null;
 
     // 1. Verificación AJAX en tiempo real del nombre de usuario
-    usernameInput.addEventListener('input', () => {
+    usernameInput.addEventListener('input', function () {
         clearTimeout(usernameTimeout);
-        const username = usernameInput.value.trim();
+        var username = usernameInput.value.trim();
 
         if (username.length === 0) {
             usernameStatus.textContent = '';
@@ -26,38 +28,46 @@ document.addEventListener('DOMContentLoaded', () => {
         usernameStatus.textContent = 'Verificando disponibilidad...';
         usernameStatus.className = 'status-msg';
 
-        usernameTimeout = setTimeout(async () => {
-            try {
-                const formData = new FormData();
-                formData.append('action', 'check_username');
-                formData.append('username', username);
-
-                const response = await fetch('index.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (result.available) {
-                    usernameStatus.textContent = result.message || 'Usuario disponible';
-                    usernameStatus.className = 'status-msg status-success';
-                    isUsernameAvailable = true;
-                } else {
-                    usernameStatus.textContent = result.message || 'El usuario ya está en uso';
-                    usernameStatus.className = 'status-msg status-error';
-                    isUsernameAvailable = false;
+        usernameTimeout = setTimeout(function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'index.php', true);
+            
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            var result = JSON.parse(xhr.responseText);
+                            if (result.available) {
+                                usernameStatus.textContent = result.message || 'Usuario disponible';
+                                usernameStatus.className = 'status-msg status-success';
+                                isUsernameAvailable = true;
+                            } else {
+                                usernameStatus.textContent = result.message || 'El usuario ya está en uso';
+                                usernameStatus.className = 'status-msg status-error';
+                                isUsernameAvailable = false;
+                            }
+                        } catch (e) {
+                            usernameStatus.textContent = 'Error al verificar usuario';
+                            usernameStatus.className = 'status-msg status-error';
+                            isUsernameAvailable = false;
+                        }
+                    } else {
+                        usernameStatus.textContent = 'Error al verificar usuario';
+                        usernameStatus.className = 'status-msg status-error';
+                        isUsernameAvailable = false;
+                    }
                 }
-            } catch (error) {
-                usernameStatus.textContent = 'Error al verificar usuario';
-                usernameStatus.className = 'status-msg status-error';
-                isUsernameAvailable = false;
-            }
+            };
+
+            var formData = new FormData();
+            formData.append('action', 'check_username');
+            formData.append('username', username);
+            xhr.send(formData);
         }, 450); // Debounce de 450ms
     });
 
     // 2. Validación de Frontend y Envío del Formulario
-    registerForm.addEventListener('submit', async (e) => {
+    registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         registerStatus.textContent = '';
@@ -72,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar contraseña (al menos 8 caracteres)
-        const password = passwordInput.value;
+        var password = passwordInput.value;
 
         if (password.length < 8) {
             registerStatus.textContent = 'La contraseña debe tener al menos 8 caracteres.';
@@ -82,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validar edad (> 13 años)
-        const birthdateVal = birthdateInput.value;
+        var birthdateVal = birthdateInput.value;
         if (!birthdateVal) {
             registerStatus.textContent = 'Por favor, ingresa tu fecha de nacimiento.';
             registerStatus.className = 'status-msg status-error';
@@ -90,10 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const birthDate = new Date(birthdateVal);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
+        var birthDate = new Date(birthdateVal);
+        var today = new Date();
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
@@ -109,34 +119,44 @@ document.addEventListener('DOMContentLoaded', () => {
         registerStatus.textContent = 'Registrando usuario...';
         registerStatus.className = 'status-msg';
 
-        try {
-            const formData = new FormData(registerForm);
-            formData.append('action', 'register');
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'index.php', true);
 
-            const response = await fetch('index.php', {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                registerStatus.textContent = result.message;
-                registerStatus.className = 'status-msg status-success';
-                
-                // Deshabilitar formulario y redirigir al dashboard
-                registerForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
-                
-                setTimeout(() => {
-                    window.location.href = 'index.php';
-                }, 1500);
-            } else {
-                registerStatus.textContent = result.message || 'Ocurrió un error en el registro.';
-                registerStatus.className = 'status-msg status-error';
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var result = JSON.parse(xhr.responseText);
+                        if (result.success) {
+                            registerStatus.textContent = result.message;
+                            registerStatus.className = 'status-msg status-success';
+                            
+                            // Deshabilitar formulario y redirigir al dashboard
+                            var inputsAndButtons = registerForm.querySelectorAll('input, button');
+                            for (var i = 0; i < inputsAndButtons.length; i++) {
+                                inputsAndButtons[i].disabled = true;
+                            }
+                            
+                            setTimeout(function () {
+                                window.location.href = 'index.php';
+                            }, 1500);
+                        } else {
+                            registerStatus.textContent = result.message || 'Ocurrió un error en el registro.';
+                            registerStatus.className = 'status-msg status-error';
+                        }
+                    } catch (e) {
+                        registerStatus.textContent = 'Error al procesar el registro.';
+                        registerStatus.className = 'status-msg status-error';
+                    }
+                } else {
+                    registerStatus.textContent = 'Error de conexión con el servidor.';
+                    registerStatus.className = 'status-msg status-error';
+                }
             }
-        } catch (error) {
-            registerStatus.textContent = 'Error de conexión con el servidor.';
-            registerStatus.className = 'status-msg status-error';
-        }
+        };
+
+        var formData = new FormData(registerForm);
+        formData.append('action', 'register');
+        xhr.send(formData);
     });
 });
