@@ -144,7 +144,7 @@ body {
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -194,7 +194,7 @@ button {
     color: var(--primary-hover);
 }
 
-button:hover {
+button:not(.action-btn):not(.activity-tab):not(.modal-close-btn):not(.lightbox-close-btn):not(.header-button):hover {
     background: var(--primary-hover);
 }
 
@@ -255,15 +255,22 @@ button:hover {
     color: var(--text-main);
 }
 
+/* Modified to display images as thumbnails instead of full size */
 .post-thumbnail {
-    width: 100%;
-    max-height: 500px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
-    height: auto;
     border-radius: var(--radius);
     display: block;
     margin-bottom: 15px;
     border: 1px solid var(--border-color);
+    cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-thumbnail:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 audio {
@@ -295,18 +302,75 @@ audio {
 }
 
 .action-btn:hover {
-    background: var(--bg-body);
+    background: rgba(0, 0, 0, 0.05);
     color: var(--text-main);
 }
 
 .like-btn:hover {
     color: #ef4444;
-    background: #fef2f2;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.like-btn.active {
+    color: #ef4444 !important;
+    font-weight: bold;
+}
+
+.dislike-btn:hover {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.dislike-btn.active {
+    color: #3b82f6 !important;
+    font-weight: bold;
 }
 
 .fav-btn:hover {
     color: #d97706;
-    background: #fffbeb;
+    background: rgba(217, 119, 6, 0.1);
+}
+
+.fav-btn.active {
+    color: #d97706 !important;
+    font-weight: bold;
+}
+
+/* Activity Tabs Styling */
+.activity-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    background: var(--bg-surface);
+    padding: 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.activity-tab {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.activity-tab:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-main);
+}
+
+.activity-tab.active {
+    background: var(--primary-color);
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(16, 91, 99, 0.2);
 }
 
 /* Responsive */
@@ -329,4 +393,219 @@ audio {
     .user-menu {
         align-items: center;
     }
+}
+
+/* Modal overlay with glassmorphism blur and smooth transition */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.open .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    transition: var(--transition);
+}
+
+.modal-close-btn:hover {
+    background: var(--bg-body);
+    color: var(--text-main);
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-body textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background: var(--input-bg);
+    resize: vertical;
+    outline: none;
+    transition: var(--transition);
+}
+
+.modal-body textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.modal-footer button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.secondary-btn:hover {
+    background: var(--bg-body);
+}
+
+.danger-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.danger-btn:hover {
+    background: #dc2626;
+}
+
+.post-card.fade-out {
+    opacity: 0;
+    transform: scale(0.95) translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Lightbox Modal */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lightbox-overlay.open .lightbox-content {
+    transform: scale(1);
+}
+
+.lightbox-img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-caption {
+    color: white;
+    margin-top: 15px;
+    font-size: 1rem;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    font-weight: 500;
+}
+
+.lightbox-close-btn {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.lightbox-close-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
 }

@@ -53,6 +53,110 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         (new PublicationController($db))->store($_POST, $_FILES);
     }
 
+    // Acción: Dar Like (AJAX)
+    if ($action === 'toggle_like') {
+        header('Content-Type: application/json');
+        if (!$is_logged_in || !isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Inicia sesión para interactuar.']);
+            exit;
+        }
+        $post_id = (int)($_POST['post_id'] ?? 0);
+        $repo = new \App\Repositories\PublicationRepository($db);
+        $result = $repo->toggleLike($post_id, (int)$_SESSION['user_id']);
+        echo json_encode($result);
+        exit;
+    }
+
+    // Acción: Dar Dislike (AJAX)
+    if ($action === 'toggle_dislike') {
+        header('Content-Type: application/json');
+        if (!$is_logged_in || !isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Inicia sesión para interactuar.']);
+            exit;
+        }
+        $post_id = (int)($_POST['post_id'] ?? 0);
+        $repo = new \App\Repositories\PublicationRepository($db);
+        $result = $repo->toggleDislike($post_id, (int)$_SESSION['user_id']);
+        echo json_encode($result);
+        exit;
+    }
+
+    // Acción: Dar Favorito (AJAX)
+    if ($action === 'toggle_favorite') {
+        header('Content-Type: application/json');
+        if (!$is_logged_in || !isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Inicia sesión para interactuar.']);
+            exit;
+        }
+        $post_id = (int)($_POST['post_id'] ?? 0);
+        $repo = new \App\Repositories\PublicationRepository($db);
+        $result = $repo->toggleFavorite($post_id, (int)$_SESSION['user_id']);
+        echo json_encode($result);
+        exit;
+    }
+    // Acción: Actualizar Post (AJAX)
+    if ($action === 'update_post') {
+        header('Content-Type: application/json');
+        if (!$is_logged_in || !isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Inicia sesión para realizar cambios.']);
+            exit;
+        }
+        $post_id = (int)($_POST['post_id'] ?? 0);
+        $post_text = trim($_POST['post_text'] ?? '');
+        if (empty($post_text)) {
+            echo json_encode(['success' => false, 'message' => 'El texto no puede estar vacío.']);
+            exit;
+        }
+        $repo = new \App\Repositories\PublicationRepository($db);
+        $success = $repo->updateText($post_id, (int)$_SESSION['user_id'], $post_text);
+        if ($success) {
+            echo json_encode(['success' => true, 'text' => $post_text]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No se pudo actualizar el post. Verifica que seas el autor.']);
+        }
+        exit;
+    }
+
+    // Acción: Eliminar Post (AJAX)
+    if ($action === 'delete_post') {
+        header('Content-Type: application/json');
+        if (!$is_logged_in || !isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Inicia sesión para realizar cambios.']);
+            exit;
+        }
+        $post_id = (int)($_POST['post_id'] ?? 0);
+        $repo = new \App\Repositories\PublicationRepository($db);
+        $success = $repo->delete($post_id, (int)$_SESSION['user_id']);
+        if ($success) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No se pudo eliminar el post. Verifica que seas el autor.']);
+        }
+        exit;
+    }
+
+    exit;
+}
+
+// 2.1 Procesar Petición GET AJAX para Actividad de Usuario
+if (isset($_GET['action']) && $_GET['action'] === 'get_user_activity') {
+    if (!$is_logged_in || !isset($_SESSION['user_id'])) {
+        http_response_code(401);
+        echo "Inicia sesión para ver tu actividad.";
+        exit;
+    }
+    $type = $_GET['type'] ?? 'like';
+    $userId = (int)$_SESSION['user_id'];
+    $repo = new \App\Repositories\PublicationRepository($db);
+    $publications = $repo->getPublicationsByInteraction($userId, $type);
+    
+    if (empty($publications)) {
+        echo '<p class="no-posts" style="text-align: center; padding: 2rem; color: var(--text-muted, #888);">No hay publicaciones en esta sección.</p>';
+    } else {
+        foreach ($publications as $post) {
+            include APP_PATH . '/View/components/post_card.php';
+        }
+    }
     exit;
 }
 

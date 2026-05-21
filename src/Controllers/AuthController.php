@@ -107,8 +107,24 @@ class AuthController {
         $inserted = $stmt->execute([$username, $email, $passwordHash, $birthdate, $country]);
 
         if ($inserted) {
-            // MOCK temporal de sesión para mantener consistencia con AuthController::login
+            $userId = (int)$this->db->lastInsertId();
+
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['usuario_autenticado'] = true;
+            $_SESSION['user_id'] = $userId;
+
             $token_to_save = bin2hex(random_bytes(32));
+            $token_hash = hash('sha256', $token_to_save);
+            $expires_at = date('Y-m-d H:i:s', time() + (86400 * 30));
+
+            $tokenStmt = $this->db->prepare("
+                INSERT INTO remember_tokens (user_id, token_hash, expires_at, created_at)
+                VALUES (?, ?, ?, NOW())
+            ");
+            $tokenStmt->execute([$userId, $token_hash, $expires_at]);
+
             setcookie('atk', $token_to_save, time() + (86400 * 30), "/", "", false, true);
             setcookie('user_name', $username, time() + (86400 * 30), "/", "", false, true);
 
@@ -140,8 +156,23 @@ class AuthController {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password_hash'])) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['usuario_autenticado'] = true;
+            $_SESSION['user_id'] = (int)$user['id'];
+
             // Generar token de sesión
             $token_to_save = bin2hex(random_bytes(32));
+            $token_hash = hash('sha256', $token_to_save);
+            $expires_at = date('Y-m-d H:i:s', time() + (86400 * 30));
+
+            $tokenStmt = $this->db->prepare("
+                INSERT INTO remember_tokens (user_id, token_hash, expires_at, created_at)
+                VALUES (?, ?, ?, NOW())
+            ");
+            $tokenStmt->execute([$user['id'], $token_hash, $expires_at]);
+
             setcookie('atk', $token_to_save, time() + (86400 * 30), "/", "", false, true);
             setcookie('user_name', $user['username'], time() + (86400 * 30), "/", "", false, true);
 
@@ -157,8 +188,30 @@ class AuthController {
     }
 
     public function logout(): void {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (isset($_COOKIE['atk']) && $this->db) {
+            $token_hash = hash('sha256', $_COOKIE['atk']);
+            $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE token_hash = ?");
+            $stmt->execute([$token_hash]);
+        }
+
         setcookie('atk', '', time() - 3600, "/");
         setcookie('user_name', '', time() - 3600, "/");
+
+        // Limpiar la sesión PHP por completo
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
+
         header("Location: index.php");
         exit;
     }

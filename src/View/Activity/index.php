@@ -9,20 +9,20 @@ ob_start();
     </div>
 
     <div class="activity-tabs">
-        <button type="button" class="tab primary">🤍 Me gusta</button>
-        <button type="button" class="tab">👎 No me gusta</button>
-        <button type="button" class="tab">☆ Favoritos</button>
+        <button type="button" class="activity-tab active" data-type="like">🤍 Me gusta</button>
+        <button type="button" class="activity-tab" data-type="dislike">👎 No me gusta</button>
+        <button type="button" class="activity-tab" data-type="favorite">★ Favoritos</button>
     </div>
 
     <div id="activity-content" class="posts-container">
         <div class="post-card" style="text-align: center; padding: 40px 20px;">
-            <p class="muted">Aún no hay interacciones registradas en esta sección.</p>
-            <span class="muted small">(Esta vista se conectará dinámicamente vía AJAX con la base de datos)</span>
+            <p class="muted">Cargando tu actividad...</p>
         </div>
     </div>
 </main>
 
 <?php
 $page_content = ob_get_clean();
+$page_scripts = '<script src="/PrivaNet/public/assets/js/interactions.js?v=' . time() . '"></script>';
 include __DIR__ . '/../layouts/base.php';
 ?>

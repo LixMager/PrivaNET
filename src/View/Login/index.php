@@ -1,3 +1,8 @@
+<?php
+global $db;
+$repository = new \App\Repositories\PublicationRepository($db);
+$posts = $repository->getLatestPublic(10);
+?>
 <!-- public: carpeta expuesta a la red -->
 <!DOCTYPE html>
 <html lang="es">
@@ -35,54 +40,27 @@
         </div>
     </header>
 
-    <main class="container main-layout" style="grid-template-columns: 1fr 320px;">
-        <section class="public-feed" id="public-feed">
-            <h2>Últimos posteos públicos</h2>
+    <div class="login-page-wrapper container">
+        <main class="main-layout">
+            <section class="public-feed" id="public-feed">
+                <h2>Últimos posteos públicos</h2>
 
-            <div id="posts-container" class="posts-container">
-                <article class="post-card" id="post-1">
-                    <header class="post-header">
-                        <h3>@usuario_demo</h3>
-                        <span>Hace 10 minutos</span>
-                    </header>
-
-                    <p class="post-text">
-                        ¡Increíble viaje por Trevelin! 🌷🏔️ Los campos de tulipanes en la Patagonia son verdaderamente
-                        un paraíso terrenal. Totalmente recomendado.
-                    </p>
-
-                    <div class="post-media image-media">
-                        <img src="assets/uploads/users/1/posts/1/trevelin.jpg" alt="Campo de tulipanes en Trevelin"
-                            class="post-thumbnail">
-                    </div>
-
-                    <footer class="post-actions">
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me
-                            gusta</button>
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆
-                            Favorito</button>
-                    </footer>
-                </article>
-
-                <article class="post-card" id="post-2">
-                    <header class="post-header">
-                        <h3>@otro_usuario</h3>
-                        <span>Hace 30 minutos</span>
-                    </header>
-
-                    <p class="post-text">
-                        Otro ejemplo de publicación visible para cualquier visitante no registrado.
-                    </p>
-
-                    <footer class="post-actions">
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me
-                            gusta</button>
-                        <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆
-                            Favorito</button>
-                    </footer>
-                </article>
-            </div>
-        </section>
+                <div id="posts-container" class="posts-container">
+                    <?php if (!empty($posts)): ?>
+                        <?php foreach ($posts as $post): ?>
+                            <?php 
+                            $isLoggedIn = false;
+                            include APP_PATH . '/View/components/post_card.php'; 
+                            ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="post-card" style="text-align: center; padding: 40px 20px;">
+                            <p class="muted">Aún no hay publicaciones públicas en la base de datos.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </section>
+        </main>
 
         <aside class="register-section">
             <form id="register-form" class="register-form">
@@ -111,8 +89,18 @@
                 <button type="submit">Registrarse</button>
             </form>
         </aside>
-    </main>
+    </div>
 
+    <!-- Lightbox Modal for Thumbnails -->
+    <div id="lightbox-modal" class="lightbox-overlay">
+        <div class="lightbox-content">
+            <button type="button" class="lightbox-close-btn" id="lightbox-close">&times;</button>
+            <img id="lightbox-image" class="lightbox-img" src="" alt="Vista ampliada">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script src="public/assets/js/lightbox.js?v=<?php echo time(); ?>"></script>
     <script src="src/view/Login/register.js?v=<?php echo time(); ?>"></script>
     <script src="src/view/Login/login.js?v=<?php echo time(); ?>"></script>
 </body>

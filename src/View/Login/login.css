@@ -75,13 +75,15 @@
     color: var(--primary-hover);
 } */
 
-/* Usamos CSS order para colocar visualmente el Feed primero y el Registro segundo en Desktop */
-.public-feed {
-    order: 1;
+.login-page-wrapper {
+    position: relative;
 }
 
 .register-section {
-    order: 2;
+    position: absolute;
+    left: calc(100% + 30px);
+    top: 40px;
+    width: 320px;
 }
 
 /* Register Section */
@@ -146,12 +148,21 @@
 }
 
 /* Responsive Login/Register */
-@media (max-width: 900px) {
-    .register-section {
-        order: -1;
-        /* En móviles mostramos el registro arriba del feed */
+@media (max-width: 1500px) {
+    .login-page-wrapper {
+        display: flex;
+        flex-direction: column;
     }
 
+    .register-section {
+        position: static;
+        width: 100%;
+        margin-top: 30px;
+        order: -1; /* En pantallas medianas/pequeñas se muestra arriba del feed */
+    }
+}
+
+@media (max-width: 900px) {
     .login-form {
         justify-content: center;
         width: 100%;
