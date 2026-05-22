@@ -91,21 +91,16 @@ class PublicationRepository {
                            (pl.user_id IS NOT NULL) as is_liked,
                            (pd.user_id IS NOT NULL) as is_disliked,
                            (f.user_id IS NOT NULL) as is_favorited
-                    FROM (
-                        SELECT id, user_id, text_content, image_path, audio_path, created_at, scheduled_at, published_at, visibility
-                        FROM posts
-                        WHERE visibility = 'public' AND user_id != :exclude_user_id AND (published_at IS NULL OR published_at <= NOW())
-                        ORDER BY created_at DESC
-                        LIMIT :limit
-                    ) p
+                    FROM posts p
                     JOIN users u ON p.user_id = u.id
                     LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
                     LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
                     LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
+                    WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
                     ORDER BY (pl.user_id IS NOT NULL OR f.user_id IS NOT NULL) DESC, p.created_at DESC
+                    LIMIT :limit
                 ");
                 $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
-                $stmt->bindValue(':exclude_user_id', $currentUserId, \PDO::PARAM_INT);
                 $stmt->bindValue(':current_user_id_like', $currentUserId, \PDO::PARAM_INT);
                 $stmt->bindValue(':current_user_id_dislike', $currentUserId, \PDO::PARAM_INT);
                 $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
@@ -447,4 +442,19 @@ class PublicationRepository {
         $stmt = $this->db->prepare("DELETE FROM posts WHERE id = ? AND user_id = ?");
         return $stmt->execute([$postId, $userId]);
     }
+
+    public function getTotalLikesForUserPosts(int $userId): int {
+        if ($this->db) {
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) 
+                FROM post_likes pl 
+                JOIN posts p ON pl.post_id = p.id 
+                WHERE p.user_id = ?
+            ");
+            $stmt->execute([$userId]);
+            return (int)$stmt->fetchColumn();
+        }
+        return 0;
+    }
 }
+

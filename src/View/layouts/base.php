@@ -6,7 +6,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo htmlspecialchars($page_title ?? 'PrivaNET'); ?></title>
-	<link rel="stylesheet" href="/PrivaNet/public/inicio.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/public/layout.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/src/View/Homepage/homepage.css?v=<?php echo time(); ?>">
 </head>

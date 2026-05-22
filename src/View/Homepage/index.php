@@ -13,11 +13,23 @@ ob_start();
 
     <section class="public-feed" id="public-feed">
 
+        <?php if ($currentUserId !== null): ?>
         <!-- Mensaje de Bienvenida -->
-        <div class="welcome-box post-card" style="margin-bottom: 25px; background: linear-gradient(135deg, var(--bg-surface), var(--bg-body)); border-left: 4px solid var(--primary-color);">
-            <h2 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 8px;">¡Bienvenido a PrivaNET, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?>!</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 0;">Tu último login fue el: <?php echo htmlspecialchars($_SESSION['mostrar_ultimo_acceso'] ?? 'Esta es tu primera visita en este dispositivo'); ?></p>
+        <div class="welcome-box post-card">
+            <h2>¡Bienvenido a PrivaNET, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?>!</h2>
+            <p class="welcome-last-login">Tu último login fue el: <?php echo htmlspecialchars($_SESSION['mostrar_ultimo_acceso'] ?? 'Esta es tu primera visita en este dispositivo'); ?></p>
+            <p class="welcome-likes-count">
+                <?php 
+                $likesCount = $repository->getTotalLikesForUserPosts((int)$currentUserId);
+                if ($likesCount > 0) {
+                    echo "Tus publicaciones han recibido " . $likesCount . " 'me gusta' en total.";
+                } else {
+                    echo "Tus publicaciones no han recibido calificaciones 'me gusta' aún.";
+                }
+                ?>
+            </p>
         </div>
+        <?php endif; ?>
 
         <h2>Últimos posteos</h2>
 

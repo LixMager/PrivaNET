@@ -11,7 +11,6 @@ $posts = $repository->getLatestPublic(10);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
-    <link rel="stylesheet" href="public/inicio.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="public/layout.css?v=<?php echo time(); ?>">
     <!-- CSS Modular del componente Login -->
     <link rel="stylesheet" href="src/view/Login/login.css?v=<?php echo time(); ?>">

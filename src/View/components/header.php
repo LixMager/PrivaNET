@@ -6,6 +6,9 @@ $route = rtrim(str_replace($base, '', $req), '/') ?: '/';
 
 function nav_active($path, $route) {
 	// $path debe ser la parte que siga al base, p.ej. '/publicar' o '/actividad'
+	if ($path === '/') {
+		return ($route === '/' || $route === '/index.php' || $route === '/public/index.php') ? 'nav-link active' : 'nav-link';
+	}
 	return $route === $path ? 'nav-link active' : 'nav-link';
 }
 ?>
@@ -25,6 +28,8 @@ function nav_active($path, $route) {
 			</div>
 
 			<nav class="main-nav">
+				<a href="/PrivaNet/" class="<?php echo nav_active('/', $route); ?>">Inicio</a>
+				<span class="nav-sep">│</span>
 				<a href="/PrivaNet/publicar" class="<?php echo nav_active('/publicar', $route); ?>">Realizar post</a>
 				<span class="nav-sep">│</span>
 				<a href="/PrivaNet/actividad" class="<?php echo nav_active('/actividad', $route); ?>">Mi actividad</a>
