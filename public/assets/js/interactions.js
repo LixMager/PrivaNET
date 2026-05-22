@@ -48,36 +48,36 @@ document.addEventListener('DOMContentLoaded', function () {
                                 if (actionType === 'like') {
                                     if (response.active) {
                                         button.classList.add('active');
-                                        button.innerHTML = '❤️ Te gusta';
+                                        button.innerHTML = '▲ Te gusta';
                                         
                                         // Mutua exclusión: desactivar dislike
                                         if (parentPost) {
                                             var dislikeBtn = parentPost.querySelector('.dislike-btn');
                                             if (dislikeBtn) {
                                                 dislikeBtn.classList.remove('active');
-                                                dislikeBtn.innerHTML = '👎 No me gusta';
+                                                dislikeBtn.innerHTML = '▽ No me gusta';
                                             }
                                         }
                                     } else {
                                         button.classList.remove('active');
-                                        button.innerHTML = '🤍 Me gusta';
+                                        button.innerHTML = '△ Me gusta';
                                     }
                                 } else if (actionType === 'dislike') {
                                     if (response.active) {
                                         button.classList.add('active');
-                                        button.innerHTML = '👎 Te disgusta';
+                                        button.innerHTML = '▼ Te disgusta';
                                         
                                         // Mutua exclusión: desactivar like
                                         if (parentPost) {
                                             var likeBtn = parentPost.querySelector('.like-btn');
                                             if (likeBtn) {
                                                 likeBtn.classList.remove('active');
-                                                likeBtn.innerHTML = '🤍 Me gusta';
+                                                likeBtn.innerHTML = '△ Me gusta';
                                             }
                                         }
                                     } else {
                                         button.classList.remove('active');
-                                        button.innerHTML = '👎 No me gusta';
+                                        button.innerHTML = '▽ No me gusta';
                                     }
                                 } else if (actionType === 'fav') {
                                     if (response.active) {
@@ -110,13 +110,29 @@ document.addEventListener('DOMContentLoaded', function () {
         var tabs = document.querySelectorAll('.activity-tab');
         
         function loadActivity(type, tabButton) {
-            // Desactivar visualmente todas las pestañas
+            // Desactivar visualmente todas las pestañas y actualizar sus iconos a vacíos
             for (var i = 0; i < tabs.length; i++) {
                 tabs[i].classList.remove('active');
+                var tType = tabs[i].getAttribute('data-type');
+                if (tType === 'like') {
+                    tabs[i].innerHTML = '△ Me gusta';
+                } else if (tType === 'dislike') {
+                    tabs[i].innerHTML = '▽ No me gusta';
+                } else if (tType === 'favorite') {
+                    tabs[i].innerHTML = '☆ Favoritos';
+                }
             }
-            // Activar la pestaña cliqueada
+            // Activar la pestaña cliqueada y actualizar su icono a sólido
             if (tabButton) {
                 tabButton.classList.add('active');
+                var tType = tabButton.getAttribute('data-type');
+                if (tType === 'like') {
+                    tabButton.innerHTML = '▲ Me gusta';
+                } else if (tType === 'dislike') {
+                    tabButton.innerHTML = '▼ No me gusta';
+                } else if (tType === 'favorite') {
+                    tabButton.innerHTML = '★ Favoritos';
+                }
             }
             
             // Verificar si es la primera carga (tiene la tarjeta inicial de "Cargando tu actividad...")

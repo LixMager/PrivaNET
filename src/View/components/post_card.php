@@ -34,7 +34,7 @@ if ($post->getPublishedAt()) {
 
     <?php if ($isDashboard && $isScheduled): ?>
         <div class="scheduled-badge" style="background: rgba(59, 130, 246, 0.1); border: 1px dashed var(--primary-color, #3b82f6); color: var(--primary-color, #3b82f6); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; margin: 10px 15px 5px 15px; width: fit-content;">
-            <span>📅</span>
+            <span>◷</span>
             <span>Programado para el <?php 
                 $pubDate = new DateTime($post->getPublishedAt());
                 echo htmlspecialchars($pubDate->format('d/m/Y \a \l\a\s H:i'));
@@ -67,25 +67,25 @@ if ($post->getPublishedAt()) {
         <?php if ($isLoggedIn): ?>
             <?php if ($isDashboard): ?>
                 <button type="button" class="action-btn edit-post-btn" data-post-id="<?php echo $post->getId(); ?>" data-post-text="<?php echo htmlspecialchars($post->getText()); ?>">
-                    ✏️ Editar
+                    ✎ Editar
                 </button>
                 <button type="button" class="action-btn delete-post-btn" data-post-id="<?php echo $post->getId(); ?>">
-                    🗑️ Eliminar
+                    ✕ Eliminar
                 </button>
             <?php else: ?>
                 <button type="button" class="action-btn like-btn <?php echo $post->getIsLiked() ? 'active' : ''; ?>" data-post-id="<?php echo $post->getId(); ?>">
-                    <?php echo $post->getIsLiked() ? '❤️ Te gusta' : '🤍 Me gusta'; ?>
+                    <?php echo $post->getIsLiked() ? '▲ Te gusta' : '△ Me gusta'; ?>
                 </button>
                 <button type="button" class="action-btn dislike-btn <?php echo $post->getIsDisliked() ? 'active' : ''; ?>" data-post-id="<?php echo $post->getId(); ?>">
-                    <?php echo $post->getIsDisliked() ? '👎 Te disgusta' : '👎 No me gusta'; ?>
+                    <?php echo $post->getIsDisliked() ? '▼ Te disgusta' : '▽ No me gusta'; ?>
                 </button>
                 <button type="button" class="action-btn fav-btn <?php echo $post->getIsFavorited() ? 'active' : ''; ?>" data-post-id="<?php echo $post->getId(); ?>">
                     <?php echo $post->getIsFavorited() ? '★ Favorito' : '☆ Favorito'; ?>
                 </button>
             <?php endif; ?>
         <?php else: ?>
-            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">🤍 Me gusta</button>
-            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">👎 No me gusta</button>
+            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">△ Me gusta</button>
+            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">▽ No me gusta</button>
             <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆ Favorito</button>
         <?php endif; ?>
     </footer>

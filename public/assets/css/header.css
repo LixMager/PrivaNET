@@ -1,0 +1,128 @@
+.main-header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 12px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+#site-title {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+#site-title a {
+    color: var(--header-text);
+    text-decoration: none;
+}
+
+.search-bar {
+    flex: 1;
+    min-width: 150px;
+    max-width: 450px;
+}
+
+.search-bar form {
+    display: flex;
+    width: 100%;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.4);
+    color: var(--header-text);
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-link {
+    color: var(--header-text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 4px 6px;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.nav-link.active {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.nav-sep {
+    color: var(--nav-sep);
+}
+
+.user-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.user-menu span {
+    color: var(--header-text);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Simplified header for unauthenticated users */
+.header-simple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+}
+
+.muted {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.header-button {
+    background: #ffffff;
+    color: var(--bg-header);
+    font-weight: 600;
+}
+
+.header-button:hover {
+    background: #f3f4f6;
+    color: var(--primary-hover);
+}
+
+/* Responsive Header */
+@media (max-width: 900px) {
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .search-bar {
+        order: 3;
+        margin-top: 8px;
+    }
+
+    .user-menu {
+        align-items: center;
+    }
+}

@@ -1,0 +1,104 @@
+:root {
+    --primary-color: #105b63; /* Verde petróleo para elementos principales */
+    --primary-hover: #0c454b;
+    --header-bg: var(--primary-color);
+    --bg-header: var(--primary-color);
+    --header-text: #ffffff;
+    --nav-sep: rgba(255, 255, 255, 0.3);
+    --radius: 4px;
+    --bg-body: #e5e7eb; /* Fondo más grisáceo para que las tarjetas resalten */
+    --bg-surface: #ffffff; /* Superficies blancas (más claro que el fondo) */
+    --border-color: #d1d5db; /* Bordes en gris */
+    --text-main: #374151; /* Textos en gris oscuro */
+    --text-muted: #6b7280; /* Textos secundarios en gris medio */
+    --input-bg: #ffffff;
+    --input-border: #9ca3af;
+    --focus-ring: rgba(16, 91, 99, 0.2);
+    --transition: all 0.2s ease-in-out;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Forms & Inputs */
+input {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-main);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    outline: none;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+/* Hover effect for standard buttons (excludes action, tab, modal, lightbox, and media buttons) */
+button:not(.action-btn):not(.activity-tab):not(.modal-close-btn):not(.lightbox-close-btn):not(.header-button):not(.remove-media-btn):not(:disabled):hover {
+    background: var(--primary-hover);
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.secondary-btn:hover {
+    background: var(--bg-body);
+}
+
+.danger-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.danger-btn:hover {
+    background: #dc2626;
+}
+
+/* Main Layout */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 20px;
+    align-items: start;
+}

@@ -9,9 +9,9 @@ ob_start();
     </div>
 
     <div class="activity-tabs">
-        <button type="button" class="activity-tab active" data-type="like">🤍 Me gusta</button>
-        <button type="button" class="activity-tab" data-type="dislike">👎 No me gusta</button>
-        <button type="button" class="activity-tab" data-type="favorite">★ Favoritos</button>
+        <button type="button" class="activity-tab active" data-type="like">▲ Me gusta</button>
+        <button type="button" class="activity-tab" data-type="dislike">▽ No me gusta</button>
+        <button type="button" class="activity-tab" data-type="favorite">☆ Favoritos</button>
     </div>
 
     <div id="activity-content" class="posts-container">

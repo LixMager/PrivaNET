@@ -74,7 +74,7 @@ ob_start();
     <div class="modal-content">
         <div class="modal-header">
             <h3>Editar Publicación</h3>
-            <button type="button" class="modal-close-btn" id="close-edit-modal">&times;</button>
+            <button type="button" class="modal-close-btn" id="close-edit-modal">✕</button>
         </div>
         <form id="edit-post-form">
             <input type="hidden" name="action" value="update_post">
@@ -96,7 +96,7 @@ ob_start();
     <div class="modal-content">
         <div class="modal-header">
             <h3>Confirmar Eliminación</h3>
-            <button type="button" class="modal-close-btn" id="close-delete-modal">&times;</button>
+            <button type="button" class="modal-close-btn" id="close-delete-modal">✕</button>
         </div>
         <div class="modal-body">
             <p style="color: var(--text-main); margin-bottom: 10px; font-weight: 500;">¿Estás seguro de que deseas eliminar esta publicación?</p>

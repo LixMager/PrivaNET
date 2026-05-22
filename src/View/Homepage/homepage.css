@@ -72,14 +72,9 @@
 }
 
 .submit-post-btn {
-    background: var(--primary-color);
-    color: white;
-    border: none;
     padding: 8px 20px;
     border-radius: 20px;
     font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
 }
 
 .submit-post-btn:not(:disabled):hover {

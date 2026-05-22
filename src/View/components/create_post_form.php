@@ -20,9 +20,9 @@
         
         <div class="create-post-actions">
             <div class="media-inputs">
-                <label class="media-btn">📷 Añadir foto
+                <label class="media-btn">▣ ⛶ Añadir foto
                     <input type="file" name="post_image" id="post-image-input" accept="image/*"></label>
-                <label class="media-btn">🎵 Añadir audio
+                <label class="media-btn">♬ Añadir audio
                     <input type="file" name="post_audio" id="post-audio-input" accept="audio/*"></label>
             </div>
             <button type="submit" class="submit-post-btn" id="submit-post-btn" disabled>Publicar</button>
@@ -32,7 +32,7 @@
         <div class="post-scheduler-section">
             <label class="schedule-checkbox-label">
                 <input type="checkbox" name="is_scheduled" id="is-scheduled-checkbox">
-                📅 Programar esta publicación
+                ◷ Programar esta publicación
             </label>
             
             <div id="scheduled-date-container">
@@ -42,12 +42,12 @@
         </div>
         <div id="image-preview-container" class="preview-container">
             <img id="image-preview" src="" alt="Previsualización">
-            <button type="button" id="remove-image-btn" class="remove-media-btn">❌ Quitar imagen</button>
+            <button type="button" id="remove-image-btn" class="remove-media-btn">✕ Quitar imagen</button>
             <p class="compression-notice upload-notice"></p>
         </div>
         <div id="audio-preview-container" class="preview-container">
             <audio id="audio-preview" controls></audio>
-            <button type="button" id="remove-audio-btn" class="remove-media-btn">❌ Quitar audio</button>
+            <button type="button" id="remove-audio-btn" class="remove-media-btn">✕ Quitar audio</button>
         </div>
         
         <!-- Mensaje de error de publicación (PHP y JS) -->

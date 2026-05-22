@@ -17,7 +17,7 @@
 	<!-- Lightbox Modal for Thumbnails -->
 	<div id="lightbox-modal" class="lightbox-overlay">
 		<div class="lightbox-content">
-			<button type="button" class="lightbox-close-btn" id="lightbox-close">&times;</button>
+			<button type="button" class="lightbox-close-btn" id="lightbox-close">✕</button>
 			<img id="lightbox-image" class="lightbox-img" src="" alt="Vista ampliada">
 			<div id="lightbox-caption" class="lightbox-caption"></div>
 		</div>

@@ -1,0 +1,138 @@
+/* Public Feed */
+.public-feed > h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-header h3 {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.post-header span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.post-text {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    color: var(--text-main);
+}
+
+/* Post Thumbnails */
+.post-thumbnail {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-thumbnail:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+audio {
+    width: 100%;
+    border-radius: var(--radius);
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Reaction Buttons */
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-main);
+}
+
+.like-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.dislike-btn:hover {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.fav-btn:hover {
+    color: #d97706;
+    background: rgba(217, 119, 6, 0.1);
+}
+
+.like-btn.active {
+    color: #ef4444 !important;
+}
+
+.dislike-btn.active {
+    color: #3b82f6 !important;
+}
+
+.fav-btn.active {
+    color: #d97706 !important;
+}
+
+.like-btn.active,
+.dislike-btn.active,
+.fav-btn.active {
+    font-weight: bold;
+}
+
+.post-card.fade-out {
+    opacity: 0;
+    transform: scale(0.95) translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
