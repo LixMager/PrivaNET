@@ -36,6 +36,39 @@ ob_start();
     </div>
 </main>
 
+<!-- Quill WYSIWYG Editor Assets para Modal de Edición -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<style>
+    .ql-toolbar.ql-snow {
+        border: 1px solid var(--border-color, #ccc) !important;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background: var(--bg-hover, rgba(0,0,0,0.02)) !important;
+        padding: 8px 12px !important;
+    }
+    .ql-container.ql-snow {
+        border: 1px solid var(--border-color, #ccc) !important;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top: none !important;
+        font-family: inherit !important;
+        font-size: 0.95rem !important;
+        background: var(--bg-card, #fff) !important;
+    }
+    .ql-editor {
+        min-height: 120px;
+        max-height: 250px;
+        color: var(--text-color, #333) !important;
+    }
+    .ql-editor.ql-blank::before {
+        color: var(--text-muted, #777) !important;
+        font-style: italic !important;
+        left: 15px !important;
+    }
+</style>
+
 <!-- Modal de Edición -->
 <div id="edit-modal" class="modal-overlay">
     <div class="modal-content">
@@ -47,7 +80,8 @@ ob_start();
             <input type="hidden" name="action" value="update_post">
             <input type="hidden" name="post_id" id="edit-post-id" value="">
             <div class="modal-body">
-                <textarea name="post_text" id="edit-post-text" placeholder="¿Qué estás pensando?"></textarea>
+                <input type="hidden" name="post_text" id="edit-post-text-hidden">
+                <div id="edit-editor-container" data-placeholder="¿Qué estás pensando?"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="action-btn secondary-btn" id="cancel-edit-btn">Cancelar</button>

@@ -13,15 +13,20 @@ class PublicationRepository {
 
     public function save(Publication $publication): bool {
         if ($this->db) {
+            $scheduledAt = $publication->getScheduledAt();
+            $publishedAt = $scheduledAt !== null ? $scheduledAt : null;
+
             $stmt = $this->db->prepare("
-                INSERT INTO posts (user_id, text_content, image_path, audio_path, published_at, visibility) 
-                VALUES (?, ?, ?, ?, NOW(), 'public')
+                INSERT INTO posts (user_id, text_content, image_path, audio_path, scheduled_at, published_at, visibility) 
+                VALUES (?, ?, ?, ?, ?, COALESCE(?, NOW()), 'public')
             ");
             return $stmt->execute([
                 $publication->getUserId(),
                 $publication->getText(),
                 $publication->getImage(),
-                $publication->getAudio()
+                $publication->getAudio(),
+                $scheduledAt,
+                $publishedAt
             ]);
         }
 
@@ -36,7 +41,7 @@ class PublicationRepository {
     public function getAll(): array {
         if ($this->db) {
             $stmt = $this->db->query("
-                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username
+                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username
                 FROM posts p
                 JOIN users u ON p.user_id = u.id
                 ORDER BY p.created_at DESC
@@ -51,7 +56,9 @@ class PublicationRepository {
                     $row['image'],
                     $row['audio'],
                     $row['username'],
-                    $row['created_at']
+                    $row['created_at'],
+                    $row['scheduled_at'] ?? null,
+                    $row['published_at'] ?? null
                 );
             }
             return $publications;
@@ -68,7 +75,9 @@ class PublicationRepository {
                 $post['image'] ?? null,
                 $post['audio'] ?? null,
                 $post['username'] ?? 'usuario',
-                $post['created_at'] ?? 'Hace un momento'
+                $post['created_at'] ?? 'Hace un momento',
+                $post['scheduled_at'] ?? null,
+                $post['published_at'] ?? null
             );
         }
         return $publications;
@@ -78,14 +87,14 @@ class PublicationRepository {
         if ($this->db) {
             if ($currentUserId !== null) {
                 $stmt = $this->db->prepare("
-                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                            (pl.user_id IS NOT NULL) as is_liked,
                            (pd.user_id IS NOT NULL) as is_disliked,
                            (f.user_id IS NOT NULL) as is_favorited
                     FROM (
-                        SELECT id, user_id, text_content, image_path, audio_path, created_at, visibility
+                        SELECT id, user_id, text_content, image_path, audio_path, created_at, scheduled_at, published_at, visibility
                         FROM posts
-                        WHERE visibility = 'public' AND user_id != :exclude_user_id
+                        WHERE visibility = 'public' AND user_id != :exclude_user_id AND (published_at IS NULL OR published_at <= NOW())
                         ORDER BY created_at DESC
                         LIMIT :limit
                     ) p
@@ -102,13 +111,13 @@ class PublicationRepository {
                 $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
             } else {
                 $stmt = $this->db->prepare("
-                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                            0 as is_liked,
                            0 as is_disliked,
                            0 as is_favorited
                     FROM posts p
                     JOIN users u ON p.user_id = u.id
-                    WHERE p.visibility = 'public'
+                    WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
                     ORDER BY p.created_at DESC
                     LIMIT :limit
                 ");
@@ -126,7 +135,9 @@ class PublicationRepository {
                     $row['image'],
                     $row['audio'],
                     $row['username'],
-                    $row['created_at']
+                    $row['created_at'],
+                    $row['scheduled_at'] ?? null,
+                    $row['published_at'] ?? null
                 );
                 $pub->setIsLiked((bool)($row['is_liked'] ?? false));
                 $pub->setIsDisliked((bool)($row['is_disliked'] ?? false));
@@ -225,7 +236,7 @@ class PublicationRepository {
 
         if ($type === 'like') {
             $sql = "
-                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                        1 as is_liked,
                        0 as is_disliked,
                        (f.user_id IS NOT NULL) as is_favorited
@@ -233,12 +244,12 @@ class PublicationRepository {
                 JOIN posts p ON pl.post_id = p.id
                 JOIN users u ON p.user_id = u.id
                 LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :user_id_fav
-                WHERE pl.user_id = :user_id_like
+                WHERE pl.user_id = :user_id_like AND (p.published_at IS NULL OR p.published_at <= NOW())
                 ORDER BY pl.created_at DESC
             ";
         } elseif ($type === 'dislike') {
             $sql = "
-                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                        0 as is_liked,
                        1 as is_disliked,
                        (f.user_id IS NOT NULL) as is_favorited
@@ -246,12 +257,12 @@ class PublicationRepository {
                 JOIN posts p ON pd.post_id = p.id
                 JOIN users u ON p.user_id = u.id
                 LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :user_id_fav
-                WHERE pd.user_id = :user_id_dislike
+                WHERE pd.user_id = :user_id_dislike AND (p.published_at IS NULL OR p.published_at <= NOW())
                 ORDER BY pd.created_at DESC
             ";
         } elseif ($type === 'favorite') {
             $sql = "
-                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                        (pl.user_id IS NOT NULL) as is_liked,
                        (pd.user_id IS NOT NULL) as is_disliked,
                        1 as is_favorited
@@ -260,7 +271,7 @@ class PublicationRepository {
                 JOIN users u ON p.user_id = u.id
                 LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :user_id_like
                 LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :user_id_dislike
-                WHERE f.user_id = :user_id_fav
+                WHERE f.user_id = :user_id_fav AND (p.published_at IS NULL OR p.published_at <= NOW())
                 ORDER BY f.created_at DESC
             ";
         } else {
@@ -291,7 +302,9 @@ class PublicationRepository {
                 $row['image'],
                 $row['audio'],
                 $row['username'],
-                $row['created_at']
+                $row['created_at'],
+                $row['scheduled_at'] ?? null,
+                $row['published_at'] ?? null
             );
             $pub->setIsLiked((bool)($row['is_liked'] ?? false));
             $pub->setIsDisliked((bool)($row['is_disliked'] ?? false));
@@ -308,7 +321,7 @@ class PublicationRepository {
         }
 
         $stmt = $this->db->prepare("
-            SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+            SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                    (pl.user_id IS NOT NULL) as is_liked,
                    (pd.user_id IS NOT NULL) as is_disliked,
                    (f.user_id IS NOT NULL) as is_favorited
@@ -336,7 +349,9 @@ class PublicationRepository {
                 $row['image'],
                 $row['audio'],
                 $row['username'],
-                $row['created_at']
+                $row['created_at'],
+                $row['scheduled_at'] ?? null,
+                $row['published_at'] ?? null
             );
             $pub->setIsLiked((bool)($row['is_liked'] ?? false));
             $pub->setIsDisliked((bool)($row['is_disliked'] ?? false));
@@ -358,7 +373,7 @@ class PublicationRepository {
 
         if ($currentUserId !== null) {
             $stmt = $this->db->prepare("
-                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                        (pl.user_id IS NOT NULL) as is_liked,
                        (pd.user_id IS NOT NULL) as is_disliked,
                        (f.user_id IS NOT NULL) as is_favorited
@@ -367,7 +382,7 @@ class PublicationRepository {
                 LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
                 LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
                 LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
-                WHERE p.visibility = 'public' 
+                WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
                   AND MATCH(p.text_content) AGAINST(:search_query_where IN NATURAL LANGUAGE MODE)
                 ORDER BY MATCH(p.text_content) AGAINST(:search_query_order IN NATURAL LANGUAGE MODE) DESC, p.created_at DESC
             ");
@@ -378,13 +393,13 @@ class PublicationRepository {
             $stmt->bindValue(':search_query_order', $query, \PDO::PARAM_STR);
         } else {
             $stmt = $this->db->prepare("
-                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, u.username,
+                SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                        0 as is_liked,
                        0 as is_disliked,
                        0 as is_favorited
                 FROM posts p
                 JOIN users u ON p.user_id = u.id
-                WHERE p.visibility = 'public'
+                WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
                   AND MATCH(p.text_content) AGAINST(:search_query_where IN NATURAL LANGUAGE MODE)
                 ORDER BY MATCH(p.text_content) AGAINST(:search_query_order IN NATURAL LANGUAGE MODE) DESC, p.created_at DESC
             ");
@@ -404,7 +419,9 @@ class PublicationRepository {
                 $row['image'],
                 $row['audio'],
                 $row['username'],
-                $row['created_at']
+                $row['created_at'],
+                $row['scheduled_at'] ?? null,
+                $row['published_at'] ?? null
             );
             $pub->setIsLiked((bool)($row['is_liked'] ?? false));
             $pub->setIsDisliked((bool)($row['is_disliked'] ?? false));

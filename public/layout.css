@@ -194,7 +194,7 @@ button {
     color: var(--primary-hover);
 }
 
-button:not(.action-btn):not(.activity-tab):not(.modal-close-btn):not(.lightbox-close-btn):not(.header-button):hover {
+button:not(.action-btn):not(.activity-tab):not(.modal-close-btn):not(.lightbox-close-btn):not(.header-button):not(:disabled):hover {
     background: var(--primary-hover);
 }
 

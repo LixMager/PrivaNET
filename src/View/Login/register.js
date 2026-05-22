@@ -81,11 +81,19 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Validar contraseña (al menos 8 caracteres)
+        // Validar contraseña (al menos 8 caracteres alfanuméricos)
         var password = passwordInput.value;
+        var alphanumericRegex = /^[a-zA-Z0-9]+$/;
 
         if (password.length < 8) {
             registerStatus.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+            registerStatus.className = 'status-msg status-error';
+            passwordInput.focus();
+            return;
+        }
+
+        if (!alphanumericRegex.test(password)) {
+            registerStatus.textContent = 'La contraseña debe contener solo caracteres alfanuméricos (letras y números).';
             registerStatus.className = 'status-msg status-error';
             passwordInput.focus();
             return;

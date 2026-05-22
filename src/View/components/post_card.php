@@ -8,6 +8,14 @@
  */
 $isLoggedIn = $isLoggedIn ?? true;
 $isDashboard = $isDashboard ?? false;
+
+$isScheduled = false;
+if ($post->getPublishedAt()) {
+    $publishedTime = strtotime($post->getPublishedAt());
+    if ($publishedTime > time()) {
+        $isScheduled = true;
+    }
+}
 ?>
 <article class="post-card" data-post-card-id="<?php echo $post->getId(); ?>">
     <header class="post-header">
@@ -24,9 +32,19 @@ $isDashboard = $isDashboard ?? false;
         </span>
     </header>
 
+    <?php if ($isDashboard && $isScheduled): ?>
+        <div class="scheduled-badge" style="background: rgba(59, 130, 246, 0.1); border: 1px dashed var(--primary-color, #3b82f6); color: var(--primary-color, #3b82f6); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; margin: 10px 15px 5px 15px; width: fit-content;">
+            <span>📅</span>
+            <span>Programado para el <?php 
+                $pubDate = new DateTime($post->getPublishedAt());
+                echo htmlspecialchars($pubDate->format('d/m/Y \a \l\a\s H:i'));
+            ?></span>
+        </div>
+    <?php endif; ?>
+
     <?php if (!empty($post->getText())): ?>
         <p class="post-text" data-post-text-content="<?php echo $post->getId(); ?>">
-            <?php echo htmlspecialchars($post->getText()); ?>
+            <?php echo \App\Helpers\SanitizerHelper::sanitize($post->getText()); ?>
         </p>
     <?php endif; ?>
 

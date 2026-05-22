@@ -9,11 +9,13 @@ class Publication {
     private ?string $audio;
     private ?string $username;
     private ?string $createdAt;
+    private ?string $scheduledAt;
+    private ?string $publishedAt;
     private bool $isLiked = false;
     private bool $isFavorited = false;
     private bool $isDisliked = false;
 
-    public function __construct(?int $id, int $userId, string $text, ?string $image = null, ?string $audio = null, ?string $username = null, ?string $createdAt = null) {
+    public function __construct(?int $id, int $userId, string $text, ?string $image = null, ?string $audio = null, ?string $username = null, ?string $createdAt = null, ?string $scheduledAt = null, ?string $publishedAt = null) {
         $this->id = $id;
         $this->userId = $userId;
         $this->text = $text;
@@ -21,6 +23,8 @@ class Publication {
         $this->audio = $audio;
         $this->username = $username;
         $this->createdAt = $createdAt;
+        $this->scheduledAt = $scheduledAt;
+        $this->publishedAt = $publishedAt;
     }
 
     public function getId(): ?int {
@@ -49,6 +53,22 @@ class Publication {
 
     public function getCreatedAt(): ?string {
         return $this->createdAt;
+    }
+
+    public function getScheduledAt(): ?string {
+        return $this->scheduledAt;
+    }
+
+    public function setScheduledAt(?string $scheduledAt): void {
+        $this->scheduledAt = $scheduledAt;
+    }
+
+    public function getPublishedAt(): ?string {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(?string $publishedAt): void {
+        $this->publishedAt = $publishedAt;
     }
 
     public function getIsLiked(): bool {
@@ -84,6 +104,8 @@ class Publication {
             'audio' => $this->audio,
             'username' => $this->username,
             'created_at' => $this->createdAt,
+            'scheduled_at' => $this->scheduledAt,
+            'published_at' => $this->publishedAt,
             'is_liked' => $this->isLiked,
             'is_favorited' => $this->isFavorited,
             'is_disliked' => $this->isDisliked

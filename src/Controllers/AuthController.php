@@ -79,9 +79,13 @@ class AuthController {
             exit;
         }
 
-        // 4. Validar contraseña: al menos 8 caracteres
+        // 4. Validar contraseña: al menos 8 caracteres alfanuméricos
         if (strlen($password) < 8) {
             echo json_encode(['success' => false, 'message' => 'La contraseña debe tener al menos 8 caracteres.']);
+            exit;
+        }
+        if (!ctype_alnum($password)) {
+            echo json_encode(['success' => false, 'message' => 'La contraseña debe contener solo caracteres alfanuméricos (letras y números).']);
             exit;
         }
 

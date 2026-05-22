@@ -12,7 +12,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // Formularios e inputs de modales
     var editForm = document.getElementById('edit-post-form');
     var editPostIdInput = document.getElementById('edit-post-id');
-    var editPostTextInput = document.getElementById('edit-post-text');
+    var editPostTextHidden = document.getElementById('edit-post-text-hidden');
+
+    // Inicializar Quill para el modal de edición
+    var editEditorContainer = document.getElementById('edit-editor-container');
+    var editQuillEditor = null;
+
+    if (editEditorContainer && editPostTextHidden) {
+        editQuillEditor = new Quill('#edit-editor-container', {
+            theme: 'snow',
+            placeholder: '¿Qué estás pensando?',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic'],
+                    [{ 'color': [] }],
+                    ['link']
+                ]
+            }
+        });
+    }
 
     var deletePostIdInput = document.getElementById('delete-post-id');
     var confirmDeleteBtn = document.getElementById('confirm-delete-btn');
@@ -85,7 +103,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Rellenar datos
                 var postText = button.getAttribute('data-post-text') || '';
                 editPostIdInput.value = postId;
-                editPostTextInput.value = postText;
+                if (editQuillEditor) {
+                    editQuillEditor.root.innerHTML = postText;
+                }
                 openModal(editModal);
             } else if (button.classList.contains('delete-post-btn')) {
                 event.preventDefault();
@@ -101,10 +121,21 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
 
             var postId = editPostIdInput.value;
-            var text = editPostTextInput.value.trim();
+            
+            var text = '';
+            var plainText = '';
+            if (editQuillEditor) {
+                text = editQuillEditor.root.innerHTML;
+                plainText = editQuillEditor.getText().trim();
+            }
 
-            if (!text) {
+            if (!plainText) {
                 alert('El texto del post no puede estar vacío.');
+                return;
+            }
+
+            if (plainText.length > 255) {
+                alert('El texto de la publicación no puede superar los 255 caracteres.');
                 return;
             }
 
@@ -118,10 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         try {
                             var response = JSON.parse(xhr.responseText);
                             if (response.success) {
-                                // Actualizar el texto en el DOM
+                                // Actualizar el texto en el DOM (con HTML formateado)
                                 var postTextElement = document.querySelector('[data-post-text-content="' + postId + '"]');
                                 if (postTextElement) {
-                                    postTextElement.textContent = response.text;
+                                    postTextElement.innerHTML = response.text;
                                 }
 
                                 // Actualizar el atributo data-post-text del botón de edición para futuros clics

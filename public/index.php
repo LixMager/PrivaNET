@@ -102,11 +102,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
         $post_id = (int)($_POST['post_id'] ?? 0);
-        $post_text = trim($_POST['post_text'] ?? '');
-        if (empty($post_text)) {
+        $post_text = $_POST['post_text'] ?? '';
+        
+        // Sanitizar el HTML del texto del posteo
+        $post_text = \App\Helpers\SanitizerHelper::sanitize($post_text);
+        
+        // Extraer texto plano para validación de longitud y vaciedad
+        $plainText = trim(strip_tags(html_entity_decode($post_text)));
+        
+        if (empty($plainText)) {
             echo json_encode(['success' => false, 'message' => 'El texto no puede estar vacío.']);
             exit;
         }
+        
+        if (mb_strlen($plainText) > 255) {
+            echo json_encode(['success' => false, 'message' => 'El texto no puede superar los 255 caracteres.']);
+            exit;
+        }
+        
         $repo = new \App\Repositories\PublicationRepository($db);
         $success = $repo->updateText($post_id, (int)$_SESSION['user_id'], $post_text);
         if ($success) {

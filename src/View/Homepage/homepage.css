@@ -82,6 +82,142 @@
     transition: var(--transition);
 }
 
-.submit-post-btn:hover {
+.submit-post-btn:not(:disabled):hover {
     background: var(--primary-hover);
+}
+
+.submit-post-btn:disabled {
+    background: #d1d5db !important;
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+    box-shadow: none !important;
+}
+
+/* Mensaje de error de publicación */
+.post-error-banner {
+    color: #ef4444;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 15px;
+    min-height: 18px;
+    display: none;
+}
+
+/* Quill WYSIWYG Editor Styles */
+.ql-toolbar.ql-snow {
+    border: 1px solid var(--border-color, #ccc) !important;
+    border-top-left-radius: var(--radius, 4px);
+    border-top-right-radius: var(--radius, 4px);
+    background: rgba(0, 0, 0, 0.02) !important;
+    padding: 8px 12px !important;
+}
+.ql-container.ql-snow {
+    border: 1px solid var(--border-color, #ccc) !important;
+    border-bottom-left-radius: var(--radius, 4px);
+    border-bottom-right-radius: var(--radius, 4px);
+    border-top: none !important;
+    font-family: inherit !important;
+    font-size: 0.95rem !important;
+    background: var(--input-bg, #fff) !important;
+}
+.ql-editor {
+    min-height: 120px;
+    max-height: 250px;
+    color: var(--text-main, #333) !important;
+}
+.ql-editor.ql-blank::before {
+    color: var(--text-muted, #777) !important;
+    font-style: italic !important;
+    left: 15px !important;
+}
+
+/* Post Scheduling Section */
+.post-scheduler-section {
+    margin: 15px 0;
+    padding: 12px;
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: var(--radius, 4px);
+    background: #f9fafb;
+}
+.schedule-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    color: var(--text-main);
+    font-weight: 500;
+}
+#is-scheduled-checkbox {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+#scheduled-date-container {
+    display: none;
+    margin-top: 10px;
+    padding-left: 20px;
+    border-left: 2px solid var(--primary-color);
+}
+.schedule-date-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+#scheduled-date-input {
+    padding: 6px 10px;
+    border-radius: var(--radius, 4px);
+    border: 1px solid var(--input-border);
+    font-size: 0.9rem;
+    background: var(--input-bg);
+    color: var(--text-main);
+    outline: none;
+    width: 100%;
+    max-width: 250px;
+    transition: var(--transition);
+}
+
+/* Media Previews */
+.preview-container {
+    display: none;
+    margin-top: 15px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+#image-preview {
+    max-height: 200px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    object-fit: cover;
+}
+.remove-media-btn {
+    display: block;
+    margin-top: 5px;
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+#audio-preview {
+    width: 100%;
+    border-radius: var(--radius);
+}
+
+/* Upload notice warnings/errors in dynamic js */
+.upload-notice {
+    font-style: italic;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: none;
+}
+.upload-notice.error {
+    color: #ef4444;
+}
+.upload-notice.warning {
+    color: #eab308;
 }

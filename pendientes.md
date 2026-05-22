@@ -5,7 +5,7 @@ Este archivo contiene la lista de control de las funcionalidades del enunciado d
 ---
 
 ## 🔐 1. Registro e Inicio de Sesión
-- [ ] **Validación alfanumérica de contraseña**:
+- [x] **Validación alfanumérica de contraseña**:
   - Modificar la validación en [register.js](file:///c:/xampp/htdocs/PrivaNet/src/View/Login/register.js) y [AuthController.php](file:///c:/xampp/htdocs/PrivaNet/src/Controllers/AuthController.php) para asegurar que la contraseña contenga únicamente caracteres alfanuméricos (letras y números sin espacios ni caracteres especiales), además de mantener la longitud mínima de 8 caracteres.
 - [ ] **Banner de Bienvenida dinámico en Inicio**:
   - Ocultar o condicionar el banner de bienvenida en [index.php (Homepage)](file:///c:/xampp/htdocs/PrivaNet/src/View/Homepage/index.php) para que solo se muestre a usuarios registrados.
@@ -14,14 +14,14 @@ Este archivo contiene la lista de control de las funcionalidades del enunciado d
 ---
 
 ## 📝 2. Creación de Publicaciones (Posteos)
-- [ ] **Programación / Planificación de publicaciones**:
+- [x] **Programación / Planificación de publicaciones**:
   - Agregar controles (fecha y hora) en el formulario de creación ([create_post_form.php](file:///c:/xampp/htdocs/PrivaNet/src/View/components/create_post_form.php)) para programar publicaciones en el futuro (límite máximo de 3 días a partir del momento de carga).
   - Modificar el controlador ([PublicationController.php](file:///c:/xampp/htdocs/PrivaNet/src/Controllers/PublicationController.php)) y repositorio para guardar la fecha en la columna `scheduled_at` y el valor condicional para `published_at`.
-- [ ] **Filtro de publicaciones programadas**:
+- [x] **Filtro de publicaciones programadas**:
   - Ajustar las consultas en [PublicationRepository.php](file:///c:/xampp/htdocs/PrivaNet/src/Repositories/PublicationRepository.php) para excluir todas las publicaciones cuya fecha `published_at` sea en el futuro.
-- [ ] **Validación de longitud de texto**:
+- [x] **Validación de longitud de texto**:
   - Validar en el servidor que el texto de la publicación no exceda los 255 caracteres (`mb_strlen($text) <= 255`).
-- [ ] **Soporte de formato en textos**:
+- [x] **Soporte de formato en textos**:
   - Permitir de forma segura que el texto del posteo incluya negrita (`<b>` o `<strong>`), cursiva (`<i>` o `<em>`), colores (`<span style="color: ...">`) e hipervínculos (`<a href="...">`). Reemplazar la llamada directa a `htmlspecialchars()` en [post_card.php](file:///c:/xampp/htdocs/PrivaNet/src/View/components/post_card.php) por un método de escape seguro/sanitización selectiva.
 - [ ] **Validaciones de imágenes**:
   - Validar en el servidor ([UploadHelper.php](file:///c:/xampp/htdocs/PrivaNet/src/Helpers/UploadHelper.php)) que el archivo subido sea únicamente de formato JPEG (`.jpg` / `.jpeg` y tipo MIME `image/jpeg`).
