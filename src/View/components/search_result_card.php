@@ -7,14 +7,18 @@ $textRaw  = strip_tags($post->getText() ?? '');
 $firstLine = mb_strimwidth($textRaw, 0, 120, '…');
 
 $dateStr = '';
+$utcIso = '';
 if ($post->getCreatedAt()) {
     $d = new DateTime($post->getCreatedAt());
+    $utcD = clone $d;
+    $utcD->setTimezone(new DateTimeZone('UTC'));
+    $utcIso = $utcD->format('c');
     $dateStr = $d->format('d/m/Y H:i');
 }
 
 $imageSrc = $post->getImage() ? '/PrivaNet/' . htmlspecialchars($post->getImage()) : '';
 $audioSrc = $post->getAudio() ? '/PrivaNet/' . htmlspecialchars($post->getAudio()) : '';
-$postText  = htmlspecialchars($post->getText() ?? '');
+$postText  = htmlspecialchars(\App\Helpers\SanitizerHelper::sanitize($post->getText() ?? ''));
 ?>
 <article class="search-result-card"
          data-post-id="<?php echo $post->getId(); ?>"
@@ -31,7 +35,11 @@ $postText  = htmlspecialchars($post->getText() ?? '');
 
     <div class="src-meta">
         <span class="src-author">@<?php echo htmlspecialchars($post->getUsername() ?? 'usuario'); ?></span>
-        <span class="src-date"><?php echo $dateStr; ?></span>
+        <?php if ($utcIso): ?>
+            <time class="local-time src-date" data-utc="<?php echo $utcIso; ?>"><?php echo $dateStr; ?></time>
+        <?php else: ?>
+            <span class="src-date"><?php echo $dateStr; ?></span>
+        <?php endif; ?>
     </div>
 
     <?php if (!empty($firstLine)): ?>

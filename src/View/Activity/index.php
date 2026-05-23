@@ -3,9 +3,11 @@ $page_title = 'PrivaNET - Mi Actividad';
 ob_start();
 ?>
 <main class="container main-layout">
-    <div class="post-card" style="margin-bottom: 20px;">
-        <h2>Registro de Mi Actividad</h2>
-        <p class="muted">Aquí puedes consultar todas las publicaciones con las que has interactuado recientemente.</p>
+    <div class="post-card panel-header">
+        <div>
+            <h2>Registro de Mi Actividad</h2>
+            <p class="muted">Aquí puedes consultar todas las publicaciones con las que has interactuado recientemente.</p>
+        </div>
     </div>
 
     <div class="activity-tabs">
@@ -15,7 +17,7 @@ ob_start();
     </div>
 
     <div id="activity-content" class="posts-container">
-        <div class="post-card" style="text-align: center; padding: 40px 20px;">
+        <div class="post-card post-card--empty">
             <p class="muted">Cargando tu actividad...</p>
         </div>
     </div>

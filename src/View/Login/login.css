@@ -120,6 +120,17 @@
     min-height: 18px;
 }
 
+/* Status message inside the header login form (absolute positioned) */
+#login-status.status-msg {
+    position: absolute;
+    right: 0;
+    bottom: -20px;
+    width: 100%;
+    text-align: right;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
 .status-success {
     color: #10b981;
     /* Verde esmeralda */

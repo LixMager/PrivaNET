@@ -11,6 +11,7 @@ $posts = $repository->getLatestPublic(10);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
     <link rel="stylesheet" href="public/layout.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="public/assets/css/base.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="public/assets/css/header.css?v=<?php echo time(); ?>">
@@ -39,7 +40,7 @@ $posts = $repository->getLatestPublic(10);
                     <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña" required>
 
                     <button class="header-button" type="submit">Ingresar</button>
-                    <div id="login-status" class="status-msg" style="position: absolute; right: 0; bottom: -20px; width: 100%; text-align: right; margin: 0; font-size: 0.8rem;"></div>
+                    <div id="login-status" class="status-msg"></div>
                 </form>
             </section>
         </div>
@@ -59,7 +60,7 @@ $posts = $repository->getLatestPublic(10);
                             ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="post-card" style="text-align: center; padding: 40px 20px;">
+                        <div class="post-card post-card--empty">
                             <p class="muted">Aún no hay publicaciones públicas en la base de datos.</p>
                         </div>
                     <?php endif; ?>
@@ -88,7 +89,17 @@ $posts = $repository->getLatestPublic(10);
                 <small class="form-hint">Debes ser mayor de 13 años.</small>
 
                 <label for="register-country">País de residencia</label>
-                <input type="text" id="register-country" name="register-country" placeholder="Ingrese su país" required>
+                <select id="register-country" name="register-country" required>
+                    <option value="" disabled selected>Seleccione su país</option>
+                    <?php
+                    require_once APP_PATH . '/Helpers/countries.php';
+                    foreach (getCountries() as $value => $label):
+                    ?>
+                        <option value="<?php echo htmlspecialchars($value); ?>">
+                            <?php echo htmlspecialchars($label); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
                 <div id="register-status" class="status-msg"></div>
                 <button type="submit">Registrarse</button>
@@ -109,8 +120,8 @@ $posts = $repository->getLatestPublic(10);
                 </header>
                 <div class="lightbox-post-body">
                     <div id="lightbox-post-text" class="lightbox-post-text"></div>
-                    <div id="lightbox-audio-container" class="lightbox-audio-container" style="display: none; margin-top: 15px;">
-                        <audio id="lightbox-audio" controls style="width: 100%;"></audio>
+                    <div id="lightbox-audio-container" class="lightbox-audio-container">
+                        <audio id="lightbox-audio" controls></audio>
                     </div>
                 </div>
                 <footer id="lightbox-post-actions" class="lightbox-post-actions">
@@ -119,6 +130,7 @@ $posts = $repository->getLatestPublic(10);
         </div>
     </div>
 
+    <script src="public/assets/js/timeformat.js?v=<?php echo time(); ?>"></script>
     <script src="public/assets/js/lightbox.js?v=<?php echo time(); ?>"></script>
     <script src="src/view/Login/register.js?v=<?php echo time(); ?>"></script>
     <script src="src/view/Login/login.js?v=<?php echo time(); ?>"></script>

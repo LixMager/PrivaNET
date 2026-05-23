@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var isUsernameAvailable = false;
     var usernameTimeout = null;
 
-    // 1. Verificación AJAX en tiempo real del nombre de usuario
     usernameInput.addEventListener('input', function () {
         clearTimeout(usernameTimeout);
         var username = usernameInput.value.trim();
@@ -63,17 +62,15 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('action', 'check_username');
             formData.append('username', username);
             xhr.send(formData);
-        }, 450); // Debounce de 450ms
+        }, 450);
     });
 
-    // 2. Validación de Frontend y Envío del Formulario
     registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         registerStatus.textContent = '';
         registerStatus.className = 'status-msg';
 
-        // Validar que el usuario esté disponible
         if (!isUsernameAvailable) {
             registerStatus.textContent = 'Por favor, elige un nombre de usuario disponible.';
             registerStatus.className = 'status-msg status-error';
@@ -81,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Validar contraseña (al menos 8 caracteres alfanuméricos)
         var password = passwordInput.value;
         var alphanumericRegex = /^[a-zA-Z0-9]+$/;
 
@@ -99,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Validar edad (> 13 años)
         var birthdateVal = birthdateInput.value;
         if (!birthdateVal) {
             registerStatus.textContent = 'Por favor, ingresa tu fecha de nacimiento.';
@@ -123,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Enviar datos por AJAX al backend
         registerStatus.textContent = 'Registrando usuario...';
         registerStatus.className = 'status-msg';
 
@@ -139,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             registerStatus.textContent = result.message;
                             registerStatus.className = 'status-msg status-success';
                             
-                            // Deshabilitar formulario y redirigir al dashboard
                             var inputsAndButtons = registerForm.querySelectorAll('input, button');
                             for (var i = 0; i < inputsAndButtons.length; i++) {
                                 inputsAndButtons[i].disabled = true;

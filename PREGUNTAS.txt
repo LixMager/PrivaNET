@@ -1,0 +1,446 @@
+================================================================================
+  BANCO DE PREGUNTAS - DEFENSA FINAL - PRIVANET
+  Laboratorio de Programación y Lenguajes - UNPSJB
+  Alumno: Elías Magallanes Guerrero
+================================================================================
+
+
+--------------------------------------------------------------------------------
+  1. BASE DE DATOS Y CONSULTAS SQL
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Qué motor de base de datos utilizaste (MySQL, PostgreSQL, SQLite)?
+                ¿Por qué elegiste ese y no otro?
+
+02. [BÁSICO]    ¿Cuál es el esquema de la tabla de usuarios? ¿Qué constraints definiste
+                (PK, UK, NOT NULL, CHECK)?
+
+03. [MEDIO]     ¿Cómo modelaste los posteos para soportar los tres tipos de contenido
+                (texto, imagen, audio) de forma simultánea en un mismo posteo?
+
+04. [MEDIO]     ¿Cómo implementaste la relación "me gusta / no me gusta"? ¿Una tabla
+                intermedia o columnas en la tabla de posteos?
+
+05. [BÁSICO]    ¿Cómo modelaste los posteos favoritos? ¿Es la misma tabla que likes
+                o una tabla separada?
+
+06. [MEDIO]     ¿Cómo implementaste los posteos programados? ¿Hay un campo de timestamp
+                futuro y un flag de publicado?
+
+07. [AVANZADO]  ¿Qué consulta SQL usás para obtener los últimos 10 posteos de la página
+                de inicio? ¿Filtrás los posteos programados que aún no deben publicarse?
+
+08. [AVANZADO]  ¿Cómo garantizás que un mismo usuario no pueda poner "me gusta" y
+                "no me gusta" al mismo posteo al mismo tiempo?
+
+09. [AVANZADO]  ¿Qué índices creaste en la base de datos y por qué?
+
+10. [MEDIO]     ¿Cómo realizás la búsqueda por palabras clave? ¿Usás LIKE '%palabra%',
+                FULLTEXT o algún otro mecanismo?
+
+11. [BÁSICO]    ¿La contraseña se guarda en texto plano o hasheada? ¿Qué función usaste?
+
+12. [BÁSICO]    ¿Cómo evitás inyecciones SQL? ¿Usás consultas preparadas
+                (prepared statements) o algún ORM?
+
+13. [AVANZADO]  ¿Cómo obtener los posteos de usuarios cuyos posteos fueron marcados como
+                favoritos o "me gusta" por el usuario logueado? ¿Podés escribir esa
+                consulta SQL?
+
+14. [MEDIO]     ¿Verificás unicidad del nombre de usuario a nivel de base de datos
+                (UNIQUE constraint) además de hacerlo en PHP?
+
+
+--------------------------------------------------------------------------------
+  2. SESIONES PHP, COOKIES Y AUTENTICACIÓN
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Cómo implementaste el sistema de login? ¿Dónde almacenás los datos
+                del usuario autenticado?
+
+02. [BÁSICO]    ¿Usás session_start() en todas las páginas que requieren autenticación?
+                ¿Dónde lo ubicás dentro del archivo?
+
+03. [BÁSICO]    ¿Qué variables guardás en $_SESSION? ¿Guardás el ID del usuario,
+                el nombre, el rol?
+
+04. [MEDIO]     ¿Cómo protegés las páginas restringidas? ¿Verificás la sesión al inicio
+                de cada script PHP o tenés un archivo centralizado?
+
+05. [MEDIO]     ¿Cómo implementaste el logout? ¿Usás session_destroy(), session_unset()
+                o ambas? ¿Cuál es la diferencia?
+
+06. [AVANZADO]  ¿Qué es la fijación de sesión (session fixation) y cómo la prevenís?
+                ¿Usás session_regenerate_id()?
+
+07. [AVANZADO]  ¿Cómo detectás el dispositivo desde el que se conecta el usuario para
+                mostrar el mensaje de último acceso por dispositivo?
+
+08. [BÁSICO]    ¿Usaste cookies explícitamente en algún punto del proyecto? ¿Para qué?
+
+09. [BÁSICO]    ¿Cuál es la diferencia entre una cookie de sesión y una cookie persistente?
+
+10. [AVANZADO]  ¿Configuraste las cookies con los atributos HttpOnly y Secure?
+                ¿Por qué son importantes?
+
+11. [MEDIO]     ¿Qué pasa si el usuario cierra el navegador sin hacer logout?
+                ¿Cuánto tiempo dura la sesión PHP?
+
+12. [MEDIO]     ¿Cómo guardás el registro del último acceso del usuario por dispositivo?
+                ¿En base de datos, en cookie o en sesión?
+
+
+--------------------------------------------------------------------------------
+  3. AJAX Y PETICIONES ASÍNCRONAS
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿En qué partes de la aplicación usaste AJAX? ¿Por qué elegiste AJAX
+                para esas funcionalidades y no un submit de formulario tradicional?
+
+02. [BÁSICO]    ¿Usaste XMLHttpRequest, fetch() o alguna biblioteca como jQuery.ajax()?
+                ¿Por qué?
+
+03. [MEDIO]     ¿Cómo manejás los errores en las peticiones AJAX? ¿Mostrás mensajes
+                al usuario cuando la petición falla?
+
+04. [BÁSICO]    ¿Qué formato de respuesta retornan tus scripts PHP cuando son llamados
+                por AJAX: JSON, HTML, texto plano?
+
+05. [MEDIO]     ¿Cómo implementaste el "me gusta / no me gusta" con AJAX? ¿Actualizás
+                el contador en el DOM sin recargar la página?
+
+06. [AVANZADO]  ¿Cómo protegés los endpoints PHP que responden peticiones AJAX para que
+                no sean accedidos directamente desde el navegador por un usuario
+                no autenticado?
+
+07. [AVANZADO]  ¿Usaste CSRF tokens en los formularios y peticiones AJAX?
+                ¿Cómo funciona esa protección?
+
+08. [MEDIO]     ¿Cómo implementaste la búsqueda de posteos? ¿Es una búsqueda en tiempo
+                real (mientras el usuario escribe) o se ejecuta al presionar un botón?
+
+09. [MEDIO]     ¿Qué cabeceras HTTP retornás desde PHP en las respuestas AJAX?
+                ¿Seteás Content-Type: application/json?
+
+10. [AVANZADO]  ¿Cómo evitás que el usuario envíe múltiples peticiones AJAX simultáneas
+                (por ejemplo, clickeando rápido el botón de postear)?
+
+
+--------------------------------------------------------------------------------
+  4. MANEJO DE MULTIMEDIA (IMÁGENES Y AUDIOS)
+--------------------------------------------------------------------------------
+
+01. [AVANZADO]  ¿Cómo validás en el servidor que una imagen subida sea realmente JPEG
+                y no otro tipo de archivo con extensión cambiada?
+
+02. [MEDIO]     ¿Cómo verificás que la resolución de la imagen no supere 1600x1200
+                píxeles? ¿Qué función PHP usás?
+
+03. [MEDIO]     ¿Dónde guardás los archivos subidos en el servidor? ¿Dentro del
+                directorio raíz del proyecto o fuera?
+
+04. [AVANZADO]  ¿Cómo generás el thumbnail de la imagen para mostrarlo en el posteo?
+                ¿Usás GD, Imagick o lo mostrás con CSS?
+
+05. [BÁSICO]    ¿Qué mecanismo usás para que el usuario pueda ver la imagen en tamaño
+                original? ¿Un modal, una nueva pestaña, un lightbox?
+
+06. [AVANZADO]  ¿Cómo validás que un audio sea MP3 y que su duración no supere
+                30 segundos?
+
+07. [BÁSICO]    ¿Qué elemento HTML usás para que el usuario pueda reproducir el audio
+                desde el posteo?
+
+08. [MEDIO]     ¿Cómo asignás nombres a los archivos subidos para evitar colisiones?
+                ¿Usás el nombre original, un hash, un UUID?
+
+09. [MEDIO]     ¿Validás el tamaño máximo del archivo (en bytes) además del formato?
+                ¿Dónde lo configurás?
+
+10. [AVANZADO]  ¿Cómo prevenís que un usuario suba un archivo malicioso disfrazado
+                de imagen o audio?
+
+11. [AVANZADO]  ¿Los archivos subidos son accesibles directamente por URL?
+                ¿Eso representa algún problema de seguridad?
+
+12. [MEDIO]     ¿Qué ocurre si el usuario sube una imagen y un audio al mismo tiempo
+                en un posteo? ¿Cómo manejás el formulario multipart?
+
+
+--------------------------------------------------------------------------------
+  5. VARIABLES PHP Y SUPERGLOBALES
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Cuáles son las variables superglobales de PHP que usaste en el
+                proyecto? Mencioná al menos cinco.
+
+02. [BÁSICO]    ¿Cuál es la diferencia entre $_GET y $_POST? ¿Cuándo usaste cada una?
+
+03. [MEDIO]     ¿Qué contiene $_FILES cuando el usuario sube un archivo?
+                Describí sus índices principales.
+
+04. [MEDIO]     ¿Qué es $_SERVER y qué índices de esa superglobal usaste? Por ejemplo,
+                ¿cómo obtenés la IP del cliente o el User-Agent?
+
+05. [BÁSICO]    ¿Cómo usás $_SESSION para mantener el estado del usuario logueado
+                entre diferentes páginas?
+
+06. [MEDIO]     ¿Cuándo usarías $_COOKIE directamente versus manejar todo a través
+                de setcookie()?
+
+07. [MEDIO]     ¿Qué es $_REQUEST y por qué generalmente se desaconseja su uso?
+
+08. [AVANZADO]  ¿Qué es $GLOBALS en PHP y cuándo sería apropiado usarla?
+
+09. [BÁSICO]    ¿Cómo sanitizás y validás los datos que llegan por $_POST o $_GET
+                antes de usarlos?
+
+10. [MEDIO]     ¿Usaste funciones como filter_input() o filter_var()? ¿Para qué?
+
+11. [BÁSICO]    ¿Qué es la interpolación de variables en PHP y qué diferencia hay
+                entre comillas simples y dobles?
+
+
+--------------------------------------------------------------------------------
+  6. PARADIGMA ORIENTADO A OBJETOS EN PHP
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Qué clases definiste en el proyecto? ¿Seguiste algún patrón de diseño
+                como MVC?
+
+02. [BÁSICO]    ¿Cómo modelaste la clase Usuario? ¿Qué atributos y métodos tiene?
+
+03. [MEDIO]     ¿Cómo modelaste la clase Posteo considerando que puede tener texto,
+                imagen y/o audio?
+
+04. [MEDIO]     ¿Usaste herencia en alguna parte del proyecto? ¿Para qué?
+
+05. [BÁSICO]    ¿Qué es el principio de encapsulamiento y cómo lo aplicaste?
+                ¿Usaste getters y setters?
+
+06. [AVANZADO]  ¿Cómo manejaste la conexión a la base de datos? ¿Usaste el patrón
+                Singleton para la conexión?
+
+07. [MEDIO]     ¿Qué diferencia hay entre una clase abstracta y una interfaz?
+                ¿Usaste alguna de las dos?
+
+08. [BÁSICO]    ¿Cómo organizaste los archivos del proyecto? ¿Tenés una carpeta para
+                clases, otra para vistas, otra para controladores?
+
+09. [AVANZADO]  ¿Usaste autoloading de clases (spl_autoload_register o Composer
+                autoload)? ¿Por qué es útil?
+
+10. [MEDIO]     ¿Cómo manejaste las excepciones en PHP? ¿Usaste try/catch?
+                ¿Definiste excepciones personalizadas?
+
+
+--------------------------------------------------------------------------------
+  7. HTML5, CSS3 Y ESTRUCTURA DE PÁGINAS
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Qué páginas principales componen la aplicación y cuál es la función
+                de cada una?
+
+02. [BÁSICO]    ¿Usaste etiquetas semánticas de HTML5 (header, nav, main, section,
+                article, footer)? ¿Dónde y por qué?
+
+03. [MEDIO]     ¿Cómo implementaste el formulario de registro con validación del lado
+                del cliente (HTML5 y JavaScript) y del lado del servidor (PHP)?
+
+04. [MEDIO]     ¿Cómo validaste en el cliente que la contraseña tenga al menos
+                8 caracteres alfanuméricos?
+
+05. [MEDIO]     ¿Cómo validaste la fecha de nacimiento para garantizar que el usuario
+                sea mayor de 13 años?
+
+06. [BÁSICO]    ¿Usaste algún framework de CSS como Bootstrap o Tailwind?
+                ¿Cómo lo integraste?
+
+07. [MEDIO]     ¿Cómo hiciste que la aplicación sea responsive? ¿Usaste media queries
+                o un sistema de grilla?
+
+08. [AVANZADO]  ¿Cómo implementaste el editor de texto enriquecido que permite negrita,
+                cursiva, colores e hipervínculos? ¿Usaste contenteditable, una librería
+                como Quill o TinyMCE?
+
+09. [AVANZADO]  ¿Cómo guardás y mostrás el texto enriquecido (HTML) en la base de datos
+                de forma segura, evitando XSS?
+
+10. [BÁSICO]    ¿Qué mecanismo usaste para la navegación entre páginas cuando el usuario
+                está logueado? ¿Un menú en cada página, un header común incluido con PHP?
+
+
+--------------------------------------------------------------------------------
+  8. JAVASCRIPT DEL LADO DEL CLIENTE
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Cómo separaste la lógica JavaScript del HTML? ¿Usaste archivos
+                .js externos?
+
+02. [MEDIO]     ¿Usaste localStorage o sessionStorage en alguna parte del proyecto?
+                ¿Para qué?
+
+03. [BÁSICO]    ¿Cuál es la diferencia entre localStorage y sessionStorage?
+
+04. [MEDIO]     ¿Cómo manejás el DOM para actualizar contadores de "me gusta" sin
+                recargar la página?
+
+05. [MEDIO]     ¿Usaste eventos del tipo DOMContentLoaded o window.onload?
+                ¿Cuál es la diferencia?
+
+06. [AVANZADO]  ¿Cómo implementaste la previsualización de la imagen antes de subirla
+                al servidor?
+
+07. [MEDIO]     ¿Usaste Promises, async/await o callbacks para manejar las peticiones
+                AJAX?
+
+08. [BÁSICO]    ¿Cómo validaste el formulario de posteo en el lado del cliente antes
+                de enviarlo?
+
+09. [BÁSICO]    ¿Usaste alguna librería de JavaScript además de jQuery (si la usaste)?
+                ¿Para qué?
+
+10. [AVANZADO]  ¿Cómo implementaste la restricción de que un posteo programado solo
+                puede agendarse dentro de los próximos 3 días? ¿La validación es solo
+                del lado del cliente o también del servidor?
+
+
+--------------------------------------------------------------------------------
+  9. FLUJO DE LA APLICACIÓN Y NAVEGACIÓN
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    Describí el flujo completo desde que un usuario no registrado llega a
+                la página de inicio hasta que realiza su primer posteo.
+
+02. [MEDIO]     ¿Qué ocurre si un usuario intenta acceder directamente a una URL
+                restringida (como el panel de control) sin estar logueado?
+
+03. [AVANZADO]  ¿Cómo implementaste la lógica de la página de inicio del usuario
+                logueado que muestra distintos posteos según si tiene favoritos o no?
+
+04. [MEDIO]     ¿Cómo maneja la aplicación el caso en que un usuario con sesión activa
+                intenta acceder a la página de login o registro?
+
+05. [MEDIO]     ¿Cómo funciona el panel de control de posteos? ¿Cargás todos los
+                posteos del usuario de una vez o con paginación?
+
+06. [MEDIO]     ¿Cómo implementaste la modificación de un posteo existente?
+                ¿Precompletás el formulario con los datos actuales?
+
+07. [AVANZADO]  ¿Qué sucede si el usuario elimina un posteo que otros usuarios tienen
+                como favorito o al que dieron like?
+
+08. [AVANZADO]  ¿Cómo gestionás la eliminación de los archivos multimedia del servidor
+                cuando se elimina un posteo?
+
+09. [AVANZADO]  ¿Cómo implementaste el mecanismo para que los posteos programados se
+                publiquen automáticamente? ¿Usaste un cron job, un script verificador
+                o alguna otra estrategia?
+
+10. [MEDIO]     ¿Cómo mostrás el mensaje de bienvenida con la fecha y hora del último
+                acceso? ¿Lo guardás en la base de datos al momento del login?
+
+
+--------------------------------------------------------------------------------
+  10. SEGURIDAD DE LA APLICACIÓN
+--------------------------------------------------------------------------------
+
+01. [MEDIO]     ¿Qué es XSS (Cross-Site Scripting) y cómo lo prevenís al mostrar
+                contenido generado por los usuarios?
+
+02. [BÁSICO]    ¿Usaste htmlspecialchars() o htmlentities() al mostrar datos de la
+                base de datos en el HTML?
+
+03. [BÁSICO]    ¿Qué es SQL Injection y qué medida concreta implementaste para evitarla?
+
+04. [BÁSICO]    ¿Qué función de PHP usás para hashear contraseñas y cómo verificás
+                la contraseña ingresada en el login?
+
+05. [AVANZADO]  ¿Qué es CSRF y cómo lo prevenís en los formularios de tu aplicación?
+
+06. [AVANZADO]  ¿Validás en el servidor el tipo MIME de los archivos subidos usando
+                finfo o mime_content_type(), o solo confías en la extensión?
+
+07. [AVANZADO]  ¿Configuraste correctamente los permisos de la carpeta de uploads
+                para que no sea ejecutable?
+
+08. [AVANZADO]  ¿Qué es el atributo SameSite en las cookies y para qué sirve?
+
+09. [AVANZADO]  ¿Cómo prevenís que un usuario modifique o elimine posteos de otro
+                usuario manipulando parámetros en la URL o el cuerpo del request?
+
+10. [MEDIO]     ¿Mostrás mensajes de error detallados al usuario cuando ocurre una
+                excepción o error de base de datos?
+
+
+--------------------------------------------------------------------------------
+  11. LIBRERÍAS Y FRAMEWORKS UTILIZADOS
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Usaste algún framework PHP (Laravel, Symfony, CodeIgniter)?
+                ¿Por qué sí o por qué no?
+
+02. [MEDIO]     ¿Usaste Composer para gestionar dependencias? ¿Qué paquetes incluiste?
+
+03. [BÁSICO]    ¿Usaste jQuery? ¿En qué partes del proyecto y por qué lo elegiste
+                sobre el Fetch API nativo?
+
+04. [MEDIO]     ¿Qué librería usaste para el editor de texto enriquecido? ¿Cómo la
+                integraste y cómo obtenés el contenido HTML que genera?
+
+05. [BÁSICO]    ¿Usaste alguna librería para validación de formularios del lado
+                del cliente?
+
+06. [MEDIO]     ¿Usaste PDO o MySQLi para la conexión a la base de datos?
+                ¿Cuál es la ventaja de PDO?
+
+07. [BÁSICO]    Si usaste Bootstrap u otro framework CSS, ¿cómo personalizaste su
+                apariencia para adaptarlo al diseño de la aplicación?
+
+08. [BÁSICO]    ¿Cómo incluiste las librerías externas: CDN, descarga manual
+                o Composer/npm?
+
+
+--------------------------------------------------------------------------------
+  12. DOCUMENTACIÓN Y ENTREGA
+--------------------------------------------------------------------------------
+
+01. [BÁSICO]    ¿Qué páginas web principales forman parte de la aplicación y qué
+                función cumple cada una?
+
+02. [BÁSICO]    ¿Cómo organizaste la estructura de carpetas y archivos del proyecto?
+
+03. [BÁSICO]    ¿El script SQL que entregaste crea la base de datos, las tablas y
+                también incluye datos de prueba?
+
+04. [MEDIO]     ¿Qué ambigüedades del enunciado encontraste y cómo las resolviste?
+
+05. [BÁSICO]    ¿El manual de usuario incluye el flujo de registro, login, creación
+                de posteos y todas las funcionalidades del panel de control?
+
+06. [BÁSICO]    ¿Podés describir brevemente el resumen de actividades que realizaste
+                durante el desarrollo? ¿Seguiste alguna metodología?
+
+
+================================================================================
+  RESUMEN
+================================================================================
+
+  Categoría                                   Preguntas
+  ─────────────────────────────────────────── ─────────
+  1.  Base de datos y consultas SQL                 14
+  2.  Sesiones PHP, cookies y autenticación         12
+  3.  AJAX y peticiones asíncronas                  10
+  4.  Manejo de multimedia (imágenes y audios)      12
+  5.  Variables PHP y superglobales                 11
+  6.  Paradigma orientado a objetos en PHP          10
+  7.  HTML5, CSS3 y estructura de páginas           10
+  8.  JavaScript del lado del cliente               10
+  9.  Flujo de la aplicación y navegación           10
+  10. Seguridad de la aplicación                    10
+  11. Librerías y frameworks utilizados              8
+  12. Documentación y entrega                        6
+  ─────────────────────────────────────────── ─────────
+  TOTAL                                            113
+
+================================================================================

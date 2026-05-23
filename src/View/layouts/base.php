@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo htmlspecialchars($page_title ?? 'PrivaNET'); ?></title>
+	<link rel="icon" type="image/svg+xml" href="/PrivaNet/public/favicon.svg">
 	<link rel="stylesheet" href="/PrivaNet/public/layout.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/public/assets/css/base.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/public/assets/css/header.css?v=<?php echo time(); ?>">
@@ -33,8 +34,8 @@
 				</header>
 				<div class="lightbox-post-body">
 					<div id="lightbox-post-text" class="lightbox-post-text"></div>
-					<div id="lightbox-audio-container" class="lightbox-audio-container" style="display: none; margin-top: 15px;">
-						<audio id="lightbox-audio" controls style="width: 100%;"></audio>
+					<div id="lightbox-audio-container" class="lightbox-audio-container">
+						<audio id="lightbox-audio" controls></audio>
 					</div>
 				</div>
 				<footer id="lightbox-post-actions" class="lightbox-post-actions">
@@ -43,6 +44,7 @@
 		</div>
 	</div>
 
+	<script src="/PrivaNet/public/assets/js/timeformat.js?v=<?php echo time(); ?>"></script>
 	<script src="/PrivaNet/public/assets/js/lightbox.js?v=<?php echo time(); ?>"></script>
 	<?php echo $page_scripts ?? ''; ?>
 </body>

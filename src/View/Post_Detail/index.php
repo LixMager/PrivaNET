@@ -15,8 +15,8 @@ ob_start();
 ?>
 <main class="container main-layout">
     <section class="detail-section">
-        <div style="margin-bottom: 20px;">
-            <a href="javascript:history.back()" class="action-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px; color: var(--text-main);">
+        <div class="back-nav">
+            <a href="javascript:history.back()" class="action-btn back-btn">
                 ← Volver
             </a>
         </div>
@@ -25,8 +25,8 @@ ob_start();
             <?php if ($post): ?>
                 <?php include APP_PATH . '/View/components/post_card.php'; ?>
             <?php else: ?>
-                <div class="post-card" style="text-align: center; padding: 40px 20px;">
-                    <p style="color: var(--text-muted); margin-bottom: 5px;">La publicación no existe o no tienes permiso para verla.</p>
+                <div class="post-card post-card--empty">
+                    <p>La publicación no existe o no tienes permiso para verla.</p>
                 </div>
             <?php endif; ?>
         </div>

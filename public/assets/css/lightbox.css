@@ -132,6 +132,7 @@
 }
 
 .lightbox-audio-container {
+    display: none;      /* shown by JS when audio is present */
     margin-top: 14px;
 }
 .lightbox-audio-container audio {
@@ -168,6 +169,23 @@
 .lightbox-post-actions .like-btn.active    { color: #60a5fa !important; }
 .lightbox-post-actions .dislike-btn.active { color: #f87171 !important; }
 .lightbox-post-actions .fav-btn.active     { color: #d97706 !important; }
+
+/* ============================================================
+   Text-only mode — when no image is present
+   ============================================================ */
+.lightbox-overlay.text-only-mode .lightbox-content {
+    width: clamp(320px, 90vw, 600px); /* Comfortable reading width */
+    height: auto;
+    max-height: 85vh; /* Adjusts height to content, scrolls if too long */
+}
+
+.lightbox-overlay.text-only-mode .lightbox-post-info {
+    border-left: none; /* No border since the black container is hidden */
+}
+
+.lightbox-overlay.text-only-mode .lightbox-post-body {
+    flex: 1 1 auto; /* Fixes the unnecessary scrollbar issue for short text */
+}
 
 /* ============================================================
    Close button — always visible top-right corner
@@ -220,4 +238,43 @@
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
+}
+
+/* ============================================================
+   404 error page
+   ============================================================ */
+.error-page {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.error-page .post-header {
+    justify-content: center;
+    border-bottom: none;
+}
+
+.error-page-code {
+    font-size: 5rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.error-page-content {
+    margin: 20px 0;
+}
+
+.error-page-title {
+    font-size: 1.5rem;
+    color: var(--text-main);
+    margin-bottom: 10px;
+}
+
+.error-page-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.error-page .post-actions {
+    justify-content: center;
+    border-top: none;
 }

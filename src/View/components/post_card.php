@@ -24,7 +24,11 @@ if ($post->getPublishedAt()) {
             <?php 
                 if ($post->getCreatedAt()) {
                     $date = new DateTime($post->getCreatedAt());
-                    echo htmlspecialchars($date->format('d/m/Y H:i'));
+                    $utcDate = clone $date;
+                    $utcDate->setTimezone(new DateTimeZone('UTC'));
+                    $utcIso = $utcDate->format('c');
+                    $fallbackStr = htmlspecialchars($date->format('d/m/Y H:i'));
+                    echo '<time class="local-time" data-utc="' . $utcIso . '">' . $fallbackStr . '</time>';
                 } else {
                     echo 'Hace un momento';
                 }
@@ -33,11 +37,15 @@ if ($post->getPublishedAt()) {
     </header>
 
     <?php if ($isDashboard && $isScheduled): ?>
-        <div class="scheduled-badge" style="background: rgba(59, 130, 246, 0.1); border: 1px dashed var(--primary-color, #3b82f6); color: var(--primary-color, #3b82f6); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; margin: 10px 15px 5px 15px; width: fit-content;">
+        <div class="scheduled-badge">
             <span>◷</span>
             <span>Programado para el <?php 
                 $pubDate = new DateTime($post->getPublishedAt());
-                echo htmlspecialchars($pubDate->format('d/m/Y \a \l\a\s H:i'));
+                $utcPubDate = clone $pubDate;
+                $utcPubDate->setTimezone(new DateTimeZone('UTC'));
+                $utcIso = $utcPubDate->format('c');
+                $fallbackStr = htmlspecialchars($pubDate->format('d/m/Y \a \l\a\s H:i'));
+                echo '<time class="local-time-scheduled" data-utc="' . $utcIso . '">' . $fallbackStr . '</time>';
             ?></span>
         </div>
     <?php endif; ?>
@@ -56,7 +64,7 @@ if ($post->getPublishedAt()) {
 
     <?php if (!empty($post->getAudio())): ?>
         <div class="post-media audio-media">
-            <audio controls style="width: 100%;">
+            <audio controls>
                 <source src="/PrivaNet/<?php echo htmlspecialchars($post->getAudio()); ?>" type="audio/mpeg">
                 Tu navegador no soporta audio HTML5.
             </audio>
@@ -76,7 +84,7 @@ if ($post->getPublishedAt()) {
                 <button type="button" class="action-btn delete-post-btn" data-post-id="<?php echo $post->getId(); ?>">
                     ✕ Eliminar
                 </button>
-                <div class="post-stats" style="margin-left: auto; font-size: 0.85rem; color: var(--text-muted, #888); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                <div class="post-stats">
                     <span>▲ <?php echo $post->getLikesCount(); ?></span>
                     <span>▼ <?php echo $post->getDislikesCount(); ?></span>
                 </div>

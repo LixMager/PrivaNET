@@ -1,15 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Referencias a los modales y sus elementos
     var editModal = document.getElementById('edit-modal');
     var deleteModal = document.getElementById('delete-modal');
-
-    // Botones de cierre y cancelación
     var closeEditModal = document.getElementById('close-edit-modal');
     var cancelEditBtn = document.getElementById('cancel-edit-btn');
     var closeDeleteModal = document.getElementById('close-delete-modal');
     var cancelDeleteBtn = document.getElementById('cancel-delete-btn');
-
-    // Formularios e inputs de modales
     var editForm = document.getElementById('edit-post-form');
     var editPostIdInput = document.getElementById('edit-post-id');
     var editPostTextHidden = document.getElementById('edit-post-text-hidden');
@@ -35,49 +30,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var deletePostIdInput = document.getElementById('delete-post-id');
     var confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 
-    // Función para abrir modal
     function openModal(modal) {
-        if (modal) {
-            modal.classList.add('open');
-        }
+        if (modal) modal.classList.add('open');
     }
 
-    // Función para cerrar modal
     function closeModal(modal) {
-        if (modal) {
-            modal.classList.remove('open');
-            // Pausar el audio del panel de edición al cerrar
-            var audPreview = modal.querySelector('audio');
-            if (audPreview) {
-                audPreview.pause();
-                audPreview.currentTime = 0;
-            }
+        if (!modal) return;
+        modal.classList.remove('open');
+        var audPreview = modal.querySelector('audio');
+        if (audPreview) {
+            audPreview.pause();
+            audPreview.currentTime = 0;
         }
     }
 
-    // Cerrar edit modal
-    if (closeEditModal) {
-        closeEditModal.addEventListener('click', function () {
-            closeModal(editModal);
-        });
-    }
-    if (cancelEditBtn) {
-        cancelEditBtn.addEventListener('click', function () {
-            closeModal(editModal);
-        });
-    }
+    if (closeEditModal) closeEditModal.addEventListener('click', function () { closeModal(editModal); });
+    if (cancelEditBtn) cancelEditBtn.addEventListener('click', function () { closeModal(editModal); });
 
-    // Cerrar delete modal
-    if (closeDeleteModal) {
-        closeDeleteModal.addEventListener('click', function () {
-            closeModal(deleteModal);
-        });
-    }
-    if (cancelDeleteBtn) {
-        cancelDeleteBtn.addEventListener('click', function () {
-            closeModal(deleteModal);
-        });
-    }
+    if (closeDeleteModal) closeDeleteModal.addEventListener('click', function () { closeModal(deleteModal); });
+    if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', function () { closeModal(deleteModal); });
 
     // Cerrar modales al hacer click en el overlay (fuera del contenido del modal)
     window.addEventListener('click', function (event) {
@@ -89,34 +60,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Delegación de eventos para botones de Editar y Eliminar en las tarjetas de post
     document.addEventListener('click', function (event) {
         var button = event.target;
 
-        // Subir en el DOM si el click fue dentro del botón
         while (button && button !== document && !button.classList.contains('action-btn')) {
             button = button.parentNode;
         }
 
         if (button && button !== document && button.classList.contains('action-btn')) {
             var postId = button.getAttribute('data-post-id');
-            if (!postId) {
-                return;
-            }
+            if (!postId) return;
 
             if (button.classList.contains('edit-post-btn')) {
                 event.preventDefault();
-                // Rellenar datos
                 var postText = button.getAttribute('data-post-text') || '';
                 var postImage = button.getAttribute('data-post-image') || '';
                 var postAudio = button.getAttribute('data-post-audio') || '';
                 
                 editPostIdInput.value = postId;
                 if (editQuillEditor) {
-                    editQuillEditor.root.innerHTML = postText;
+                    editQuillEditor.clipboard.dangerouslyPasteHTML(postText);
                 }
                 
-                // Mostrar previsualización de imagen actual
                 var imgContainer = document.getElementById('edit-image-preview-container');
                 var imgPreview = document.getElementById('edit-image-preview');
                 var deleteImgCheckbox = document.getElementById('edit-delete-image-checkbox');
@@ -131,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
                 
-                // Mostrar previsualización de audio actual
                 var audContainer = document.getElementById('edit-audio-preview-container');
                 var audPreview = document.getElementById('edit-audio-preview');
                 var deleteAudCheckbox = document.getElementById('edit-delete-audio-checkbox');
@@ -146,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
                 
-                // Limpiar inputs de archivos y banner de error
                 var imgInput = document.getElementById('edit-image-input');
                 var audInput = document.getElementById('edit-audio-input');
                 if (imgInput) imgInput.value = '';
@@ -278,13 +241,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         try {
                             var response = JSON.parse(xhr.responseText);
                             if (response.success) {
-                                // 1. Actualizar el texto en el DOM
                                 var postTextElement = document.querySelector('[data-post-text-content="' + postId + '"]');
                                 if (postTextElement) {
                                     postTextElement.innerHTML = response.text;
                                 }
 
-                                // 2. Encontrar la tarjeta del post
                                 var card = document.querySelector('.post-card[data-post-card-id="' + postId + '"]');
                                 if (card) {
                                     // 3. Actualizar o eliminar imagen
@@ -315,13 +276,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                             var audioTag = audMedia.querySelector('audio');
                                             if (audEl && audioTag) {
                                                 audEl.src = '/PrivaNet/' + response.audio;
-                                                audioTag.load(); // Recargar el player de audio
+                                                audioTag.load();
                                             }
                                         } else {
-                                            // Crear el div media para el audio
                                             var newAudMedia = document.createElement('div');
                                             newAudMedia.className = 'post-media audio-media';
-                                            newAudMedia.innerHTML = '<audio controls style="width: 100%;"><source src="/PrivaNet/' + response.audio + '" type="audio/mpeg">Tu navegador no soporta audio HTML5.</audio>';
+                                            newAudMedia.innerHTML = '<audio controls><source src="/PrivaNet/' + response.audio + '" type="audio/mpeg">Tu navegador no soporta audio HTML5.</audio>';
                                             var footer = card.querySelector('.post-actions');
                                             card.insertBefore(newAudMedia, footer);
                                         }
@@ -387,12 +347,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                             card.parentNode.removeChild(card);
                                         }
                                         
-                                        // Si ya no quedan posts, mostrar un mensaje de lista vacía
                                         var container = document.getElementById('dashboard-posts-container');
                                         if (container && container.querySelectorAll('.post-card').length === 0) {
-                                            container.innerHTML = '<div class="post-card" style="text-align: center; padding: 40px 20px;"><p style="color: var(--text-muted);">Aún no has realizado ninguna publicación.</p></div>';
+                                            container.innerHTML = '<div class="post-card post-card--empty"><p>Aún no has realizado ninguna publicación.</p></div>';
                                         }
-                                    }, 400); // Coincide con la duración en la clase .post-card.fade-out
+                                    }, 400);
                                 }
                             } else {
                                 alert(response.message || 'Error al eliminar el posteo.');

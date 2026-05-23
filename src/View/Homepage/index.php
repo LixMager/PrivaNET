@@ -40,7 +40,7 @@ ob_start();
                     <?php include APP_PATH . '/View/components/post_card.php'; ?>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="post-card" style="text-align: center; padding: 40px 20px;">
+                <div class="post-card post-card--empty">
                     <p class="muted">Aún no hay publicaciones en la base de datos.</p>
                 </div>
             <?php endif; ?>

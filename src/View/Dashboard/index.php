@@ -13,10 +13,10 @@ $posts = $repository->getPublicationsByUser((int)$currentUserId);
 ob_start();
 ?>
 <main class="container main-layout">
-    <div class="post-card" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="post-card panel-header">
         <div>
-            <h2 style="font-size: 1.3rem; margin-bottom: 5px; color: var(--text-main);">Panel de Gestión de Publicaciones</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">Administra tus posteos, realiza modificaciones de texto o elimina publicaciones de forma definitiva.</p>
+            <h2>Panel de Gestión de Publicaciones</h2>
+            <p>Administra tus posteos, realiza modificaciones de texto o elimina publicaciones de forma definitiva.</p>
         </div>
     </div>
 
@@ -29,8 +29,8 @@ ob_start();
                 ?>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="post-card" style="text-align: center; padding: 40px 20px;">
-                <p style="color: var(--text-muted);">Aún no has realizado ninguna publicación.</p>
+            <div class="post-card post-card--empty">
+                <p>Aún no has realizado ninguna publicación.</p>
             </div>
         <?php endif; ?>
     </div>
@@ -71,7 +71,7 @@ ob_start();
 
 <!-- Modal de Edición -->
 <div id="edit-modal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-content modal-content--wide">
         <div class="modal-header">
             <h3>Editar Publicación</h3>
             <button type="button" class="modal-close-btn" id="close-edit-modal">✕</button>
@@ -83,13 +83,13 @@ ob_start();
                 <input type="hidden" name="post_text" id="edit-post-text-hidden">
                 <div id="edit-editor-container" data-placeholder="¿Qué estás pensando?"></div>
                 
-                <div class="modal-media-section" style="margin-top: 15px; border-top: 1px solid var(--border-color, #ccc); padding-top: 15px;">
+                <div class="modal-media-section">
                     <!-- Image Edit Area -->
-                    <div class="media-edit-group" style="margin-bottom: 15px;">
-                        <label style="font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 5px; color: var(--text-main);">Imagen de la publicación:</label>
-                        <div id="edit-image-preview-container" style="display: none; margin-bottom: 8px;">
-                            <img id="edit-image-preview" src="" style="max-height: 120px; border-radius: 6px; display: block; margin-bottom: 5px;" alt="Preview">
-                            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: #ff4d4d; cursor: pointer;">
+                    <div class="media-edit-group">
+                        <label class="media-edit-label">Imagen de la publicación:</label>
+                        <div id="edit-image-preview-container" class="media-preview-container">
+                            <img id="edit-image-preview" src="" class="media-preview-img" alt="Preview">
+                            <label class="media-delete-label">
                                 <input type="checkbox" name="delete_image" id="edit-delete-image-checkbox" value="1">
                                 Eliminar imagen actual
                             </label>
@@ -103,11 +103,11 @@ ob_start();
                     
                     <!-- Audio Edit Area -->
                     <div class="media-edit-group">
-                        <label style="font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 5px; color: var(--text-main);">Audio de la publicación:</label>
-                        <div id="edit-audio-preview-container" style="display: none; margin-bottom: 8px;">
-                            <audio id="edit-audio-preview" controls style="width: 100%; max-width: 300px; margin-bottom: 5px;"></audio>
+                        <label class="media-edit-label">Audio de la publicación:</label>
+                        <div id="edit-audio-preview-container" class="media-preview-container">
+                            <audio id="edit-audio-preview" controls class="media-preview-audio"></audio>
                             <br>
-                            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: #ff4d4d; cursor: pointer;">
+                            <label class="media-delete-label">
                                 <input type="checkbox" name="delete_audio" id="edit-delete-audio-checkbox" value="1">
                                 Eliminar audio actual
                             </label>
@@ -119,11 +119,11 @@ ob_start();
                         </div>
                     </div>
                 </div>
-                <div id="edit-post-error-banner" class="post-error-banner" style="display: none; margin-top: 10px;"></div>
+                <div id="edit-post-error-banner" class="post-error-banner modal-error-banner"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="action-btn secondary-btn" id="cancel-edit-btn">Cancelar</button>
-                <button type="submit" class="action-btn" id="save-edit-btn" style="background: var(--primary-color); color: white;">Guardar Cambios</button>
+                <button type="submit" class="action-btn modal-btn-primary" id="save-edit-btn">Guardar Cambios</button>
             </div>
         </form>
     </div>
@@ -137,8 +137,8 @@ ob_start();
             <button type="button" class="modal-close-btn" id="close-delete-modal">✕</button>
         </div>
         <div class="modal-body">
-            <p style="color: var(--text-main); margin-bottom: 10px; font-weight: 500;">¿Estás seguro de que deseas eliminar esta publicación?</p>
-            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4;">Esta acción es irreversible y eliminará de forma permanente el texto, las imágenes o audios asociados, así como también los me gusta, no me gusta y favoritos que haya recibido.</p>
+            <p class="modal-confirm-text">¿Estás seguro de que deseas eliminar esta publicación?</p>
+            <p class="modal-confirm-sub">Esta acción es irreversible y eliminará de forma permanente el texto, las imágenes o audios asociados, así como también los me gusta, no me gusta y favoritos que haya recibido.</p>
         </div>
         <div class="modal-footer">
             <input type="hidden" id="delete-post-id" value="">
