@@ -129,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $post_id = (int)($_POST['post_id'] ?? 0);
         $post_text = $_POST['post_text'] ?? '';
+        $user_id = (int)$_SESSION['user_id'];
         
         // Sanitizar el HTML del texto del posteo
         $post_text = \App\Helpers\SanitizerHelper::sanitize($post_text);
@@ -136,20 +137,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Extraer texto plano para validación de longitud y vaciedad
         $plainText = trim(strip_tags(html_entity_decode($post_text)));
         
-        if (empty($plainText)) {
-            echo json_encode(['success' => false, 'message' => 'El texto no puede estar vacío.']);
-            exit;
-        }
-        
         if (mb_strlen($plainText) > 255) {
             echo json_encode(['success' => false, 'message' => 'El texto no puede superar los 255 caracteres.']);
             exit;
         }
         
+        $deleteImage = isset($_POST['delete_image']) && $_POST['delete_image'] === '1';
+        $deleteAudio = isset($_POST['delete_audio']) && $_POST['delete_audio'] === '1';
+
+        $destinationDir = ROOT_PATH . '/public/assets/uploads/users/' . $user_id . '/posts/' . $post_id . '/';
+        $relativeDir = 'public/assets/uploads/users/' . $user_id . '/posts/' . $post_id . '/';
+
+        $imagePath = null;
+        $audioPath = null;
+
+        try {
+            if (isset($_FILES['post_image'])) {
+                $imagePath = \App\Helpers\UploadHelper::upload($_FILES['post_image'], $destinationDir, $relativeDir, 'img_');
+            }
+            if (isset($_FILES['post_audio'])) {
+                $audioPath = \App\Helpers\UploadHelper::upload($_FILES['post_audio'], $destinationDir, $relativeDir, 'aud_');
+            }
+        } catch (\InvalidArgumentException $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            exit;
+        }
+
+        // Obtener la publicación actual para verificar si quedará vacía
+        $stmtCurrent = $db->getConnection()->prepare("SELECT image_path, audio_path FROM posts WHERE id = ? AND user_id = ?");
+        $stmtCurrent->execute([$post_id, $user_id]);
+        $current = $stmtCurrent->fetch();
+        if (!$current) {
+            echo json_encode(['success' => false, 'message' => 'Publicación no encontrada.']);
+            exit;
+        }
+
+        $hasImage = ($current['image_path'] && !$deleteImage) || $imagePath !== null;
+        $hasAudio = ($current['audio_path'] && !$deleteAudio) || $audioPath !== null;
+
+        if (empty($plainText) && !$hasImage && !$hasAudio) {
+            echo json_encode(['success' => false, 'message' => 'La publicación no puede quedar completamente vacía.']);
+            exit;
+        }
+
         $repo = new \App\Repositories\PublicationRepository($db);
-        $success = $repo->updateText($post_id, (int)$_SESSION['user_id'], $post_text);
+        $success = $repo->updatePost($post_id, $user_id, $post_text, $imagePath, $audioPath, $deleteImage, $deleteAudio);
         if ($success) {
-            echo json_encode(['success' => true, 'text' => $post_text]);
+            $updatedPost = $repo->getById($post_id, $user_id);
+            echo json_encode([
+                'success' => true, 
+                'text' => $post_text,
+                'image' => $updatedPost ? $updatedPost->getImage() : null,
+                'audio' => $updatedPost ? $updatedPost->getAudio() : null
+            ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'No se pudo actualizar el post. Verifica que seas el autor.']);
         }

@@ -85,25 +85,67 @@ class PublicationRepository {
 
     public function getLatestPublic(int $limit = 10, ?int $currentUserId = null): array {
         if ($this->db) {
+            $hasInteractions = false;
             if ($currentUserId !== null) {
-                $stmt = $this->db->prepare("
-                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
-                           (pl.user_id IS NOT NULL) as is_liked,
-                           (pd.user_id IS NOT NULL) as is_disliked,
-                           (f.user_id IS NOT NULL) as is_favorited
-                    FROM posts p
-                    JOIN users u ON p.user_id = u.id
-                    LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
-                    LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
-                    LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
-                    WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
-                    ORDER BY (pl.user_id IS NOT NULL OR f.user_id IS NOT NULL) DESC, p.created_at DESC
-                    LIMIT :limit
+                $stmtCheck = $this->db->prepare("
+                    SELECT EXISTS(SELECT 1 FROM post_likes WHERE user_id = ?) OR EXISTS(SELECT 1 FROM favorites WHERE user_id = ?)
                 ");
-                $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
-                $stmt->bindValue(':current_user_id_like', $currentUserId, \PDO::PARAM_INT);
-                $stmt->bindValue(':current_user_id_dislike', $currentUserId, \PDO::PARAM_INT);
-                $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
+                $stmtCheck->execute([$currentUserId, $currentUserId]);
+                $hasInteractions = (bool)$stmtCheck->fetchColumn();
+            }
+
+            if ($currentUserId !== null) {
+                if ($hasInteractions) {
+                    $stmt = $this->db->prepare("
+                        SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
+                               (pl.user_id IS NOT NULL) as is_liked,
+                               (pd.user_id IS NOT NULL) as is_disliked,
+                               (f.user_id IS NOT NULL) as is_favorited
+                        FROM posts p
+                        JOIN users u ON p.user_id = u.id
+                        LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
+                        LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
+                        LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
+                        WHERE p.visibility = 'public' 
+                          AND (p.published_at IS NULL OR p.published_at <= NOW())
+                          AND p.user_id IN (
+                              SELECT DISTINCT p2.user_id 
+                              FROM posts p2
+                              WHERE p2.id IN (
+                                  SELECT post_id FROM post_likes WHERE user_id = :current_user_id_int1
+                                  UNION
+                                  SELECT post_id FROM favorites WHERE user_id = :current_user_id_int2
+                              )
+                          )
+                        ORDER BY p.created_at DESC
+                        LIMIT :limit
+                    ");
+                    $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_like', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_dislike', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_int1', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_int2', $currentUserId, \PDO::PARAM_INT);
+                } else {
+                    $stmt = $this->db->prepare("
+                        SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
+                               (pl.user_id IS NOT NULL) as is_liked,
+                               (pd.user_id IS NOT NULL) as is_disliked,
+                               (f.user_id IS NOT NULL) as is_favorited
+                        FROM posts p
+                        JOIN users u ON p.user_id = u.id
+                        LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
+                        LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
+                        LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
+                        WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
+                        ORDER BY p.created_at DESC
+                        LIMIT :limit
+                    ");
+                    $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_like', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_dislike', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
+                }
             } else {
                 $stmt = $this->db->prepare("
                     SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
@@ -319,7 +361,9 @@ class PublicationRepository {
             SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
                    (pl.user_id IS NOT NULL) as is_liked,
                    (pd.user_id IS NOT NULL) as is_disliked,
-                   (f.user_id IS NOT NULL) as is_favorited
+                   (f.user_id IS NOT NULL) as is_favorited,
+                   (SELECT COUNT(*) FROM post_likes WHERE post_id = p.id) as likes_count,
+                   (SELECT COUNT(*) FROM post_dislikes WHERE post_id = p.id) as dislikes_count
             FROM posts p
             JOIN users u ON p.user_id = u.id
             LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
@@ -351,6 +395,8 @@ class PublicationRepository {
             $pub->setIsLiked((bool)($row['is_liked'] ?? false));
             $pub->setIsDisliked((bool)($row['is_disliked'] ?? false));
             $pub->setIsFavorited((bool)($row['is_favorited'] ?? false));
+            $pub->setLikesCount((int)($row['likes_count'] ?? 0));
+            $pub->setDislikesCount((int)($row['dislikes_count'] ?? 0));
             $publications[] = $pub;
         }
         return $publications;
@@ -435,12 +481,105 @@ class PublicationRepository {
         return $stmt->execute([$text, $postId, $userId]);
     }
 
+    public function updatePost(int $postId, int $userId, string $text, ?string $imagePath, ?string $audioPath, bool $deleteImage, bool $deleteAudio): bool {
+        if (!$this->db) {
+            return false;
+        }
+
+        // Obtener la publicación actual para gestionar archivos
+        $stmt = $this->db->prepare("SELECT image_path, audio_path FROM posts WHERE id = ? AND user_id = ?");
+        $stmt->execute([$postId, $userId]);
+        $current = $stmt->fetch();
+        if (!$current) {
+            return false;
+        }
+
+        $finalImage = $current['image_path'];
+        $finalAudio = $current['audio_path'];
+
+        // Gestionar borrado o reemplazo de imagen
+        if ($deleteImage || $imagePath !== null) {
+            if ($finalImage && file_exists(ROOT_PATH . '/' . $finalImage)) {
+                @unlink(ROOT_PATH . '/' . $finalImage);
+            }
+            $finalImage = $imagePath;
+        }
+
+        // Gestionar borrado o reemplazo de audio
+        if ($deleteAudio || $audioPath !== null) {
+            if ($finalAudio && file_exists(ROOT_PATH . '/' . $finalAudio)) {
+                @unlink(ROOT_PATH . '/' . $finalAudio);
+            }
+            $finalAudio = $audioPath;
+        }
+
+        $stmt = $this->db->prepare("
+            UPDATE posts 
+            SET text_content = ?, image_path = ?, audio_path = ?, updated_at = NOW() 
+            WHERE id = ? AND user_id = ?
+        ");
+        return $stmt->execute([$text, $finalImage, $finalAudio, $postId, $userId]);
+    }
+
     public function delete(int $postId, int $userId): bool {
         if (!$this->db) {
             return false;
         }
         $stmt = $this->db->prepare("DELETE FROM posts WHERE id = ? AND user_id = ?");
         return $stmt->execute([$postId, $userId]);
+    }
+
+    public function getById(int $postId, ?int $currentUserId = null): ?Publication {
+        if ($this->db) {
+            if ($currentUserId !== null) {
+                $stmt = $this->db->prepare("
+                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
+                           (pl.user_id IS NOT NULL) as is_liked,
+                           (pd.user_id IS NOT NULL) as is_disliked,
+                           (f.user_id IS NOT NULL) as is_favorited
+                    FROM posts p
+                    JOIN users u ON p.user_id = u.id
+                    LEFT JOIN post_likes pl ON p.id = pl.post_id AND pl.user_id = :current_user_id_like
+                    LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
+                    LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
+                    WHERE p.id = :post_id
+                ");
+                $stmt->bindValue(':current_user_id_like', $currentUserId, \PDO::PARAM_INT);
+                $stmt->bindValue(':current_user_id_dislike', $currentUserId, \PDO::PARAM_INT);
+                $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
+            } else {
+                $stmt = $this->db->prepare("
+                    SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
+                           0 as is_liked,
+                           0 as is_disliked,
+                           0 as is_favorited
+                    FROM posts p
+                    JOIN users u ON p.user_id = u.id
+                    WHERE p.id = :post_id
+                ");
+            }
+            $stmt->bindValue(':post_id', $postId, \PDO::PARAM_INT);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            if ($row) {
+                $pub = new Publication(
+                    (int)$row['id'],
+                    (int)$row['user_id'],
+                    $row['text'] ?? '',
+                    $row['image'],
+                    $row['audio'],
+                    $row['username'],
+                    $row['created_at'],
+                    $row['scheduled_at'] ?? null,
+                    $row['published_at'] ?? null
+                );
+                $pub->setIsLiked((bool)($row['is_liked'] ?? false));
+                $pub->setIsDisliked((bool)($row['is_disliked'] ?? false));
+                $pub->setIsFavorited((bool)($row['is_favorited'] ?? false));
+                return $pub;
+            }
+        }
+        return null;
     }
 
     public function getTotalLikesForUserPosts(int $userId): int {

@@ -14,6 +14,8 @@ class Publication {
     private bool $isLiked = false;
     private bool $isFavorited = false;
     private bool $isDisliked = false;
+    private int $likesCount = 0;
+    private int $dislikesCount = 0;
 
     public function __construct(?int $id, int $userId, string $text, ?string $image = null, ?string $audio = null, ?string $username = null, ?string $createdAt = null, ?string $scheduledAt = null, ?string $publishedAt = null) {
         $this->id = $id;
@@ -95,6 +97,22 @@ class Publication {
         $this->isDisliked = $isDisliked;
     }
 
+    public function getLikesCount(): int {
+        return $this->likesCount;
+    }
+
+    public function setLikesCount(int $count): void {
+        $this->likesCount = $count;
+    }
+
+    public function getDislikesCount(): int {
+        return $this->dislikesCount;
+    }
+
+    public function setDislikesCount(int $count): void {
+        $this->dislikesCount = $count;
+    }
+
     public function toArray(): array {
         return [
             'id' => $this->id,
@@ -108,7 +126,9 @@ class Publication {
             'published_at' => $this->publishedAt,
             'is_liked' => $this->isLiked,
             'is_favorited' => $this->isFavorited,
-            'is_disliked' => $this->isDisliked
+            'is_disliked' => $this->isDisliked,
+            'likes_count' => $this->likesCount,
+            'dislikes_count' => $this->dislikesCount
         ];
     }
 }

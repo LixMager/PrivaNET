@@ -12,6 +12,12 @@ $posts = $repository->getLatestPublic(10);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
     <link rel="stylesheet" href="public/layout.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/assets/css/base.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/assets/css/header.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/assets/css/post.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/assets/css/modal.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/assets/css/lightbox.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="public/assets/css/activity.css?v=<?php echo time(); ?>">
     <!-- CSS Modular del componente Login -->
     <link rel="stylesheet" href="src/view/Login/login.css?v=<?php echo time(); ?>">
 </head>
@@ -94,8 +100,22 @@ $posts = $repository->getLatestPublic(10);
     <div id="lightbox-modal" class="lightbox-overlay">
         <div class="lightbox-content">
             <button type="button" class="lightbox-close-btn" id="lightbox-close">✕</button>
-            <img id="lightbox-image" class="lightbox-img" src="" alt="Vista ampliada">
-            <div id="lightbox-caption" class="lightbox-caption"></div>
+            <div class="lightbox-media-container">
+                <img id="lightbox-image" class="lightbox-img" src="" alt="Vista ampliada">
+            </div>
+            <div id="lightbox-post-info" class="lightbox-post-info">
+                <header class="lightbox-post-header">
+                    <h3 id="lightbox-author">@username</h3>
+                </header>
+                <div class="lightbox-post-body">
+                    <div id="lightbox-post-text" class="lightbox-post-text"></div>
+                    <div id="lightbox-audio-container" class="lightbox-audio-container" style="display: none; margin-top: 15px;">
+                        <audio id="lightbox-audio" controls style="width: 100%;"></audio>
+                    </div>
+                </div>
+                <footer id="lightbox-post-actions" class="lightbox-post-actions">
+                </footer>
+            </div>
         </div>
     </div>
 

@@ -43,49 +43,51 @@ document.addEventListener('DOMContentLoaded', function () {
                         try {
                             var response = JSON.parse(xhr.responseText);
                             if (response.success) {
-                                var parentPost = button.closest('.post-card');
+                                // Buscar todos los botones relacionados con esta publicación en la página para mantenerlos sincronizados (card del feed y modal/lightbox)
+                                var buttonsToUpdate = document.querySelectorAll('[data-post-id="' + postId + '"]');
                                 
-                                if (actionType === 'like') {
-                                    if (response.active) {
-                                        button.classList.add('active');
-                                        button.innerHTML = '▲ Te gusta';
-                                        
-                                        // Mutua exclusión: desactivar dislike
-                                        if (parentPost) {
-                                            var dislikeBtn = parentPost.querySelector('.dislike-btn');
-                                            if (dislikeBtn) {
-                                                dislikeBtn.classList.remove('active');
-                                                dislikeBtn.innerHTML = '▽ No me gusta';
+                                for (var i = 0; i < buttonsToUpdate.length; i++) {
+                                    var btn = buttonsToUpdate[i];
+                                    if (actionType === 'like') {
+                                        if (btn.classList.contains('like-btn')) {
+                                            if (response.active) {
+                                                btn.classList.add('active');
+                                                btn.innerHTML = '▲ Te gusta';
+                                            } else {
+                                                btn.classList.remove('active');
+                                                btn.innerHTML = '△ Me gusta';
+                                            }
+                                        } else if (btn.classList.contains('dislike-btn')) {
+                                            if (response.active) {
+                                                btn.classList.remove('active');
+                                                btn.innerHTML = '▽ No me gusta';
                                             }
                                         }
-                                    } else {
-                                        button.classList.remove('active');
-                                        button.innerHTML = '△ Me gusta';
-                                    }
-                                } else if (actionType === 'dislike') {
-                                    if (response.active) {
-                                        button.classList.add('active');
-                                        button.innerHTML = '▼ Te disgusta';
-                                        
-                                        // Mutua exclusión: desactivar like
-                                        if (parentPost) {
-                                            var likeBtn = parentPost.querySelector('.like-btn');
-                                            if (likeBtn) {
-                                                likeBtn.classList.remove('active');
-                                                likeBtn.innerHTML = '△ Me gusta';
+                                    } else if (actionType === 'dislike') {
+                                        if (btn.classList.contains('dislike-btn')) {
+                                            if (response.active) {
+                                                btn.classList.add('active');
+                                                btn.innerHTML = '▼ Te disgusta';
+                                            } else {
+                                                btn.classList.remove('active');
+                                                btn.innerHTML = '▽ No me gusta';
+                                            }
+                                        } else if (btn.classList.contains('like-btn')) {
+                                            if (response.active) {
+                                                btn.classList.remove('active');
+                                                btn.innerHTML = '△ Me gusta';
                                             }
                                         }
-                                    } else {
-                                        button.classList.remove('active');
-                                        button.innerHTML = '▽ No me gusta';
-                                    }
-                                } else if (actionType === 'fav') {
-                                    if (response.active) {
-                                        button.classList.add('active');
-                                        button.innerHTML = '★ Favorito';
-                                    } else {
-                                        button.classList.remove('active');
-                                        button.innerHTML = '☆ Favorito';
+                                    } else if (actionType === 'fav') {
+                                        if (btn.classList.contains('fav-btn')) {
+                                            if (response.active) {
+                                                btn.classList.add('active');
+                                                btn.innerHTML = '★ Favorito';
+                                            } else {
+                                                btn.classList.remove('active');
+                                                btn.innerHTML = '☆ Favorito';
+                                            }
+                                        }
                                     }
                                 }
                             } else {

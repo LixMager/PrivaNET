@@ -71,17 +71,55 @@ ob_start();
 
 <!-- Modal de Edición -->
 <div id="edit-modal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 600px;">
         <div class="modal-header">
             <h3>Editar Publicación</h3>
             <button type="button" class="modal-close-btn" id="close-edit-modal">✕</button>
         </div>
-        <form id="edit-post-form">
+        <form id="edit-post-form" enctype="multipart/form-data">
             <input type="hidden" name="action" value="update_post">
             <input type="hidden" name="post_id" id="edit-post-id" value="">
             <div class="modal-body">
                 <input type="hidden" name="post_text" id="edit-post-text-hidden">
                 <div id="edit-editor-container" data-placeholder="¿Qué estás pensando?"></div>
+                
+                <div class="modal-media-section" style="margin-top: 15px; border-top: 1px solid var(--border-color, #ccc); padding-top: 15px;">
+                    <!-- Image Edit Area -->
+                    <div class="media-edit-group" style="margin-bottom: 15px;">
+                        <label style="font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 5px; color: var(--text-main);">Imagen de la publicación:</label>
+                        <div id="edit-image-preview-container" style="display: none; margin-bottom: 8px;">
+                            <img id="edit-image-preview" src="" style="max-height: 120px; border-radius: 6px; display: block; margin-bottom: 5px;" alt="Preview">
+                            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: #ff4d4d; cursor: pointer;">
+                                <input type="checkbox" name="delete_image" id="edit-delete-image-checkbox" value="1">
+                                Eliminar imagen actual
+                            </label>
+                        </div>
+                        <div class="media-inputs">
+                            <label class="media-btn">▣ ⛶ Cambiar foto
+                                <input type="file" name="post_image" id="edit-image-input" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Audio Edit Area -->
+                    <div class="media-edit-group">
+                        <label style="font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 5px; color: var(--text-main);">Audio de la publicación:</label>
+                        <div id="edit-audio-preview-container" style="display: none; margin-bottom: 8px;">
+                            <audio id="edit-audio-preview" controls style="width: 100%; max-width: 300px; margin-bottom: 5px;"></audio>
+                            <br>
+                            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: #ff4d4d; cursor: pointer;">
+                                <input type="checkbox" name="delete_audio" id="edit-delete-audio-checkbox" value="1">
+                                Eliminar audio actual
+                            </label>
+                        </div>
+                        <div class="media-inputs">
+                            <label class="media-btn">♬ Cambiar audio
+                                <input type="file" name="post_audio" id="edit-audio-input" accept="audio/*">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div id="edit-post-error-banner" class="post-error-banner" style="display: none; margin-top: 10px;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="action-btn secondary-btn" id="cancel-edit-btn">Cancelar</button>

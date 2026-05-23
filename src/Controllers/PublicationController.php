@@ -112,13 +112,21 @@ class PublicationController {
         $relativeDir = 'public/assets/uploads/users/' . $user_id . '/posts/' . $post_id . '/';
 
         $imagePath = null;
-        if (isset($filesData['post_image'])) {
-            $imagePath = UploadHelper::upload($filesData['post_image'], $destinationDir, $relativeDir, 'img_');
-        }
-
         $audioPath = null;
-        if (isset($filesData['post_audio'])) {
-            $audioPath = UploadHelper::upload($filesData['post_audio'], $destinationDir, $relativeDir, 'aud_');
+
+        try {
+            if (isset($filesData['post_image'])) {
+                $imagePath = UploadHelper::upload($filesData['post_image'], $destinationDir, $relativeDir, 'img_');
+            }
+
+            if (isset($filesData['post_audio'])) {
+                $audioPath = UploadHelper::upload($filesData['post_audio'], $destinationDir, $relativeDir, 'aud_');
+            }
+        } catch (\InvalidArgumentException $e) {
+            $_SESSION['post_text_draft'] = $postData['post_text'] ?? '';
+            $_SESSION['post_error'] = $e->getMessage();
+            header("Location: /PrivaNet/publicar");
+            exit;
         }
 
         if (!empty($post_text) || !empty($imagePath) || !empty($audioPath)) {

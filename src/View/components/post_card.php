@@ -66,12 +66,20 @@ if ($post->getPublishedAt()) {
     <footer class="post-actions">
         <?php if ($isLoggedIn): ?>
             <?php if ($isDashboard): ?>
-                <button type="button" class="action-btn edit-post-btn" data-post-id="<?php echo $post->getId(); ?>" data-post-text="<?php echo htmlspecialchars($post->getText()); ?>">
+                <button type="button" class="action-btn edit-post-btn" 
+                        data-post-id="<?php echo $post->getId(); ?>" 
+                        data-post-text="<?php echo htmlspecialchars($post->getText()); ?>"
+                        data-post-image="<?php echo htmlspecialchars($post->getImage() ?? ''); ?>"
+                        data-post-audio="<?php echo htmlspecialchars($post->getAudio() ?? ''); ?>">
                     ✎ Editar
                 </button>
                 <button type="button" class="action-btn delete-post-btn" data-post-id="<?php echo $post->getId(); ?>">
                     ✕ Eliminar
                 </button>
+                <div class="post-stats" style="margin-left: auto; font-size: 0.85rem; color: var(--text-muted, #888); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                    <span>▲ <?php echo $post->getLikesCount(); ?></span>
+                    <span>▼ <?php echo $post->getDislikesCount(); ?></span>
+                </div>
             <?php else: ?>
                 <button type="button" class="action-btn like-btn <?php echo $post->getIsLiked() ? 'active' : ''; ?>" data-post-id="<?php echo $post->getId(); ?>">
                     <?php echo $post->getIsLiked() ? '▲ Te gusta' : '△ Me gusta'; ?>
