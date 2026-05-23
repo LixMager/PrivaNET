@@ -27,7 +27,7 @@ ob_start();
             <?php if (!empty($queryText)): ?>
                 <?php if (!empty($posts)): ?>
                     <?php foreach ($posts as $post): ?>
-                        <?php include APP_PATH . '/View/components/post_card.php'; ?>
+                        <?php include APP_PATH . '/View/components/search_result_card.php'; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="post-card" style="text-align: center; padding: 40px 20px;">

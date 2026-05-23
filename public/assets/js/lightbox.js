@@ -63,6 +63,64 @@ document.addEventListener('DOMContentLoaded', function() {
             lightboxImage.setAttribute('src', src);
             lightboxModal.classList.add('open');
         }
+
+        // ── Search result card click ──────────────────────────
+        var card = event.target.closest('.search-result-card');
+        if (card) {
+            var author   = card.getAttribute('data-author') || '';
+            var imageSrc = card.getAttribute('data-image') || '';
+            var audioSrc = card.getAttribute('data-audio') || '';
+            var postId   = card.getAttribute('data-post-id') || '';
+            var rawText  = card.getAttribute('data-text') || '';
+            var liked    = card.getAttribute('data-liked') === '1';
+            var disliked = card.getAttribute('data-disliked') === '1';
+            var fav      = card.getAttribute('data-favorited') === '1';
+
+            // Author
+            document.getElementById('lightbox-author').textContent = author;
+
+            // Text (data attr is HTML-escaped plain text; render as-is)
+            document.getElementById('lightbox-post-text').textContent = rawText;
+
+            // Image
+            var mediaContainer = lightboxImage.closest('.lightbox-media-container');
+            if (imageSrc) {
+                lightboxImage.setAttribute('src', imageSrc);
+                if (mediaContainer) mediaContainer.style.display = '';
+            } else {
+                lightboxImage.setAttribute('src', '');
+                if (mediaContainer) mediaContainer.style.display = 'none';
+            }
+
+            // Audio
+            var lightboxAudioContainer = document.getElementById('lightbox-audio-container');
+            var lightboxAudio = document.getElementById('lightbox-audio');
+            if (audioSrc && lightboxAudioContainer && lightboxAudio) {
+                lightboxAudio.innerHTML = '<source src="' + audioSrc + '" type="audio/mpeg">';
+                lightboxAudio.load();
+                lightboxAudioContainer.style.display = 'block';
+            } else if (lightboxAudioContainer) {
+                lightboxAudioContainer.style.display = 'none';
+                if (lightboxAudio) lightboxAudio.src = '';
+            }
+
+            // Interaction buttons built from data attrs
+            var lightboxActions = document.getElementById('lightbox-post-actions');
+            if (lightboxActions) {
+                lightboxActions.innerHTML =
+                    '<button type="button" class="action-btn like-btn ' + (liked ? 'active' : '') + '" data-post-id="' + postId + '">' +
+                        (liked ? '▲ Te gusta' : '△ Me gusta') +
+                    '</button>' +
+                    '<button type="button" class="action-btn dislike-btn ' + (disliked ? 'active' : '') + '" data-post-id="' + postId + '">' +
+                        (disliked ? '▼ Te disgusta' : '▽ No me gusta') +
+                    '</button>' +
+                    '<button type="button" class="action-btn fav-btn ' + (fav ? 'active' : '') + '" data-post-id="' + postId + '">' +
+                        (fav ? '★ Favorito' : '☆ Favorito') +
+                    '</button>';
+            }
+
+            lightboxModal.classList.add('open');
+        }
     });
 
     // Close lightbox on click on close button
