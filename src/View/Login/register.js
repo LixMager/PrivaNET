@@ -10,6 +10,23 @@ document.addEventListener('DOMContentLoaded', function () {
     var passwordInput = document.getElementById('register-password');
     var birthdateInput = document.getElementById('register-birthdate');
 
+    var togglePasswordBtn = document.getElementById('toggle-register-password');
+    if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener('click', function () {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePasswordBtn.textContent = '◉';
+                togglePasswordBtn.title = 'Ocultar contraseña';
+                togglePasswordBtn.setAttribute('aria-label', 'Ocultar contraseña');
+            } else {
+                passwordInput.type = 'password';
+                togglePasswordBtn.textContent = '○';
+                togglePasswordBtn.title = 'Mostrar contraseña';
+                togglePasswordBtn.setAttribute('aria-label', 'Mostrar contraseña');
+            }
+        });
+    }
+
     var isUsernameAvailable = false;
     var usernameTimeout = null;
 

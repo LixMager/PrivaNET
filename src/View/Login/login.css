@@ -107,7 +107,34 @@
     width: 100%;
 }
 
-.register-form button {
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 40px;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--text-muted, #6b7280);
+    padding: 0;
+    margin: 0;
+}
+
+.toggle-password-btn:hover {
+    color: var(--primary-color, #2563eb);
+}
+
+.register-form button[type="submit"] {
     margin-top: 10px;
     width: 100%;
 }

@@ -19,7 +19,7 @@ function nav_active($path, $route) {
 			<h1 id="site-title"><a href="/PrivaNet/">PrivaNET</a></h1>
 		</div>
 
-		<?php if (!empty($_COOKIE['user_name'])): ?>
+		<?php if (!empty($_SESSION['username'])): ?>
 
 			<div class="search-bar">
 				<form action="/PrivaNet/buscar" method="GET">
@@ -38,7 +38,7 @@ function nav_active($path, $route) {
 			</nav>
 
 			<div class="user-menu">
-				<span>Hola, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?></span>
+				<span>Hola, @<?php echo htmlspecialchars($_SESSION['username'] ?? 'usuario'); ?></span>
 				<form method="POST" action="/PrivaNet/index.php">
 					<input type="hidden" name="action" value="logout">
 					<button type="submit" class="header-button">Cerrar sesión</button>

@@ -77,8 +77,10 @@ $posts = $repository->getLatestPublic(10);
                 <span id="username-status" class="status-msg"></span>
 
                 <label for="register-password">Contraseña</label>
-                <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres"
-                    minlength="8" required>
+                <div class="password-wrapper">
+                    <input type="password" id="register-password" name="register-password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                    <button type="button" id="toggle-register-password" class="toggle-password-btn" aria-label="Mostrar contraseña" title="Mostrar contraseña">○</button>
+                </div>
                 <small class="form-hint">Debe contener al menos 8 caracteres.</small>
 
                 <label for="register-email">Correo electrónico</label>

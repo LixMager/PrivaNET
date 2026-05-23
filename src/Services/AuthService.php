@@ -21,7 +21,7 @@ class AuthService {
         // Si ya está establecido el ID de usuario en la sesión PHP, recuperamos el username
         if (isset($_SESSION['usuario_autenticado']) && $_SESSION['usuario_autenticado'] === true && isset($_SESSION['user_id'])) {
             $authenticated = true;
-            $username = $_COOKIE['user_name'] ?? null;
+            $username = $_SESSION['username'] ?? null;
         } elseif (isset($_COOKIE['atk'])) {
             $token_cookie = $_COOKIE['atk'];
             $hash_busqueda = hash('sha256', $token_cookie);
@@ -41,15 +41,13 @@ class AuthService {
                     $_SESSION['user_id'] = (int)$sesion_valida['user_id'];
                     $username = $sesion_valida['username'];
                     
-                    // Asegurar que la cookie de username coincida
-                    if (!isset($_COOKIE['user_name']) || $_COOKIE['user_name'] !== $username) {
-                        setcookie('user_name', $username, time() + (86400 * 30), "/", "", false, true);
+                    // Asegurar que la sesión de username coincida
+                    if (!isset($_SESSION['username']) || $_SESSION['username'] !== $username) {
+                        $_SESSION['username'] = $username;
                     }
                     $authenticated = true;
                 } else {
-                    // Token inválido o caducado
                     setcookie('atk', '', time() - 3600, "/");
-                    setcookie('user_name', '', time() - 3600, "/");
                 }
             }
         }
@@ -62,19 +60,30 @@ class AuthService {
             $authenticated = true;
         }
 
-        // Manejar la cookie 'ultimo_acceso' específica del usuario
+        // Manejar la cookie única de accesos (formato JSON)
         if ($authenticated && $username !== null) {
-            // Nombre de cookie seguro basado en el nombre de usuario
-            $cookie_name = 'ultimo_acceso_' . preg_replace('/[^a-zA-Z0-9_]/', '', $username);
-
             if (!isset($_SESSION['mostrar_ultimo_acceso'])) {
+                $safe_username = preg_replace('/[^a-zA-Z0-9_]/', '', $username);
+                $cookie_name = 'ultimo_acceso_' . $safe_username;
+                
                 if (isset($_COOKIE[$cookie_name])) {
-                    $_SESSION['mostrar_ultimo_acceso'] = $_COOKIE[$cookie_name];
+                    $decoded = json_decode($_COOKIE[$cookie_name], true);
+                    if (is_array($decoded) && isset($decoded['last_access'])) {
+                        $_SESSION['mostrar_ultimo_acceso'] = $decoded['last_access'];
+                    } else {
+                        // Fallback por si la cookie vieja no era JSON
+                        $_SESSION['mostrar_ultimo_acceso'] = $_COOKIE[$cookie_name];
+                    }
                 } else {
                     $_SESSION['mostrar_ultimo_acceso'] = 'Esta es tu primera visita en este dispositivo';
                 }
-                // Actualizar la cookie con la fecha/hora actual
-                setcookie($cookie_name, date('d/m/Y H:i:s'), time() + (86400 * 365), "/", "", false, true);
+                
+                // Guardar la cookie como un JSON con el usuario y la fecha
+                $cookie_data = [
+                    'username' => $safe_username,
+                    'last_access' => gmdate('Y-m-d\TH:i:s\Z')
+                ];
+                setcookie($cookie_name, json_encode($cookie_data), time() + (86400 * 365), "/", "", false, true);
             }
         }
 

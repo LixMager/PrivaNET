@@ -30,16 +30,8 @@ class PublicationController {
         // Buscar el ID del usuario logueado, priorizando la sesión segura de PHP
         $user_id = $_SESSION['user_id'] ?? null;
         if (!$user_id) {
-            $username = $_COOKIE['user_name'] ?? '';
-            $user_id = 1; // Fallback predeterminado si no se encuentra
-            if ($this->db && !empty($username)) {
-                $stmt = $this->db->prepare("SELECT id FROM users WHERE username = ?");
-                $stmt->execute([$username]);
-                $id = $stmt->fetchColumn();
-                if ($id) {
-                    $user_id = (int)$id;
-                }
-            }
+            header("Location: index.php");
+            exit;
         }
 
         $isScheduled = isset($postData['is_scheduled']) && $postData['is_scheduled'] === 'on';

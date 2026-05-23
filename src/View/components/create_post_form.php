@@ -16,7 +16,7 @@
         
         <input type="hidden" name="post_text" id="post-text-hidden" value="<?php echo htmlspecialchars($draftText); ?>">
         <input type="hidden" name="scheduled_date_utc" id="scheduled-date-utc-input">
-        <div id="editor-container" data-placeholder="¿Qué estás pensando, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?>?"></div>
+        <div id="editor-container" data-placeholder="¿Qué estás pensando, @<?php echo htmlspecialchars($_SESSION['username'] ?? 'usuario'); ?>?"></div>
         
         <div class="create-post-actions">
             <div class="media-inputs">

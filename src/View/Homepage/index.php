@@ -16,8 +16,17 @@ ob_start();
         <?php if ($currentUserId !== null): ?>
         <!-- Mensaje de Bienvenida -->
         <div class="welcome-box post-card">
-            <h2>¡Bienvenido a PrivaNET, @<?php echo htmlspecialchars($_COOKIE['user_name'] ?? 'usuario'); ?>!</h2>
-            <p class="welcome-last-login">Tu último login fue el: <?php echo htmlspecialchars($_SESSION['mostrar_ultimo_acceso'] ?? 'Esta es tu primera visita en este dispositivo'); ?></p>
+            <h2>¡Bienvenido a PrivaNET, @<?php echo htmlspecialchars($_SESSION['username'] ?? 'usuario'); ?>!</h2>
+            <p class="welcome-last-login">Tu último login fue el: 
+                <?php 
+                $lastAccess = $_SESSION['mostrar_ultimo_acceso'] ?? null;
+                if ($lastAccess && preg_match('/^\d{4}-\d{2}-\d{2}T/', $lastAccess)) {
+                    echo '<time class="local-time" data-utc="' . htmlspecialchars($lastAccess) . '">' . htmlspecialchars($lastAccess) . '</time>';
+                } else {
+                    echo htmlspecialchars($lastAccess ?? 'Esta es tu primera visita en este dispositivo');
+                }
+                ?>
+            </p>
             <p class="welcome-likes-count">
                 <?php 
                 $likesCount = $repository->getTotalLikesForUserPosts((int)$currentUserId);

@@ -4,6 +4,9 @@ define('CONFIG_PATH', ROOT_PATH . '/config');
 define('APP_PATH', ROOT_PATH . '/src');
 define('VIEW_PATH', APP_PATH . '/view');
 
+// Configurar zona horaria por defecto para que las fechas generadas por PHP sean precisas
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 // Cargar configuración de base de datos
 require_once APP_PATH . '/Database/Database.php';
 $dbConfig = require_once CONFIG_PATH . '/db_config.php';

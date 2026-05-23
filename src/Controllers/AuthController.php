@@ -118,6 +118,7 @@ class AuthController {
             }
             $_SESSION['usuario_autenticado'] = true;
             $_SESSION['user_id'] = $userId;
+            $_SESSION['username'] = $username;
 
             $token_to_save = bin2hex(random_bytes(32));
             $token_hash = hash('sha256', $token_to_save);
@@ -130,7 +131,6 @@ class AuthController {
             $tokenStmt->execute([$userId, $token_hash, $expires_at]);
 
             setcookie('atk', $token_to_save, time() + (86400 * 30), "/", "", false, true);
-            setcookie('user_name', $username, time() + (86400 * 30), "/", "", false, true);
 
             echo json_encode(['success' => true, 'message' => 'Registro exitoso. Iniciando sesión...']);
         } else {
@@ -165,6 +165,7 @@ class AuthController {
             }
             $_SESSION['usuario_autenticado'] = true;
             $_SESSION['user_id'] = (int)$user['id'];
+            $_SESSION['username'] = $user['username'];
 
             // Generar token de sesión
             $token_to_save = bin2hex(random_bytes(32));
@@ -178,7 +179,6 @@ class AuthController {
             $tokenStmt->execute([$user['id'], $token_hash, $expires_at]);
 
             setcookie('atk', $token_to_save, time() + (86400 * 30), "/", "", false, true);
-            setcookie('user_name', $user['username'], time() + (86400 * 30), "/", "", false, true);
 
             // Actualizar last_login_at en users
             $updateStmt = $this->db->prepare("UPDATE users SET last_login_at = NOW() WHERE id = ?");
@@ -203,7 +203,6 @@ class AuthController {
         }
 
         setcookie('atk', '', time() - 3600, "/");
-        setcookie('user_name', '', time() - 3600, "/");
 
         // Limpiar la sesión PHP por completo
         $_SESSION = [];

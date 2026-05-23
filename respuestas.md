@@ -39,7 +39,7 @@ Alumno: Elías Magallanes Guerrero
 
 **02.** Sí, uso `session_start()`. Está ubicado de forma centralizada al inicio de los archivos principales o scripts de bootstrap antes de que se envíe cualquier salida (headers) al navegador.
 
-**03.** Guardo principalmente el `user_id`, `username`, y la fecha de `last_login_at` para mostrar mensajes personalizados.
+**03.** Guardo principalmente el `user_id` y el `username` de manera estrictamente segura del lado del servidor (evitando usar cookies manipulables para el nombre de usuario), además de un flag booleano `usuario_autenticado`.
 
 **04.** Verifico la sesión mediante una condición centralizada. Si el usuario intenta entrar a una vista protegida y `!isset($_SESSION['user_id'])`, lo redirijo mediante la cabecera HTTP `Location: /PrivaNet/index.php`.
 
@@ -57,7 +57,7 @@ Alumno: Elías Magallanes Guerrero
 
 **11.** La sesión expira de todos modos por inactividad del lado del servidor (garbage collection de PHP). Por defecto, esto suele ser tras 24 minutos (`session.gc_maxlifetime`), y la cookie de sesión del navegador se elimina al cerrarlo.
 
-**12.** Guardo un registro temporal (timestamp) en la base de datos, en el campo `last_login_at` de la tabla `users`, y actualizo ese valor en la sesión o en la tabla de tokens.
+**12.** Para mostrarlo en la interfaz por dispositivo, implementé una cookie única por usuario (ej: `ultimo_acceso_elias`) cuyo valor es un objeto JSON codificado con el formato `{"username": "...", "last_access": "..."}` en UTC. Además, actualizo el campo `last_login_at` en la tabla `users` para control del servidor.
 
 
 ## 3. AJAX Y PETICIONES ASÍNCRONAS
@@ -199,7 +199,7 @@ Alumno: Elías Magallanes Guerrero
 
 **08.** Validé capturando el evento submit: verifiqué que el contenido de texto generado por el editor Quill no superara los caracteres permitidos y evalué los validadores del tamaño de archivo.
 
-**09.** Además de la librería Quill.js mencionada anteriormente (para el Rich Text Editor), el resto del código es Vanilla Javascript puro sin jQuery ni otras librerías innecesarias.
+**09.** Además de la librería Quill.js mencionada anteriormente (para el Rich Text Editor), el resto del código es Vanilla Javascript puro. Por ejemplo, implementé un toggle interactivo (mostrar/ocultar contraseña con el ícono ◉/○) en el formulario de registro usando manipulaciones puras del DOM y sin jQuery.
 
 **10.** La validación se debe realizar del lado del cliente revisando las fechas (calculando los ms de diferencia), pero es imperativo que también se valide en el lado del **servidor** (PHP) para evitar vulnerabilidades de peticiones forzadas.
 
