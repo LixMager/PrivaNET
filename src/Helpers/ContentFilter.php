@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-class SanitizerHelper {
+class ContentFilter {
     /**
      * Sanitiza una cadena HTML permitiendo únicamente etiquetas y atributos seguros.
      * 

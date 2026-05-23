@@ -80,7 +80,7 @@ class PublicationController {
         }
 
         $post_text = $postData['post_text'] ?? '';
-        $post_text = \App\Helpers\SanitizerHelper::sanitize($post_text);
+        $post_text = \App\Helpers\ContentFilter::sanitize($post_text);
         
         // Extraer texto plano para validaciones de longitud y vaciedad real (Quill genera tags como <p><br></p>)
         $plainText = trim(strip_tags(html_entity_decode($post_text)));

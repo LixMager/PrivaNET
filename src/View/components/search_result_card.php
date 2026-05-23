@@ -18,7 +18,7 @@ if ($post->getCreatedAt()) {
 
 $imageSrc = $post->getImage() ? '/PrivaNet/' . htmlspecialchars($post->getImage()) : '';
 $audioSrc = $post->getAudio() ? '/PrivaNet/' . htmlspecialchars($post->getAudio()) : '';
-$postText  = htmlspecialchars(\App\Helpers\SanitizerHelper::sanitize($post->getText() ?? ''));
+$postText  = htmlspecialchars(\App\Helpers\ContentFilter::sanitize($post->getText() ?? ''));
 ?>
 <article class="search-result-card"
          data-post-id="<?php echo $post->getId(); ?>"
