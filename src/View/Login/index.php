@@ -36,7 +36,10 @@ $posts = $repository->getLatestPublic(10);
                     <input type="text" id="login-user" name="login-user" placeholder="Ingrese su usuario" required>
 
                     <label for="login-password">Contraseña</label>
-                    <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" name="login-password" placeholder="Ingrese su contraseña" required>
+                        <button type="button" id="toggle-login-password" class="toggle-password-btn" aria-label="Mostrar contraseña" title="Mostrar contraseña">○</button>
+                    </div>
 
                     <button class="header-button" type="submit">Ingresar</button>
                     <div id="login-status" class="status-msg"></div>

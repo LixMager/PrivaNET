@@ -112,6 +112,10 @@
     width: 100%;
 }
 
+.login-form .password-wrapper {
+    width: auto;
+}
+
 .password-wrapper input {
     padding-right: 40px;
 }
@@ -196,9 +200,14 @@
         width: 100%;
     }
 
-    .login-form input {
+    .login-form input[type="text"],
+    .login-form .password-wrapper {
         width: calc(50% - 15px);
         min-width: 150px;
+    }
+
+    .login-form .password-wrapper input {
+        width: 100%;
     }
 }
 
@@ -207,7 +216,8 @@
         flex-direction: column;
     }
 
-    .login-form input,
+    .login-form input[type="text"],
+    .login-form .password-wrapper,
     .login-form button {
         width: 100%;
     }

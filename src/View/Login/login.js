@@ -5,6 +5,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var loginStatus = document.getElementById('login-status');
+    var loginPasswordInput = document.getElementById('login-password');
+    var toggleLoginPasswordBtn = document.getElementById('toggle-login-password');
+
+    if (toggleLoginPasswordBtn && loginPasswordInput) {
+        toggleLoginPasswordBtn.addEventListener('click', function () {
+            if (loginPasswordInput.type === 'password') {
+                loginPasswordInput.type = 'text';
+                toggleLoginPasswordBtn.textContent = '◉';
+                toggleLoginPasswordBtn.title = 'Ocultar contraseña';
+                toggleLoginPasswordBtn.setAttribute('aria-label', 'Ocultar contraseña');
+            } else {
+                loginPasswordInput.type = 'password';
+                toggleLoginPasswordBtn.textContent = '○';
+                toggleLoginPasswordBtn.title = 'Mostrar contraseña';
+                toggleLoginPasswordBtn.setAttribute('aria-label', 'Mostrar contraseña');
+            }
+        });
+    }
 
     loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
