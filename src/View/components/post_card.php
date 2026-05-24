@@ -52,7 +52,7 @@ if ($post->getPublishedAt()) {
 
     <?php if (!empty($post->getText())): ?>
         <div class="post-text" data-post-text-content="<?php echo $post->getId(); ?>">
-            <?php echo \App\Helpers\ContentFilter::sanitize($post->getText()); ?>
+            <?php echo \App\Helpers\ContentFilter::filter($post->getText()); ?>
         </div>
     <?php endif; ?>
 

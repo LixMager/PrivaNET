@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS posts (
 
     user_id INT NOT NULL,
 
-    text_content VARCHAR(255) NULL,
+    text_content TEXT NULL,
 
     image_path VARCHAR(255) NULL,
     audio_path VARCHAR(255) NULL,

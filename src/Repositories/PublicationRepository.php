@@ -108,7 +108,7 @@ class PublicationRepository {
                         LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
                         WHERE p.visibility = 'public' 
                           AND (p.published_at IS NULL OR p.published_at <= NOW())
-                          AND p.user_id IN (
+                          AND (p.user_id = :current_user_id_self OR p.user_id IN (
                               SELECT DISTINCT p2.user_id 
                               FROM posts p2
                               WHERE p2.id IN (
@@ -116,7 +116,7 @@ class PublicationRepository {
                                   UNION
                                   SELECT post_id FROM favorites WHERE user_id = :current_user_id_int2
                               )
-                          )
+                          ))
                         ORDER BY p.created_at DESC
                         LIMIT :limit
                     ");
@@ -126,6 +126,7 @@ class PublicationRepository {
                     $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
                     $stmt->bindValue(':current_user_id_int1', $currentUserId, \PDO::PARAM_INT);
                     $stmt->bindValue(':current_user_id_int2', $currentUserId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':current_user_id_self', $currentUserId, \PDO::PARAM_INT);
                 } else {
                     $stmt = $this->db->prepare("
                         SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,

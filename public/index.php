@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = (int)$_SESSION['user_id'];
         
         // Sanitizar el HTML del texto del posteo
-        $post_text = \App\Helpers\ContentFilter::sanitize($post_text);
+        $post_text = \App\Helpers\ContentFilter::filter($post_text);
         
         // Extraer texto plano para validación de longitud y vaciedad
         $plainText = trim(strip_tags(html_entity_decode($post_text)));

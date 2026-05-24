@@ -155,6 +155,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             mostrarErrorEdit('');
             
+            var imgContainer = document.getElementById('edit-image-preview-container');
+            var imgPreview = document.getElementById('edit-image-preview');
+            if (imgContainer && imgPreview) {
+                imgPreview.src = URL.createObjectURL(file);
+                imgContainer.style.display = 'block';
+                var deleteImgCheckbox = document.getElementById('edit-delete-image-checkbox');
+                if (deleteImgCheckbox) deleteImgCheckbox.checked = false;
+            }
+            
             var img = new Image();
             img.onload = function() {
                 var w = img.width;
@@ -178,6 +187,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             var dataTransfer = new DataTransfer();
                             dataTransfer.items.add(compressedFile);
                             editImgInput.files = dataTransfer.files;
+                            
+                            if (imgPreview) imgPreview.src = URL.createObjectURL(blob);
                             mostrarErrorEdit('La imagen se ha comprimido automáticamente.');
                         }
                     }, 'image/jpeg', 0.85);
@@ -199,12 +210,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             mostrarErrorEdit('');
             
+            var audContainer = document.getElementById('edit-audio-preview-container');
+            var audPreview = document.getElementById('edit-audio-preview');
+            
             var tempAudio = document.createElement('audio');
             tempAudio.src = URL.createObjectURL(file);
             tempAudio.onloadedmetadata = function() {
                 if (tempAudio.duration > 30) {
                     editAudInput.value = '';
+                    if (audContainer && audPreview) {
+                        audPreview.src = '';
+                        audContainer.style.display = 'none';
+                    }
                     mostrarErrorEdit('El audio supera el límite de 30 segundos.');
+                } else {
+                    if (audContainer && audPreview) {
+                        audPreview.src = tempAudio.src;
+                        audContainer.style.display = 'block';
+                        var deleteAudCheckbox = document.getElementById('edit-delete-audio-checkbox');
+                        if (deleteAudCheckbox) deleteAudCheckbox.checked = false;
+                    }
                 }
             };
         });
