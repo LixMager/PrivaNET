@@ -176,3 +176,6 @@ CREATE TABLE IF NOT EXISTS remember_tokens (
 ALTER TABLE posts
 ADD FULLTEXT INDEX ft_posts_text_content (text_content);
 
+ALTER TABLE users
+ADD FULLTEXT INDEX ft_users_username (username);
+

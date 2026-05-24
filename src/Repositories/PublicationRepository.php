@@ -108,7 +108,7 @@ class PublicationRepository {
                         LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
                         WHERE p.visibility = 'public' 
                           AND (p.published_at IS NULL OR p.published_at <= NOW())
-                          AND (p.user_id = :current_user_id_self OR p.user_id IN (
+                          AND p.user_id IN (
                               SELECT DISTINCT p2.user_id 
                               FROM posts p2
                               WHERE p2.id IN (
@@ -116,7 +116,7 @@ class PublicationRepository {
                                   UNION
                                   SELECT post_id FROM favorites WHERE user_id = :current_user_id_int2
                               )
-                          ))
+                          )
                         ORDER BY p.created_at DESC
                         LIMIT :limit
                     ");
@@ -126,7 +126,6 @@ class PublicationRepository {
                     $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
                     $stmt->bindValue(':current_user_id_int1', $currentUserId, \PDO::PARAM_INT);
                     $stmt->bindValue(':current_user_id_int2', $currentUserId, \PDO::PARAM_INT);
-                    $stmt->bindValue(':current_user_id_self', $currentUserId, \PDO::PARAM_INT);
                 } else {
                     $stmt = $this->db->prepare("
                         SELECT p.id, p.user_id, p.text_content as text, p.image_path as image, p.audio_path as audio, p.created_at, p.scheduled_at, p.published_at, u.username,
@@ -425,13 +424,17 @@ class PublicationRepository {
                 LEFT JOIN post_dislikes pd ON p.id = pd.post_id AND pd.user_id = :current_user_id_dislike
                 LEFT JOIN favorites f ON p.id = f.post_id AND f.user_id = :current_user_id_fav
                 WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
-                  AND MATCH(p.text_content) AGAINST(:search_query_where IN NATURAL LANGUAGE MODE)
+                  AND (
+                      MATCH(p.text_content) AGAINST(:search_query_where IN NATURAL LANGUAGE MODE)
+                      OR MATCH(u.username) AGAINST(:search_query_where2 IN NATURAL LANGUAGE MODE)
+                  )
                 ORDER BY MATCH(p.text_content) AGAINST(:search_query_order IN NATURAL LANGUAGE MODE) DESC, p.created_at DESC
             ");
             $stmt->bindValue(':current_user_id_like', $currentUserId, \PDO::PARAM_INT);
             $stmt->bindValue(':current_user_id_dislike', $currentUserId, \PDO::PARAM_INT);
             $stmt->bindValue(':current_user_id_fav', $currentUserId, \PDO::PARAM_INT);
             $stmt->bindValue(':search_query_where', $query, \PDO::PARAM_STR);
+            $stmt->bindValue(':search_query_where2', $query, \PDO::PARAM_STR);
             $stmt->bindValue(':search_query_order', $query, \PDO::PARAM_STR);
         } else {
             $stmt = $this->db->prepare("
@@ -442,10 +445,14 @@ class PublicationRepository {
                 FROM posts p
                 JOIN users u ON p.user_id = u.id
                 WHERE p.visibility = 'public' AND (p.published_at IS NULL OR p.published_at <= NOW())
-                  AND MATCH(p.text_content) AGAINST(:search_query_where IN NATURAL LANGUAGE MODE)
+                  AND (
+                      MATCH(p.text_content) AGAINST(:search_query_where IN NATURAL LANGUAGE MODE)
+                      OR MATCH(u.username) AGAINST(:search_query_where2 IN NATURAL LANGUAGE MODE)
+                  )
                 ORDER BY MATCH(p.text_content) AGAINST(:search_query_order IN NATURAL LANGUAGE MODE) DESC, p.created_at DESC
             ");
             $stmt->bindValue(':search_query_where', $query, \PDO::PARAM_STR);
+            $stmt->bindValue(':search_query_where2', $query, \PDO::PARAM_STR);
             $stmt->bindValue(':search_query_order', $query, \PDO::PARAM_STR);
         }
 
