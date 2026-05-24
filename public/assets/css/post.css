@@ -48,12 +48,12 @@
 
 /* Post Thumbnails */
 .post-thumbnail {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     object-fit: cover;
     border-radius: var(--radius);
     display: block;
-    margin-bottom: 15px;
+    margin: 0 auto 15px auto;
     border: 1px solid var(--border-color);
     cursor: zoom-in;
     transition: transform 0.2s ease, box-shadow 0.2s ease;

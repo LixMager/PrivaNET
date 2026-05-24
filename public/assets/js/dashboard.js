@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 editPostIdInput.value = postId;
                 if (editQuillEditor) {
+                    editQuillEditor.root.innerHTML = '';
                     editQuillEditor.clipboard.dangerouslyPasteHTML(postText);
                 }
                 
@@ -241,12 +242,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         try {
                             var response = JSON.parse(xhr.responseText);
                             if (response.success) {
+                                var card = document.querySelector('.post-card[data-post-card-id="' + postId + '"]');
                                 var postTextElement = document.querySelector('[data-post-text-content="' + postId + '"]');
-                                if (postTextElement) {
-                                    postTextElement.innerHTML = response.text;
+                                
+                                if (response.text) {
+                                    if (postTextElement) {
+                                        postTextElement.innerHTML = response.text;
+                                    } else if (card) {
+                                        postTextElement = document.createElement('div');
+                                        postTextElement.className = 'post-text';
+                                        postTextElement.setAttribute('data-post-text-content', postId);
+                                        postTextElement.innerHTML = response.text;
+                                        var header = card.querySelector('.post-header');
+                                        var badge = card.querySelector('.scheduled-badge');
+                                        var insertAfter = badge ? badge : header;
+                                        if (insertAfter && insertAfter.parentNode) {
+                                            insertAfter.parentNode.insertBefore(postTextElement, insertAfter.nextSibling);
+                                        }
+                                    }
+                                } else if (postTextElement) {
+                                    postTextElement.parentNode.removeChild(postTextElement);
                                 }
 
-                                var card = document.querySelector('.post-card[data-post-card-id="' + postId + '"]');
                                 if (card) {
                                     // 3. Actualizar o eliminar imagen
                                     var imgMedia = card.querySelector('.image-media');

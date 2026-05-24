@@ -51,9 +51,9 @@ if ($post->getPublishedAt()) {
     <?php endif; ?>
 
     <?php if (!empty($post->getText())): ?>
-        <p class="post-text" data-post-text-content="<?php echo $post->getId(); ?>">
+        <div class="post-text" data-post-text-content="<?php echo $post->getId(); ?>">
             <?php echo \App\Helpers\ContentFilter::sanitize($post->getText()); ?>
-        </p>
+        </div>
     <?php endif; ?>
 
     <?php if (!empty($post->getImage())): ?>

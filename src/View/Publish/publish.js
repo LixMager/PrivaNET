@@ -30,12 +30,19 @@ if (editorContainer && postTextHidden) {
         quillEditor.root.innerHTML = postTextHidden.value;
     }
 
-    // Habilitar/Deshabilitar botón de publicar según contenido de texto
+    // Habilitar/Deshabilitar botón de publicar según contenido de texto o archivos
     var submitBtn = document.getElementById('submit-post-btn');
     function actualizarEstadoBotonPublicar() {
         if (!submitBtn) return;
         var plainText = quillEditor.getText().trim();
-        submitBtn.disabled = (plainText.length === 0);
+        var imageInput = document.getElementById('post-image-input');
+        var audioInput = document.getElementById('post-audio-input');
+        
+        var hasImage = (imageInput && imageInput.files && imageInput.files.length > 0);
+        var hasAudio = (audioInput && audioInput.files && audioInput.files.length > 0);
+        
+        // Se habilita si hay texto, imagen o audio
+        submitBtn.disabled = (plainText.length === 0 && !hasImage && !hasAudio);
     }
 
     quillEditor.on('text-change', function() {
@@ -116,8 +123,11 @@ if (imageInput && imagePreviewContainer && imagePreview && removeImageBtn) {
 
                         // 2. Actualizar aviso a comprimido exitosamente
                         mostrarMensajeImagen('La imagen supera la resolución máxima de 1600x1200 px. Se ha comprimido y redimensionado automáticamente.', false);
+                        if (typeof actualizarEstadoBotonPublicar === 'function') actualizarEstadoBotonPublicar();
                     }
                 }, 'image/jpeg', 0.85);
+            } else {
+                if (typeof actualizarEstadoBotonPublicar === 'function') actualizarEstadoBotonPublicar();
             }
         };
         img.src = URL.createObjectURL(file);
@@ -127,6 +137,7 @@ if (imageInput && imagePreviewContainer && imagePreview && removeImageBtn) {
     removeImageBtn.addEventListener('click', function() {
         limpiarImagen();
         mostrarMensajeErrorPost('');
+        if (typeof actualizarEstadoBotonPublicar === 'function') actualizarEstadoBotonPublicar();
     });
 }
 
@@ -202,6 +213,7 @@ if (audioInput && audioPreviewContainer && audioPreview && removeAudioBtn) {
                 audioPreview.src = URL.createObjectURL(file);
                 audioPreviewContainer.style.display = 'block';
                 mostrarMensajeErrorPost('');
+                if (typeof actualizarEstadoBotonPublicar === 'function') actualizarEstadoBotonPublicar();
             }
         };
         
@@ -215,6 +227,7 @@ if (audioInput && audioPreviewContainer && audioPreview && removeAudioBtn) {
     removeAudioBtn.addEventListener('click', function() {
         limpiarAudio();
         mostrarMensajeErrorPost('');
+        if (typeof actualizarEstadoBotonPublicar === 'function') actualizarEstadoBotonPublicar();
     });
 }
 

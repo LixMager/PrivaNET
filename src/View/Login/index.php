@@ -12,7 +12,6 @@ $posts = $repository->getLatestPublic(10);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrivaNET - Ingreso</title>
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
-    <link rel="stylesheet" href="public/layout.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="public/assets/css/base.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="public/assets/css/header.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="public/assets/css/post.css?v=<?php echo time(); ?>">

@@ -108,8 +108,8 @@ class ContentFilter {
             }
         }
 
-        // 2. Sanitizar etiquetas de estilo <span>
-        if ($tagName === 'span' && isset($attrs['style'])) {
+        // 2. Sanitizar etiquetas de estilo
+        if (isset($attrs['style'])) {
             $style = trim($attrs['style']);
             
             // Permitir únicamente definir el color de texto

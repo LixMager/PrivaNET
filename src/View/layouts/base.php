@@ -7,7 +7,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo htmlspecialchars($page_title ?? 'PrivaNET'); ?></title>
 	<link rel="icon" type="image/svg+xml" href="/PrivaNet/public/favicon.svg">
-	<link rel="stylesheet" href="/PrivaNet/public/layout.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/public/assets/css/base.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/public/assets/css/header.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="/PrivaNet/public/assets/css/post.css?v=<?php echo time(); ?>">
