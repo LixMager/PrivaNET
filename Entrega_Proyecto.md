@@ -43,22 +43,14 @@ A continuación se detalla la operatoria estándar para la interacción con la p
 ### 3.1. Acceso y Registro
 Para operar el sistema, el individuo debe poseer credenciales válidas. Si es un nuevo usuario, debe completar el formulario "Registro de nuevos usuarios" con información personal obligatoria (Usuario, Email, Contraseña mayor a 8 caracteres, Fecha de nacimiento, País). Tras el alta, el ingreso se realiza desde el panel superior "Iniciar sesión".
 
-> **[Insertar captura de pantalla de los formularios de Registro y Login]**
-
 ### 3.2. Publicación de Contenido
 Una vez autenticado, el usuario visualiza la caja de publicación en el Muro Principal. Se provee un editor de texto enriquecido y botones para adjuntar recursos (imágenes o audios locales). Al ejecutar la acción "Publicar", el contenido se sube al servidor, se persiste en base de datos y se actualiza el muro.
-
-> **[Insertar captura de pantalla del formulario de creación de publicación]**
 
 ### 3.3. Interacción con el Muro
 El flujo principal consta de una lista de tarjetas (posteos). Cada tarjeta incluye los controles de reacción (Me gusta, No me gusta, Favoritos). Al accionar estos controles, el sistema registra la interacción internamente sin requerir la recarga de la página (comportamiento asíncrono). Los archivos multimedia anexos pueden visualizarse mediante *click* (modal Lightbox) o reproducirse in-situ.
 
-> **[Insertar captura de pantalla de las publicaciones en el Feed Principal]**
-
 ### 3.4. Administración de Registros (Dashboard)
 El autor puede gestionar su propio contenido. Accediendo al "Panel de Control" (esquina superior derecha), se visualiza el listado de publicaciones propias. Las opciones "✎ Editar" y "✕ Eliminar" permiten actualizar la base de datos o remover el contenido del servidor permanentemente.
-
-> **[Insertar captura de pantalla del Panel de Control y sus herramientas de edición]**
 
 ---
 
