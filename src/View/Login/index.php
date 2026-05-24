@@ -136,6 +136,7 @@ $posts = $repository->getLatestPublic(10);
 
     <script src="public/assets/js/timeformat.js?v=<?php echo time(); ?>"></script>
     <script src="public/assets/js/lightbox.js?v=<?php echo time(); ?>"></script>
+    <script src="public/assets/js/alert.js?v=<?php echo time(); ?>"></script>
     <script src="src/view/Login/register.js?v=<?php echo time(); ?>"></script>
     <script src="src/view/Login/login.js?v=<?php echo time(); ?>"></script>
 </body>

@@ -396,13 +396,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     }, 400);
                                 }
                             } else {
-                                alert(response.message || 'Error al eliminar el posteo.');
+                                customAlert(response.message || 'Error al eliminar el posteo.', 'Error');
                             }
                         } catch (e) {
                             console.error('Error al parsear respuesta JSON:', e);
                         }
                     } else {
-                        alert('Error de red al intentar eliminar la publicación.');
+                        customAlert('Error de red al intentar eliminar la publicación.', 'Error');
                     }
                 }
             };

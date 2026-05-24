@@ -100,9 +100,9 @@ if ($post->getPublishedAt()) {
                 </button>
             <?php endif; ?>
         <?php else: ?>
-            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">△ Me gusta</button>
-            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">▽ No me gusta</button>
-            <button type="button" class="action-btn" onclick="alert('Inicia sesión para interactuar')">☆ Favorito</button>
+            <button type="button" class="action-btn" onclick="customAlert('Inicia sesión para interactuar')">△ Me gusta</button>
+            <button type="button" class="action-btn" onclick="customAlert('Inicia sesión para interactuar')">▽ No me gusta</button>
+            <button type="button" class="action-btn" onclick="customAlert('Inicia sesión para interactuar')">☆ Favorito</button>
         <?php endif; ?>
     </footer>
 </article>

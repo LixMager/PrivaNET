@@ -45,6 +45,7 @@
 
 	<script src="/PrivaNet/public/assets/js/timeformat.js?v=<?php echo time(); ?>"></script>
 	<script src="/PrivaNet/public/assets/js/lightbox.js?v=<?php echo time(); ?>"></script>
+	<script src="/PrivaNet/public/assets/js/alert.js?v=<?php echo time(); ?>"></script>
 	<?php echo $page_scripts ?? ''; ?>
 </body>
 </html>

@@ -85,13 +85,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     }
                                 }
                             } else {
-                                alert(response.message || 'Ocurrió un error al procesar la acción.');
+                                customAlert(response.message || 'Ocurrió un error al procesar la acción.', 'Error');
                             }
                         } catch (e) {
                             console.error('Error parseando respuesta JSON:', e);
                         }
                     } else {
-                        alert('Error de red al intentar interactuar con la publicación.');
+                        customAlert('Error de red al intentar interactuar con la publicación.', 'Error');
                     }
                 }
             };
