@@ -42,7 +42,7 @@
     width: calc(var(--lb-h) + clamp(260px, 30vw, 380px));
     max-width: 96vw;
 
-    border-radius: 14px;
+    border-radius: var(--radius);
     overflow: hidden;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.08);

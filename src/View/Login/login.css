@@ -11,10 +11,7 @@
 
 .login-card .login-form h2 {
     display: block;
-    font-size: 1.3rem;
     margin-bottom: 10px;
-    color: var(--text-main);
-    font-weight: 600;
 }
 
 .login-card .login-form label {
@@ -89,10 +86,7 @@
 }
 
 .register-form h2 {
-    font-size: 1.2rem;
     margin-bottom: 10px;
-    color: var(--text-main);
-    font-weight: 600;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
 }

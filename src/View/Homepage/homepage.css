@@ -229,10 +229,7 @@
 }
 
 .welcome-box h2 {
-    font-size: 1.3rem;
-    color: var(--text-main);
     margin-bottom: 8px;
-    font-weight: 600;
 }
 
 .welcome-box p {

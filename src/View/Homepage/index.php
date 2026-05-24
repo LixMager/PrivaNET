@@ -17,13 +17,13 @@ ob_start();
         <!-- Mensaje de Bienvenida -->
         <div class="welcome-box post-card">
             <h2>¡Bienvenido a PrivaNET, @<?php echo htmlspecialchars($_SESSION['username'] ?? 'usuario'); ?>!</h2>
-            <p class="welcome-last-login">Tu último login fue el: 
+            <p class="welcome-last-login">
                 <?php 
                 $lastAccess = $_SESSION['mostrar_ultimo_acceso'] ?? null;
                 if ($lastAccess && preg_match('/^\d{4}-\d{2}-\d{2}T/', $lastAccess)) {
-                    echo '<time class="local-time" data-utc="' . htmlspecialchars($lastAccess) . '">' . htmlspecialchars($lastAccess) . '</time>';
+                    echo 'Tu último login fue el: <time class="local-time" data-utc="' . htmlspecialchars($lastAccess) . '">' . htmlspecialchars($lastAccess) . '</time>';
                 } else {
-                    echo htmlspecialchars($lastAccess ?? 'Esta es tu primera visita en este dispositivo');
+                    echo 'Esta es tu primera visita';
                 }
                 ?>
             </p>

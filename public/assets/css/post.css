@@ -1,9 +1,6 @@
 /* Public Feed */
 .public-feed > h2 {
-    font-size: 1.3rem;
     margin-bottom: 20px;
-    font-weight: 600;
-    color: var(--text-main);
 }
 
 .posts-container {
@@ -250,9 +247,7 @@ audio {
 }
 
 .panel-header h2 {
-    font-size: 1.3rem;
     margin-bottom: 5px;
-    color: var(--text-main);
 }
 
 .panel-header p {
